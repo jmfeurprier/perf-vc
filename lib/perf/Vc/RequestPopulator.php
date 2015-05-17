@@ -25,9 +25,9 @@ class RequestPopulator
      */
     public function populate()
     {
-        $get          = $_GET;
-        $cookies      = $_COOKIE;
-        $this->server = $_SERVER;
+        $get          = isset($_GET) ? $_GET : array();
+        $cookies      = isset($_COOKIE) ? $_COOKIE : array();
+        $this->server = isset($_SERVER) ? $_SERVER : array();
 
         $method = $this->getMethod();
         $path   = $this->getPath();
@@ -43,7 +43,11 @@ class RequestPopulator
      */
     private function getMethod()
     {
-        return $this->server['REQUEST_METHOD'];
+        if (array_key_exists('REQUEST_METHOD', $this->server)) {
+            return $this->server['REQUEST_METHOD'];
+        }
+
+        throw new \RuntimeException('Failed to retrieve HTTP method.');
     }
 
     /**
@@ -53,9 +57,9 @@ class RequestPopulator
      */
     private function getPath()
     {
-        if (isset($this->server['REDIRECT_URL'])) {
+        if (array_key_exists('REDIRECT_URL', $this->server)) {
             $url = $this->server['REDIRECT_URL'];
-        } elseif (isset($this->server['REQUEST_URI'])) {
+        } elseif (array_key_exists('REQUEST_URI', $this->server)) {
             $url = $this->server['REQUEST_URI'];
         } else {
             throw new \RuntimeException('Failed to retrieve HTTP request path.');
