@@ -21,11 +21,11 @@ class RequestPopulator
      * Returns a new HTTP request instance, populated with global values.
      *
      * @return Request
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     public function populate()
     {
-        $get          = isset($_GET) ? $_GET : array();
+        $query        = isset($_GET) ? $_GET : array();
         $cookies      = isset($_COOKIE) ? $_COOKIE : array();
         $this->server = isset($_SERVER) ? $_SERVER : array();
 
@@ -33,13 +33,14 @@ class RequestPopulator
         $path   = $this->getPath();
         $post   = $this->getPost();
 
-        return new Request($method, $path, $get, $post, $cookies, $this->server);
+        return new Request($method, $path, $query, $post, $cookies, $this->server);
     }
 
     /**
      *
      *
      * @return string
+     * @throws \RuntimeException
      */
     private function getMethod()
     {
@@ -54,6 +55,7 @@ class RequestPopulator
      *
      *
      * @return string
+     * @throws \RuntimeException
      */
     private function getPath()
     {

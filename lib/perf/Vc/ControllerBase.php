@@ -2,11 +2,14 @@
 
 namespace perf\Vc;
 
+use perf\Vc\Routing\Address;
+use perf\Vc\Routing\Route;
+
 /**
  * Controller.
  *
  */
-abstract class Controller
+abstract class ControllerBase implements ControllerInterface
 {
 
     /**
@@ -50,7 +53,7 @@ abstract class Controller
      * @param Routing\Route $route
      * @return Controller Fluent return.
      */
-    final public function setRoute(Routing\Route $route)
+    public function setRoute(Routing\Route $route)
     {
         $this->route = $route;
 
@@ -63,7 +66,7 @@ abstract class Controller
      * @param Request $request
      * @return Controller Fluent return.
      */
-    final public function setRequest(Request $request)
+    public function setRequest(Request $request)
     {
         $this->request = $request;
 
@@ -76,7 +79,7 @@ abstract class Controller
      * @param View $view View.
      * @return Controller Fluent return.
      */
-    final public function setView(View $view)
+    public function setView(View $view)
     {
         $this->view = $view;
 
@@ -89,7 +92,7 @@ abstract class Controller
      * @param Response $response
      * @return Controller Fluent return.
      */
-    final public function setResponse(Response $response)
+    public function setResponse(Response $response)
     {
         $this->response = $response;
 
@@ -101,19 +104,17 @@ abstract class Controller
      *
      * @return void
      */
-    final public function run()
+    public function run()
     {
         $this->executeHookPre();
         $this->execute();
         $this->executeHookPost();
 
-        if (!$this->render) {
-            return;
+        if ($this->render) {
+            $viewContent = $this->getView()->fetch();
+
+            $this->getResponse()->setContent($viewContent);
         }
-
-        $viewContent = $this->getView()->fetch();
-
-        $this->getResponse()->setContent($viewContent);
     }
 
     /**
@@ -149,7 +150,7 @@ abstract class Controller
      *
      * @return Request
      */
-    final protected function getRequest()
+    protected function getRequest()
     {
         return $this->request;
     }
@@ -160,9 +161,9 @@ abstract class Controller
      *
      * @return string
      */
-    final protected function getModule()
+    protected function getRoute()
     {
-        return $this->route->getModule();
+        return $this->route;
     }
 
     /**
@@ -171,9 +172,20 @@ abstract class Controller
      *
      * @return string
      */
-    final protected function getAction()
+    protected function getModule()
     {
-        return $this->route->getAction();
+        return $this->getRoute()->getAddress()->getModule();
+    }
+
+    /**
+     *
+     * Helper method.
+     *
+     * @return string
+     */
+    protected function getAction()
+    {
+        return $this->getRoute()->getAddress()->getAction();
     }
 
     /**
@@ -184,15 +196,9 @@ abstract class Controller
      * @return mixed
      * @throws \DomainException
      */
-    final protected function getParameter($parameter)
+    protected function getParameter($parameter)
     {
-        $parameters = $this->route->getParameters();
-
-        if (array_key_exists($parameter, $parameters)) {
-            return $parameters[$parameter];
-        }
-
-        throw new \DomainException("Parameter {$parameter} not found.");
+        return $this->route->getParameter($parameter);
     }
 
     /**
@@ -202,11 +208,9 @@ abstract class Controller
      * @param string $parameter
      * @return bool
      */
-    final protected function hasParameter($parameter)
+    protected function hasParameter($parameter)
     {
-        $parameters = $this->route->getParameters();
-
-        return array_key_exists($parameter, $parameters);
+        return $this->route->hasParameter($parameter);
     }
 
     /**
@@ -219,9 +223,10 @@ abstract class Controller
      * @return void
      * @throws ForwardException Always thrown.
      */
-    final protected function forward($module, $action, array $parameters = array())
+    protected function forward($module, $action, array $parameters = array())
     {
-        $route = new Routing\Route($module, $action, $parameters);
+        $address = new Address($module, $action);
+        $route   = new Route($address, $parameters);
 
         throw new ForwardException($route);
     }
@@ -231,7 +236,7 @@ abstract class Controller
      *
      * @return View
      */
-    final protected function getView()
+    protected function getView()
     {
         return $this->view;
     }
@@ -241,7 +246,7 @@ abstract class Controller
      *
      * @return void
      */
-    final protected function noRender()
+    protected function noRender()
     {
         $this->render = false;
     }
@@ -255,7 +260,7 @@ abstract class Controller
      * @return void
      * @throws RedirectException Always thrown.
      */
-    final protected function redirectToUrl($url, $httpStatusCode)
+    protected function redirectToUrl($url, $httpStatusCode)
     {
         throw new RedirectException($url, $httpStatusCode);
     }
@@ -265,7 +270,7 @@ abstract class Controller
      *
      * @return Response
      */
-    final public function getResponse()
+    public function getResponse()
     {
         return $this->response;
     }

@@ -13,7 +13,7 @@ Install it with [Composer](http://getcomposer.org/):
 {
 	"require":
 	{
-		"perf/vc"  : "~1.0"
+		"perf/vc"  : "~2.0"
 	}
 }
 ```

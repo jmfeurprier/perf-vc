@@ -2,37 +2,58 @@
 
 namespace perf\Vc;
 
+use perf\Vc\Routing\Address;
 use perf\Vc\Routing\Route;
 
 /**
- *
+ * Controller factory (returns a new controller based on provided route).
+ * Default implementation.
  *
  */
-class ControllerFactory
+class ControllerFactory implements ControllerFactoryInterface
 {
+
+    const NAMESPACE_DEFAULT = 'Controller';
+
+    /**
+     * Controllers namespace.
+     *
+     * @var string
+     */
+    private $namespace;
+
+    /**
+     * Constructor.
+     *
+     * @param string $namespace
+     * @return void
+     */
+    public function __construct($namespace = self::NAMESPACE_DEFAULT)
+    {
+        $this->namespace = trim($namespace, '\\');
+    }
 
     /**
      *
      *
      * @param Route $route
-     * @return Controller
+     * @return ControllerInterface
      * @throws \RuntimeException
      */
     public function getController(Route $route)
     {
-        $module = $route->getModule();
-        $action = $route->getAction();
+        $address = $route->getAddress();
 
-        $controllerClass = $this->getControllerClass($module, $action);
+        $controllerClass = $this->getControllerClass($address);
 
         if (!class_exists($controllerClass, true)) {
-            $message = "Controller not found for {$module}:{$action}, expected class {$controllerClass} not found.";
+            $message = "Controller not found for {$address}, expected class {$controllerClass} not found.";
 
             throw new \RuntimeException($message);
         }
 
-        if (!is_subclass_of($controllerClass, '\\' . __NAMESPACE__ . '\\Controller')) {
-            $message = "Controller not valid for {$module}:{$action}.";
+        if (!is_subclass_of($controllerClass, '\\' . __NAMESPACE__ . '\\ControllerInterface')) {
+            $message = "Controller not valid for {$address}.";
 
             throw new \RuntimeException($message);
         }
@@ -42,14 +63,15 @@ class ControllerFactory
 
     /**
      *
-     * Default implementation.
      *
-     * @param string $module
-     * @param string $action
+     * @param Address $address
      * @return string
      */
-    protected function getControllerClass($module, $action)
+    protected function getControllerClass(Address $address)
     {
-        return "\\Controller\\{$module}\\{$action}";
+        $module = $address->getModule();
+        $action = $address->getAction();
+
+        return "\\{$this->namespace}\\{$module}\\{$action}Controller";
     }
 }

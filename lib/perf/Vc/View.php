@@ -4,9 +4,10 @@ namespace perf\Vc;
 
 /**
  * View.
+ * Default implementation.
  *
  */
-class View
+class View implements ViewInterface
 {
 
     /**
@@ -244,7 +245,7 @@ class View
     private function fixOutputBufferringStack($outputBufferringStartLevel)
     {
         if (ob_get_level() < $outputBufferringStartLevel) {
-            throw new \RuntimeException();
+            throw new \RuntimeException('Failed to fix output bufferingf stack.');
         }
 
         while (ob_get_level() > $outputBufferringStartLevel) {

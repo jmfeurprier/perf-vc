@@ -2,45 +2,50 @@
 
 namespace perf\Vc;
 
+use perf\Vc\Redirection\RedirectionHeadersGenerator;
+use perf\Vc\Routing\Route;
+use perf\Vc\Routing\Router;
+use perf\Vc\Routing\RouterInterface;
+
 /**
  *
  *
  */
-class FrontController
+class FrontController implements FrontControllerInterface
 {
 
     /**
      * Controller factory.
      *
-     * @var ControllerFactory
+     * @var ControllerFactoryInterface
      */
     private $controllerFactory;
 
     /**
      * View factory.
      *
-     * @var ViewFactory
+     * @var ViewFactoryInterface
      */
     private $viewFactory;
 
     /**
      * Router.
      *
-     * @var Routing\Router
+     * @var RouterInterface
      */
     private $router;
 
     /**
      * Response factory.
      *
-     * @var ResponseFactory
+     * @var ResponseFactoryInterface
      */
     private $responseFactory;
 
     /**
      * HTTP redirection headers generator.
      *
-     * @var Redirect\HeadersGenerator
+     * @var RedirectionHeadersGenerator
      */
     private $redirectionHeadersGenerator;
 
@@ -56,7 +61,7 @@ class FrontController
      * Current route.
      * Temporary property.
      *
-     * @var Routing\Route
+     * @var Route
      */
     private $route;
 
@@ -73,10 +78,10 @@ class FrontController
     /**
      * Sets the controller factory.
      *
-     * @param ControllerFactory $factory Controller factory.
+     * @param ControllerFactoryInterface $factory Controller factory.
      * @return FrontController Fluent return.
      */
-    final public function setControllerFactory(ControllerFactory $factory)
+    public function setControllerFactory(ControllerFactoryInterface $factory)
     {
         $this->controllerFactory = $factory;
 
@@ -86,10 +91,10 @@ class FrontController
     /**
      * Sets the view factory.
      *
-     * @param ViewFactory $factory View factory.
+     * @param ViewFactoryInterface $factory View factory.
      * @return FrontController Fluent return.
      */
-    final public function setViewFactory(ViewFactory $factory)
+    public function setViewFactory(ViewFactoryInterface $factory)
     {
         $this->viewFactory = $factory;
 
@@ -99,10 +104,10 @@ class FrontController
     /**
      * Sets the router.
      *
-     * @param Routing\Router $router Router.
+     * @param RouterInterface $router Router.
      * @return FrontController Fluent return.
      */
-    final public function setRouter(Routing\Router $router)
+    public function setRouter(RouterInterface $router)
     {
         $this->router = $router;
 
@@ -112,10 +117,10 @@ class FrontController
     /**
      * Sets the response factory.
      *
-     * @param ResponseFactory $factory Response factory.
+     * @param ResponseFactoryInterface $factory Response factory.
      * @return FrontController Fluent return.
      */
-    final public function setResponseFactory(ResponseFactory $factory)
+    public function setResponseFactory(ResponseFactoryInterface $factory)
     {
         $this->responseFactory = $factory;
 
@@ -125,10 +130,10 @@ class FrontController
     /**
      * Sets redirection headers generator.
      *
-     * @param Redirect\HeadersGenerator $generator
+     * @param RedirectionHeadersGenerator $generator
      * @return FrontController Fluent return.
      */
-    final public function setRedirectionHeadersGenerator(Redirect\HeadersGenerator $generator)
+    public function setRedirectionHeadersGenerator(RedirectionHeadersGenerator $generator)
     {
         $this->redirectionHeadersGenerator = $generator;
 
@@ -142,11 +147,10 @@ class FrontController
      * @return Response
      * @throws \Exception
      */
-    final public function run(Request $request)
+    public function run(Request $request)
     {
         $this->request = $request;
-        $path          = $this->request->getPath();
-        $route         = $this->router->tryMatch($path);
+        $route         = $this->router->tryGetRoute($this->request);
 
         if (!$route) {
             return $this->routeNotFound();
@@ -190,21 +194,21 @@ class FrontController
 
         error_log($message);
 
-        throw new \RuntimeException('Controller execution failure. << {$exception->getMessage()}', 0, $exception);
+        throw new \RuntimeException("Controller execution failure. << {$exception->getMessage()}", 0, $exception);
     }
 
     /**
      * Forwards execution to a controller.
      *
-     * @param Routing\Route $route Route.
+     * @param Route $route Route.
      * @return Response
      */
-    final protected function forward(Routing\Route $route)
+    protected function forward(Route $route)
     {
         $this->route = $route;
-        $controller  = $this->getController($route);
-        $view        = $this->getView($route);
-        $response    = $this->responseFactory->create();
+        $controller  = $this->getController();
+        $view        = $this->getView();
+        $response    = $this->responseFactory->getResponse();
 
         $controller
             ->setRoute($route)
@@ -227,12 +231,11 @@ class FrontController
     /**
      *
      *
-     * @param Routing\Route $route Route.
-     * @return Controller
+     * @return ControllerInterface
      */
-    private function getController(Routing\Route $route)
+    private function getController()
     {
-        $controller = $this->controllerFactory->getController($route);
+        $controller = $this->controllerFactory->getController($this->route);
 
         $this->configureController($controller);
 
@@ -244,24 +247,23 @@ class FrontController
      * Hook.
      * Default implementation.
      *
-     * @param Controller $controller
+     * @param ControllerInterface $controller
      * @return void
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function configureController(Controller $controller)
+    protected function configureController(ControllerInterface $controller)
     {
     }
 
     /**
      *
      *
-     * @param Routing\Route $route Route.
-     * @return View
+     * @return ViewInterface
      */
-    private function getView(Routing\Route $route)
+    private function getView()
     {
-        $view = $this->viewFactory->getView($route);
+        $view = $this->viewFactory->getView($this->route);
 
         $this->configureView($view);
 
@@ -273,19 +275,19 @@ class FrontController
      * Hook.
      * Default implementation.
      *
-     * @param View $view
+     * @param ViewInterface $view
      * @return void
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function configureView(View $view)
+    protected function configureView(ViewInterface $view)
     {
     }
 
     /**
      * Returns current route.
      *
-     * @return Routing\Route
+     * @return Route
      */
     protected function getRoute()
     {
@@ -301,7 +303,7 @@ class FrontController
      */
     private function redirectToUrl($url, $httpStatusCode)
     {
-        $response = $this->responseFactory->create();
+        $response = $this->responseFactory->getResponse();
 
         foreach ($this->redirectionHeadersGenerator->generate($url, $httpStatusCode) as $header) {
             $response->addHeader($header);

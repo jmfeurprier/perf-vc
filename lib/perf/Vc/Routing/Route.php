@@ -3,25 +3,18 @@
 namespace perf\Vc\Routing;
 
 /**
- * MVC route (module, action and parameters).
+ * MVC route.
  *
  */
 class Route
 {
 
     /**
-     * Module name.
+     * Address.
      *
-     * @var string
+     * @var Address
      */
-    private $module;
-
-    /**
-     * Action name.
-     *
-     * @var string
-     */
-    private $action;
+    private $address;
 
     /**
      * Parameters.
@@ -33,49 +26,16 @@ class Route
     /**
      * Constructor.
      *
-     * @param string $module Module name.
-     * @param string $action Action name.
+     * @param Address $address
      * @param {string:mixed} $parameters Parameters.
      * @return void
      * @throws \InvalidArgumentException
      */
-    public function __construct($module, $action, array $parameters = array())
+    public function __construct(Address $address, array $parameters = array())
     {
-        $this->setModule($module);
-        $this->setAction($action);
+        $this->address = $address;
+
         $this->setParameters($parameters);
-    }
-
-    /**
-     *
-     *
-     * @param string $module
-     * @return void
-     * @throws \InvalidArgumentException
-     */
-    private function setModule($module)
-    {
-        if (!is_string($module) || (1 !== preg_match('/^[a-zA-Z][a-zA-Z0-9]*$/D', $module))) {
-            throw new \InvalidArgumentException('Invalid module.');
-        }
-
-        $this->module = $module;
-    }
-
-    /**
-     *
-     *
-     * @param string $action
-     * @return void
-     * @throws \InvalidArgumentException
-     */
-    private function setAction($action)
-    {
-        if (!is_string($action) || (1 !== preg_match('/^[a-zA-Z][a-zA-Z0-9]*$/D', $action))) {
-            throw new \InvalidArgumentException('Invalid action.');
-        }
-
-        $this->action = $action;
     }
 
     /**
@@ -97,23 +57,13 @@ class Route
     }
 
     /**
-     * Returns the module name.
      *
-     * @return string
-     */
-    public function getModule()
-    {
-        return $this->module;
-    }
-
-    /**
-     * Returns the action name.
      *
-     * @return string
+     * @return Address
      */
-    public function getAction()
+    public function getAddress()
     {
-        return $this->action;
+        return $this->address;
     }
 
     /**
@@ -124,5 +74,32 @@ class Route
     public function getParameters()
     {
         return $this->parameters;
+    }
+
+    /**
+     *
+     *
+     * @param string $parameter
+     * @return mixed
+     * @throws \DomainException
+     */
+    public function getParameter($parameter)
+    {
+        if (array_key_exists($parameter, $this->parameters)) {
+            return $this->parameters[$parameter];
+        }
+
+        throw new \DomainException("Parameter {$parameter} not found.");
+    }
+
+    /**
+     *
+     *
+     * @param string $parameter
+     * @return bool
+     */
+    public function hasParameter($parameter)
+    {
+        return array_key_exists($parameter, $this->parameters);
     }
 }

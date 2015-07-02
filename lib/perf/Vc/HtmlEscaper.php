@@ -9,6 +9,8 @@ namespace perf\Vc;
 class HtmlEscaper implements Escaper
 {
 
+    const CHARSET_DEFAULT = 'UTF-8';
+
     /**
      *
      *
@@ -22,7 +24,7 @@ class HtmlEscaper implements Escaper
      * @param string $charset
      * @return void
      */
-    public function __construct($charset = 'UTF-8')
+    public function __construct($charset = self::CHARSET_DEFAULT)
     {
         $this->charset = $charset;
     }

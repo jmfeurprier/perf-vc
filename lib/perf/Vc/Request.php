@@ -57,6 +57,17 @@ class Request
     private $server;
 
     /**
+     * Static constructor.
+     *
+     * @return Request
+     * @throws \RuntimeException
+     */
+    public static function createPopulated()
+    {
+        return RequestPopulator::create()->populate();
+    }
+
+    /**
      * Constructor.
      *
      * @param string         $method  HTTP method.
@@ -65,11 +76,12 @@ class Request
      * @param {string:mixed} $post    POST channel content.
      * @param {string:mixed} $cookies Cookies channel content.
      * @param {string:mixed} $server  Server channel content.
+     * @return void
      */
     public function __construct($method, $path, array $query, array $post, array $cookies, array $server)
     {
         $this->method  = $method;
-        $this->path    = (string) $path;
+        $this->path    = $path;
         $this->query   = $query;
         $this->post    = $post;
         $this->cookies = $cookies;

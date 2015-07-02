@@ -1,6 +1,6 @@
 <?php
 
-namespace perf\Vc\Redirect;
+namespace perf\Vc\Redirection;
 
 /**
  *
@@ -14,7 +14,7 @@ interface HttpProtocol
      *
      * @param int $httpStatusCode
      * @return HttpStatus
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function getStatus($httpStatusCode);
 }

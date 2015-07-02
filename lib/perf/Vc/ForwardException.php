@@ -2,6 +2,8 @@
 
 namespace perf\Vc;
 
+use perf\Vc\Routing\Route;
+
 /**
  * Exception for forwards.
  *
@@ -12,17 +14,17 @@ class ForwardException extends \Exception
     /**
      * Route to forward to.
      *
-     * @var Routing\Route
+     * @var Route
      */
     private $route;
 
     /**
      * Constructor.
      *
-     * @param Routing\Route $route Route.
+     * @param Route $route Route.
      * @return void
      */
-    public function __construct(Routing\Route $route)
+    public function __construct(Route $route)
     {
         $this->route = $route;
     }
@@ -30,7 +32,7 @@ class ForwardException extends \Exception
     /**
      * Returns route.
      *
-     * @return Routing\Route
+     * @return Route
      */
     public function getRoute()
     {

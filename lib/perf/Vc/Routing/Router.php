@@ -2,41 +2,57 @@
 
 namespace perf\Vc\Routing;
 
+use perf\Vc\Request;
+
 /**
  * MVC router.
  *
  */
-class Router
+class Router implements RouterInterface
 {
 
     /**
-     * MVC route matchers.
+     * MVC routing rules.
      *
-     * @var RouteMatcher[]
+     * @var RoutingRule[]
      */
-    private $matchers = array();
+    private $rules = array();
 
     /**
-     * Adds a MVC route matcher.
+     * Constructor.
      *
-     * @param RouteMatcher $matcher MVC route matcher.
+     * @param RoutingRule[] $rules
      * @return void
+     * @throws \InvalidArgumentException
      */
-    public function addRouteMatcher(RouteMatcher $matcher)
+    public function __construct(array $rules = array())
     {
-        $this->matchers[] = $matcher;
+        foreach ($rules as $rule) {
+            $this->addRule($rule);
+        }
     }
 
     /**
-     * Attempts to match provided HTTP request path against route matchers.
+     * Adds a MVC routing rule.
      *
-     * @param string $path HTTP request path.
+     * @param RoutingRule $rule MVC routing rule.
+     * @return void
+     */
+    public function addRule(RoutingRule $rule)
+    {
+        $this->rules[] = $rule;
+    }
+
+    /**
+     * Attempts to match provided request against routing rules.
+     *
+     * @param Request $request Request.
      * @return null|Route
      */
-    public function tryMatch($path)
+    public function tryGetRoute(Request $request)
     {
-        foreach ($this->matchers as $matcher) {
-            $route = $matcher->tryMatch($path);
+        foreach ($this->rules as $rule) {
+            $route = $rule->tryMatch($request);
 
             if ($route) {
                 return $route;

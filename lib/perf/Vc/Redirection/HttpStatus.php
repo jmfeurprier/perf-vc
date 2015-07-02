@@ -1,6 +1,6 @@
 <?php
 
-namespace perf\Vc\Redirect;
+namespace perf\Vc\Redirection;
 
 /**
  *
@@ -40,9 +40,9 @@ class HttpStatus
      */
     public function __construct($httpVersion, $code, $reason)
     {
-        $this->httpVersion = (string) $httpVersion;
-        $this->code        = (int) $code;
-        $this->reason      = (string) $reason;
+        $this->httpVersion = $httpVersion;
+        $this->code        = $code;
+        $this->reason      = $reason;
     }
 
     /**

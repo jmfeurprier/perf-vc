@@ -1,11 +1,11 @@
 <?php
 
-namespace perf\Vc\Redirect;
+namespace perf\Vc\Redirection;
 
 /**
  * This class allows to generate HTTP headers to redirect visitors to other web sites / pages.
  */
-class HeadersGenerator
+class RedirectionHeadersGenerator
 {
 
     /**
@@ -16,23 +16,25 @@ class HeadersGenerator
     private $protocol;
 
     /**
-     * Constructor.
+     * Static constructor.
      *
-     * @return void
+     * @param HttpProtocol $protocol
+     * @return RedirectionHeadersGenerator
      */
-    public function __construct()
+    public static function createDefault()
     {
-        // Default protocol.
-        $this->setHttpProtocol(new Http11Protocol());
+        $protocol = new Http11Protocol();
+
+        return new self($protocol);
     }
 
     /**
-     * Sets HTTP protocol.
+     * Constructor.
      *
-     * @param HttpProtocol $protocol HTTP protocol to be used.
+     * @param HttpProtocol $protocol
      * @return void
      */
-    public function setHttpProtocol(HttpProtocol $protocol)
+    public function __construct(HttpProtocol $protocol)
     {
         $this->protocol = $protocol;
     }

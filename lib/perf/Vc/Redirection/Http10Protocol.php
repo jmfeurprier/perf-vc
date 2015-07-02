@@ -1,6 +1,6 @@
 <?php
 
-namespace perf\Vc\Redirect;
+namespace perf\Vc\Redirection;
 
 /**
  *
@@ -33,7 +33,7 @@ class Http10Protocol implements HttpProtocol
      *
      * @param int $httpStatusCode
      * @return HttpStatus
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function getStatus($httpStatusCode)
     {

@@ -4,17 +4,18 @@ namespace perf\Vc;
 
 /**
  * Response factory.
+ * Default implementation.
  *
  */
-class ResponseFactory
+class ResponseFactory implements ResponseFactoryInterface
 {
 
     /**
      * Creates a new response.
      *
-     * @return void
+     * @return Response
      */
-    public function create()
+    public function getResponse()
     {
         return new Response();
     }

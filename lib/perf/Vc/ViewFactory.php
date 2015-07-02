@@ -2,13 +2,15 @@
 
 namespace perf\Vc;
 
+use perf\Vc\Routing\Address;
 use perf\Vc\Routing\Route;
 
 /**
  * View factory.
+ * Default implementation.
  *
  */
-class ViewFactory
+class ViewFactory implements ViewFactoryInterface
 {
 
     /**
@@ -56,10 +58,10 @@ class ViewFactory
     }
 
     /**
-     * Builds a new view based on provided module and action.
+     * Builds a new view based on provided route.
      *
      * @param Route $route
-     * @return View
+     * @return ViewInterface
      */
     public function getView(Route $route)
     {
@@ -77,8 +79,9 @@ class ViewFactory
      */
     protected function getViewPath(Route $route)
     {
-        $module = $route->getModule();
-        $action = $route->getAction();
+        $address = $route->getAddress();
+        $module  = $address->getModule();
+        $action  = $address->getAction();
 
         return "{$this->getViewsBasePath()}/{$module}/{$action}.php";
     }

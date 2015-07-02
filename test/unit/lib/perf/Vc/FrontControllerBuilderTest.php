@@ -15,9 +15,9 @@ class FrontControllerBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $viewsBasePath = __DIR__;
 
-        $viewFactory = $this->getMockBuilder('\\perf\\Vc\\ViewFactory')->disableOriginalConstructor()->getMock();
+        $viewFactory = $this->getMock('\\perf\\Vc\\ViewFactoryInterface');
 
-        $router = $this->getMock('\\perf\\Vc\\Routing\\Router');
+        $router = $this->getMock('\\perf\\Vc\\Routing\\RouterInterface');
 
         $frontControllerBuilder = new FrontControllerBuilder();
         $frontControllerBuilder
