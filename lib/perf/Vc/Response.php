@@ -76,7 +76,7 @@ class Response
      */
     public function send()
     {
-        if (is_null($this->sourcePath)) {
+        if (null === $this->sourcePath) {
             $this->sendContent();
         } else {
             $this->sendFile();
