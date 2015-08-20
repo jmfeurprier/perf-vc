@@ -13,18 +13,32 @@ abstract class ControllerBase implements ControllerInterface
 {
 
     /**
-     * Current route.
      *
-     * @var Routing\Route
+     *
+     * @return Response
      */
-    private $route;
+    private $response;
+
+    /**
+     * View factory.
+     *
+     * @var ViewFactoryInterface
+     */
+    private $viewFactory;
 
     /**
      *
      *
-     * @var Request
+     * @var bool
      */
-    private $request;
+    private $render = true;
+
+    /**
+     * Current context.
+     *
+     * @var Context
+     */
+    private $context;
 
     /**
      *
@@ -36,85 +50,48 @@ abstract class ControllerBase implements ControllerInterface
     /**
      *
      *
-     * @return Response
-     */
-    private $response;
-
-    /**
-     *
-     *
-     * @var bool
-     */
-    private $render = true;
-
-    /**
-     *
-     *
-     * @param Routing\Route $route
-     * @return Controller Fluent return.
-     */
-    public function setRoute(Routing\Route $route)
-    {
-        $this->route = $route;
-
-        return $this;
-    }
-
-    /**
-     *
-     *
-     * @param Request $request
-     * @return Controller Fluent return.
-     */
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
-
-        return $this;
-    }
-
-    /**
-     * Sets the view.
-     *
-     * @param View $view View.
-     * @return Controller Fluent return.
-     */
-    public function setView(View $view)
-    {
-        $this->view = $view;
-
-        return $this;
-    }
-
-    /**
-     *
-     *
      * @param Response $response
-     * @return Controller Fluent return.
+     * @return void
      */
     public function setResponse(Response $response)
     {
         $this->response = $response;
+    }
 
-        return $this;
+    /**
+     * Sets the view factory.
+     *
+     * @param ViewFactoryInterface $factory View factory.
+     * @return void
+     */
+    public function setViewFactory(ViewFactoryInterface $factory)
+    {
+        $this->viewFactory = $factory;
     }
 
     /**
      *
      *
-     * @return void
+     * @param Context $context
+     * @return Response
      */
-    public function run()
+    public function run(Context $context)
     {
+        $this->context = $context;
+
         $this->executeHookPre();
         $this->execute();
         $this->executeHookPost();
 
+        $response = $this->getResponse();
+
         if ($this->render) {
             $viewContent = $this->getView()->fetch();
 
-            $this->getResponse()->setContent($viewContent);
+            $response->setContent($viewContent);
         }
+
+        return $response;
     }
 
     /**
@@ -152,18 +129,7 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function getRequest()
     {
-        return $this->request;
-    }
-
-    /**
-     *
-     * Helper method.
-     *
-     * @return string
-     */
-    protected function getRoute()
-    {
-        return $this->route;
+        return $this->getContext()->getRequest();
     }
 
     /**
@@ -174,7 +140,7 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function getModule()
     {
-        return $this->getRoute()->getAddress()->getModule();
+        return $this->getAddress()->getModule();
     }
 
     /**
@@ -185,7 +151,30 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function getAction()
     {
-        return $this->getRoute()->getAddress()->getAction();
+        return $this->getAddress()->getAction();
+    }
+
+    /**
+     *
+     * Helper method.
+     *
+     * @return string
+     */
+    protected function getAddress()
+    {
+        return $this->getRoute()->getAddress();
+    }
+
+    /**
+     *
+     * Helper method.
+     *
+     * @param string $parameter
+     * @return bool
+     */
+    protected function hasParameter($parameter)
+    {
+        return $this->getRoute()->hasParameter($parameter);
     }
 
     /**
@@ -198,19 +187,18 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function getParameter($parameter)
     {
-        return $this->route->getParameter($parameter);
+        return $this->getRoute()->getParameter($parameter);
     }
 
     /**
      *
      * Helper method.
      *
-     * @param string $parameter
-     * @return bool
+     * @return string
      */
-    protected function hasParameter($parameter)
+    protected function getRoute()
     {
-        return $this->route->hasParameter($parameter);
+        return $this->getContext()->getRoute();
     }
 
     /**
@@ -234,11 +222,31 @@ abstract class ControllerBase implements ControllerInterface
     /**
      *
      *
-     * @return View
+     * @return ViewInterface
      */
     protected function getView()
     {
+        if (!$this->view) {
+            $this->view = $this->viewFactory->getView($this->getRoute());
+
+            $this->configureView($this->view);
+        }
+
         return $this->view;
+    }
+
+    /**
+     *
+     * Hook.
+     * Default implementation.
+     *
+     * @param ViewInterface $view
+     * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    protected function configureView(ViewInterface $view)
+    {
     }
 
     /**
@@ -270,7 +278,7 @@ abstract class ControllerBase implements ControllerInterface
      *
      * @return Response
      */
-    public function getResponse()
+    protected function getResponse()
     {
         return $this->response;
     }

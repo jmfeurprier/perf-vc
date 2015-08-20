@@ -147,7 +147,11 @@ class RoutingRuleXmlImporter implements RoutingRuleImporter
 
         if ('regex' === $matcherType) {
             $pattern        = (string) $sxeRule['pattern'];
-            $parameterNames = $this->parseParameterNames($sxeRule);
+            $parameterNames = array();
+
+            foreach ($sxeRule->parameter as $sxeParameter) {
+                $parameterNames[] = (string) $sxeParameter;
+            }
 
             $pathMatcher = new RegexPathMatcher($pattern, $parameterNames);
         } else {
@@ -158,22 +162,5 @@ class RoutingRuleXmlImporter implements RoutingRuleImporter
 
 
         return $pathMatcher;
-    }
-
-    /**
-     *
-     *
-     * @param \SimpleXMLElement $sxeRule
-     * @return string[]
-     */
-    private function parseParameterNames(\SimpleXMLElement $sxeRule)
-    {
-        $parameterNames = array();
-
-        foreach ($sxeRule->parameter as $sxeParameter) {
-            $parameterNames[] = (string) $sxeParameter;
-        }
-
-        return $parameterNames;
     }
 }

@@ -204,18 +204,14 @@ class FrontControllerBuilder
     {
         $frontController             = $this->getFrontController();
         $controllerFactory           = $this->getControllerFactory();
-        $viewFactory                 = $this->getViewFactory();
         $router                      = $this->getRouter();
         $responseFactory             = $this->getResponseFactory();
         $redirectionHeadersGenerator = $this->getRedirectionHeadersGenerator();
 
-        $frontController
-            ->setControllerFactory($controllerFactory)
-            ->setViewFactory($viewFactory)
-            ->setRouter($router)
-            ->setResponseFactory($responseFactory)
-            ->setRedirectionHeadersGenerator($redirectionHeadersGenerator)
-        ;
+        $frontController->setControllerFactory($controllerFactory);
+        $frontController->setRouter($router);
+        $frontController->setResponseFactory($responseFactory);
+        $frontController->setRedirectionHeadersGenerator($redirectionHeadersGenerator);
 
         return $frontController;
     }
@@ -242,7 +238,12 @@ class FrontControllerBuilder
     private function getControllerFactory()
     {
         if (null === $this->controllerFactory) {
-            return new ControllerFactory();
+            $viewFactory = $this->getViewFactory();
+
+            $controllerFactory = new ControllerFactory();
+            $controllerFactory->setViewFactory($viewFactory);
+
+            return $controllerFactory;
         }
 
         return $this->controllerFactory;

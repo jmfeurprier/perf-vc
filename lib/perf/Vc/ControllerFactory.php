@@ -23,6 +23,13 @@ class ControllerFactory implements ControllerFactoryInterface
     private $namespace;
 
     /**
+     * View factory.
+     *
+     * @var ViewFactoryInterface
+     */
+    private $viewFactory;
+
+    /**
      * Constructor.
      *
      * @param string $namespace
@@ -31,6 +38,17 @@ class ControllerFactory implements ControllerFactoryInterface
     public function __construct($namespace = self::NAMESPACE_DEFAULT)
     {
         $this->namespace = trim($namespace, '\\');
+    }
+
+    /**
+     * Sets the view factory.
+     *
+     * @param ViewFactoryInterface $factory View factory.
+     * @return void
+     */
+    public function setViewFactory(ViewFactoryInterface $factory)
+    {
+        $this->viewFactory = $factory;
     }
 
     /**
@@ -58,7 +76,10 @@ class ControllerFactory implements ControllerFactoryInterface
             throw new \RuntimeException($message);
         }
 
-        return new $controllerClass();
+        $controller = new $controllerClass();
+        $controller->setViewFactory($this->viewFactory);
+
+        return $controller;
     }
 
     /**

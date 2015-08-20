@@ -13,7 +13,7 @@ Install it with [Composer](http://getcomposer.org/):
 {
 	"require":
 	{
-		"perf/vc"  : "~2.0"
+		"perf/vc" : "~2.0"
 	}
 }
 ```
@@ -25,7 +25,10 @@ Install it with [Composer](http://getcomposer.org/):
 ```php
 <?php
 
-$routesPath    = __DIR__ . '/routes.xml';
+// Path where routing file can be found.
+$routesPath = __DIR__ . '/routes.xml';
+
+// Base path for view files (which must follow this structure: {views-base-path}/{module}/{action}.php)
 $viewsBasePath = __DIR__ . '/view/';
 
 $frontController = \perf\Vc\FrontController::createBuilder()
@@ -41,8 +44,7 @@ $frontController = \perf\Vc\FrontController::createBuilder()
 <?php
 
 // Create and populate a HTTP request with values from super-globals ($_GET, $_POST, $_SERVER, etc).
-$requestPopulator = new \perf\Vc\RequestPopulator();
-$request = $requestPopulator->populate();
+$request = \perf\Vc\Request::createPopulated();
 
 // Route, execute, and retrieve result into a HTTP response.
 $response = $frontController->run($request);
@@ -56,6 +58,5 @@ Or, shorter:
 ```php
 <?php
 
-$requestPopulator = new \perf\Vc\RequestPopulator();
-$frontController->run($requestPopulator->populate())->send();
+$frontController->runAll();
 ```

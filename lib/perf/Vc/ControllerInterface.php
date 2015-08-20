@@ -13,22 +13,6 @@ interface ControllerInterface
 {
 
     /**
-     *
-     *
-     * @param Routing\Route $route
-     * @return void
-     */
-    public function setRoute(Routing\Route $route);
-
-    /**
-     *
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function setRequest(Request $request);
-
-    /**
      * Sets the view.
      *
      * @param View $view View.
@@ -47,14 +31,8 @@ interface ControllerInterface
     /**
      *
      *
-     * @return void
-     */
-    public function run();
-
-    /**
-     *
-     *
+     * @param Context $context
      * @return Response
      */
-    public function getResponse();
+    public function run(Context $context);
 }
