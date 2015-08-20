@@ -149,8 +149,9 @@ class FrontController implements FrontControllerInterface
      */
     public function run(Request $request)
     {
-        $this->request = $request;
-        $route         = $this->router->tryGetRoute($this->request);
+        $this->setRequest($request);
+
+        $route = $this->router->tryGetRoute($this->request);
 
         if (!$route) {
             return $this->routeNotFound();
@@ -161,6 +162,17 @@ class FrontController implements FrontControllerInterface
         } catch (\Exception $exception) {
             return $this->failure($exception);
         }
+    }
+
+    /**
+     * Sets the current request.
+     *
+     * @param Request $request
+     * @return void
+     */
+    protected function setRequest(Request $request)
+    {
+        $this->request = $request;
     }
 
     /**
