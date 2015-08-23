@@ -29,7 +29,7 @@ abstract class ControllerBase implements ControllerInterface
     /**
      *
      *
-     * @var View
+     * @var ViewInterface
      */
     private $view;
 
@@ -76,10 +76,10 @@ abstract class ControllerBase implements ControllerInterface
     /**
      * Sets the view.
      *
-     * @param View $view View.
+     * @param ViewInterface $view View.
      * @return Controller Fluent return.
      */
-    public function setView(View $view)
+    public function setView(ViewInterface $view)
     {
         $this->view = $view;
 
@@ -234,7 +234,7 @@ abstract class ControllerBase implements ControllerInterface
     /**
      *
      *
-     * @return View
+     * @return ViewInterface
      */
     protected function getView()
     {
