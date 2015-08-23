@@ -43,7 +43,7 @@ abstract class ControllerBase implements ControllerInterface
     /**
      *
      *
-     * @var View
+     * @var ViewInterface
      */
     private $view;
 

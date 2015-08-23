@@ -15,7 +15,7 @@ interface ViewFactoryInterface
      * Builds a new view based on provided route.
      *
      * @param Route $route
-     * @return View
+     * @return ViewInterface
      */
     public function getView(Route $route);
 }
