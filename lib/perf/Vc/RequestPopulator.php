@@ -59,10 +59,17 @@ class RequestPopulator
      */
     private function getPath()
     {
+        // Adding host/domain helps parsing paths from malformed URLs.
+        if (array_key_exists('HTTP_HOST', $this->server)) {
+            $url = 'http://' . $this->server['HTTP_HOST'];
+        } else {
+            $url = '';
+        }
+
         if (array_key_exists('REDIRECT_URL', $this->server)) {
-            $url = $this->server['REDIRECT_URL'];
+            $url .= $this->server['REDIRECT_URL'];
         } elseif (array_key_exists('REQUEST_URI', $this->server)) {
-            $url = $this->server['REQUEST_URI'];
+            $url .= $this->server['REQUEST_URI'];
         } else {
             throw new \RuntimeException('Failed to retrieve HTTP request path.');
         }
