@@ -31,7 +31,7 @@ class RequestPopulator
 
         $method = $this->getMethod();
         $path   = $this->getPath();
-        $post   = $this->getPost();
+        $post   = $this->getPost($method);
 
         return new Request($method, $path, $query, $post, $cookies, $this->server);
     }
@@ -86,18 +86,25 @@ class RequestPopulator
     /**
      *
      *
+     * @param string $method
      * @return array
      */
-    private function getPost()
+    private function getPost($method)
     {
-        $post = $_POST;
+        $post = array();
 
-        if (isset($_FILES)) {
-            foreach ($_FILES as $key => $file) {
-                $fileKey = "@{$key}";
+        if ('POST' === $method) {
+            $post = $_POST;
 
-                $post[$fileKey] = $file;
+            if (isset($_FILES)) {
+                foreach ($_FILES as $key => $file) {
+                    $fileKey = "@{$key}";
+
+                    $post[$fileKey] = $file;
+                }
             }
+        } elseif (in_array($method, array('PUT', 'DELETE'), true)) {
+            parse_str(file_get_contents("php://input"), $post);
         }
 
         return $post;
