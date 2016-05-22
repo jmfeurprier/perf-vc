@@ -13,14 +13,6 @@ interface ControllerInterface
 {
 
     /**
-     * Sets the view.
-     *
-     * @param ViewInterface $view View.
-     * @return void
-     */
-    public function setView(ViewInterface $view);
-
-    /**
      *
      *
      * @param Response $response
