@@ -6,7 +6,7 @@ namespace perf\Vc;
  *
  *
  */
-interface Escaper
+interface EscaperInterface
 {
 
     /**

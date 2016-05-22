@@ -6,7 +6,7 @@ namespace perf\Vc;
  *
  *
  */
-class HtmlEscaper implements Escaper
+class HtmlEscaper implements EscaperInterface
 {
 
     const CHARSET_DEFAULT = 'UTF-8';

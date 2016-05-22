@@ -59,16 +59,6 @@ class FrontController implements FrontControllerInterface
     private $route;
 
     /**
-     * Creates a new front controller builder.
-     *
-     * @return FrontControllerBuilder
-     */
-    public static function createBuilder()
-    {
-        return new FrontControllerBuilder();
-    }
-
-    /**
      * Sets the controller factory.
      *
      * @param ControllerFactoryInterface $factory Controller factory.
