@@ -22,13 +22,6 @@ class FrontController implements FrontControllerInterface
     private $controllerFactory;
 
     /**
-     * View factory.
-     *
-     * @var ViewFactoryInterface
-     */
-    private $viewFactory;
-
-    /**
      * Router.
      *
      * @var RouterInterface
@@ -79,65 +72,44 @@ class FrontController implements FrontControllerInterface
      * Sets the controller factory.
      *
      * @param ControllerFactoryInterface $factory Controller factory.
-     * @return FrontController Fluent return.
+     * @return void
      */
     public function setControllerFactory(ControllerFactoryInterface $factory)
     {
         $this->controllerFactory = $factory;
-
-        return $this;
-    }
-
-    /**
-     * Sets the view factory.
-     *
-     * @param ViewFactoryInterface $factory View factory.
-     * @return FrontController Fluent return.
-     */
-    public function setViewFactory(ViewFactoryInterface $factory)
-    {
-        $this->viewFactory = $factory;
-
-        return $this;
     }
 
     /**
      * Sets the router.
      *
      * @param RouterInterface $router Router.
-     * @return FrontController Fluent return.
+     * @return void
      */
     public function setRouter(RouterInterface $router)
     {
         $this->router = $router;
-
-        return $this;
     }
 
     /**
      * Sets the response factory.
      *
      * @param ResponseFactoryInterface $factory Response factory.
-     * @return FrontController Fluent return.
+     * @return void
      */
     public function setResponseFactory(ResponseFactoryInterface $factory)
     {
         $this->responseFactory = $factory;
-
-        return $this;
     }
 
     /**
      * Sets redirection headers generator.
      *
      * @param RedirectionHeadersGenerator $generator
-     * @return FrontController Fluent return.
+     * @return void
      */
     public function setRedirectionHeadersGenerator(RedirectionHeadersGenerator $generator)
     {
         $this->redirectionHeadersGenerator = $generator;
-
-        return $this;
     }
 
     /**
@@ -219,12 +191,10 @@ class FrontController implements FrontControllerInterface
     {
         $this->route = $route;
         $controller  = $this->getController();
-        $view        = $this->getView();
         $response    = $this->responseFactory->getResponse();
 
         $controller
             ->setRoute($route)
-            ->setView($view)
             ->setRequest($this->request)
             ->setResponse($response)
         ;
@@ -265,34 +235,6 @@ class FrontController implements FrontControllerInterface
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function configureController(ControllerInterface $controller)
-    {
-    }
-
-    /**
-     *
-     *
-     * @return ViewInterface
-     */
-    private function getView()
-    {
-        $view = $this->viewFactory->getView($this->route);
-
-        $this->configureView($view);
-
-        return $view;
-    }
-
-    /**
-     *
-     * Hook.
-     * Default implementation.
-     *
-     * @param ViewInterface $view
-     * @return void
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    protected function configureView(ViewInterface $view)
     {
     }
 
