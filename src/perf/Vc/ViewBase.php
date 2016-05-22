@@ -78,10 +78,10 @@ abstract class ViewBase implements ViewInterface
     /**
      *
      *
-     * @param Escaper $escaper
+     * @param EscaperInterface $escaper
      * @return void
      */
-    public function setEscaper(Escaper $escaper)
+    public function setEscaper(EscaperInterface $escaper)
     {
         $this->escaper = $escaper;
     }
@@ -179,7 +179,7 @@ abstract class ViewBase implements ViewInterface
      * @return string
      * @throws \RuntimeException
      */
-    public function getContent()
+    public function fetch()
     {
         $outputBufferringStartLevel = ob_get_level();
 
@@ -253,7 +253,7 @@ abstract class ViewBase implements ViewInterface
             throw new \RuntimeException('A view is already being extended.');
         }
 
-        $this->extendedView = new self($extendedViewPath, $this->parameters);
+        $this->extendedView = new View($extendedViewPath, $this->parameters);
         $this->extendedView->slots = $this->slots;
     }
 
@@ -342,7 +342,7 @@ abstract class ViewBase implements ViewInterface
             $childParameters
         );
 
-        $subView = new self($subViewFullPath, $parameters);
+        $subView = new View($subViewFullPath, $parameters);
 
         try {
             echo $subView->getContent();

@@ -203,6 +203,16 @@ abstract class ControllerBase implements ControllerInterface
 
     /**
      *
+     *
+     * @return Context
+     */
+    private function getContext()
+    {
+        return $this->context;
+    }
+
+    /**
+     *
      * Helper method.
      *
      * @param string $module
@@ -278,7 +288,7 @@ abstract class ControllerBase implements ControllerInterface
      *
      * @return Response
      */
-    protected function getResponse()
+    public function getResponse()
     {
         return $this->response;
     }

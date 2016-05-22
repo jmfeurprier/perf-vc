@@ -183,14 +183,12 @@ class FrontController implements FrontControllerInterface
         $controller  = $this->getController();
         $response    = $this->responseFactory->getResponse();
 
-        $controller
-            ->setRoute($route)
-            ->setRequest($this->request)
-            ->setResponse($response)
-        ;
+        $context = new Context($this->request, $route);
+
+        $controller->setResponse($response);
 
         try {
-            $controller->run();
+            $controller->run($context);
         } catch (ForwardException $exception) {
             return $this->forward($exception->getRoute());
         } catch (RedirectException $exception) {
