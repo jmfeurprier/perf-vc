@@ -5,7 +5,7 @@ namespace perf\Vc\Routing;
 use perf\Vc\Request;
 
 /**
- * MVC router.
+ * Router.
  *
  */
 interface RouterInterface

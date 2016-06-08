@@ -14,7 +14,7 @@
 	<target name="lint" description="Performs syntax check of sourcecode files">
 		<phplint haltonfailure="true">
 			<fileset dir="${rootdir}">
-				<include name="lib/"/>
+				<include name="src/"/>
 				<include name="test/unit/**/*.php"/>
 			</fileset>
 		</phplint>
@@ -28,19 +28,19 @@
 	</target>
 
 	<target name="phpcs" description="Finds coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-		<exec command="${bindir}phpcs -p --extensions=php --standard=PSR2 --report=full ${rootdir}lib" escape="false" logoutput="true" passthru="true" />
+		<exec command="${bindir}phpcs -p --extensions=php --standard=PSR2 --report=full ${rootdir}src" escape="false" logoutput="true" passthru="true" />
 	</target>
 
 	<target name="phpcpd" description="Finds duplicate code using PHPCPD">
 		<exec executable="${bindir}phpcpd" logoutput="true" passthru="true">
 			<arg line="--min-lines 7" />
 			<arg line="--min-tokens 65" />
-			<arg value="${rootdir}lib" />
+			<arg value="${rootdir}src" />
 		</exec>
 	</target>
 
 	<target name="phpmd" description="Performs project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-		<exec command="${bindir}phpmd ${rootdir}lib text codesize,unusedcode,design" checkreturn="false" logoutput="true" passthru="true" />
+		<exec command="${bindir}phpmd ${rootdir}src text codesize,unusedcode,design" checkreturn="false" logoutput="true" passthru="true" />
 	</target>
 
 	<target name="codecheck" depends="lint,phpunit,phpcs,phpcpd,phpmd" description="Runs code-related targets (lint, phpunit, etc)"/>

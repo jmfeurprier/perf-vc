@@ -22,7 +22,6 @@ class ForwardException extends \Exception
      * Constructor.
      *
      * @param Route $route Route.
-     * @return void
      */
     public function __construct(Route $route)
     {

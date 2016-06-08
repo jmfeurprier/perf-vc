@@ -29,8 +29,7 @@ class Context
      * Constructor.
      *
      * @param Request $request
-     * @param Route $route
-     * @return void
+     * @param Route   $route
      */
     public function __construct(Request $request, Route $route)
     {

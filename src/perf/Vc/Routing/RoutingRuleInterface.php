@@ -5,7 +5,7 @@ namespace perf\Vc\Routing;
 use perf\Vc\Request;
 
 /**
- * MVC routing rule.
+ * Routing rule.
  *
  */
 interface RoutingRuleInterface
@@ -16,6 +16,7 @@ interface RoutingRuleInterface
      *
      * @param Request $request Request.
      * @return null|Route
+     * @throws \RuntimeException
      */
     public function tryMatch(Request $request);
 }

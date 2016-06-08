@@ -1,0 +1,53 @@
+parameters:
+
+    perf.vc.html_escaper.charset:                    'UTF-8'
+    perf.vc.controller_factory.controller_namespace: ~
+    perf.vc.view_factory.base_path:                  ~
+
+imports:
+
+services:
+
+    perf.vc.controller_factory:
+        class: perf\Vc\ControllerFactory
+        arguments:
+            - '%perf.vc.controller_factory.controller_namespace%'
+            - '@perf.vc.view_factory'
+
+    perf.vc.front_controller:
+        class: perf\Vc\FrontController
+        arguments:
+            - '@perf.vc.controller_factory'
+            - '@perf.vc.routing.router'
+            - '@perf.vc.response_factory'
+            - '@perf.vc.redirection.redirection_headers_generator'
+
+    perf.vc.html_escaper:
+        class: perf\Vc\HtmlEscaper
+        arguments:
+            - '%perf.vc.html_escaper.charset%'
+
+    perf.vc.request:
+        synthetic: true
+        class: perf\Vc\Request
+        factory_service: '@perf.vc.request_populator'
+        factory_method: 'populate'
+
+    perf.vc.request_populator:
+        class: perf\Vc\RequestPopulator
+
+    perf.vc.routing.path_pattern_parser:
+        class: perf\Vc\Routing\PathPatternParser
+
+    perf.vc.routing.router:
+        class: perf\Vc\Routing\Router
+
+    perf.vc.routing.routing_rule_xml_importer:
+        class: perf\Vc\Routing\RoutingRuleXmlImporter
+        arguments:
+            - '@perf.vc.routing.path_pattern_parser'
+
+    perf.vc.view_factory:
+        class: perf\Vc\ViewFactory
+        arguments:
+            - '%perf.vc.view_factory.base_path%'

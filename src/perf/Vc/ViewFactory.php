@@ -23,8 +23,7 @@ class ViewFactory implements ViewFactoryInterface
     /**
      * Constructor.
      *
-     * @param string $viewsBasePath Path.
-     * @return void
+     * @param string $viewsBasePath Views base path.
      */
     public function __construct($viewsBasePath)
     {

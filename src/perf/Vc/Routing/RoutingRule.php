@@ -5,7 +5,7 @@ namespace perf\Vc\Routing;
 use perf\Vc\Request;
 
 /**
- * MVC routing rule.
+ * Routing rule.
  *
  */
 class RoutingRule implements RoutingRuleInterface
@@ -28,23 +28,31 @@ class RoutingRule implements RoutingRuleInterface
     /**
      *
      *
-     * @var PathMatcher
+     * @var string
      */
-    private $pathMatcher;
+    private $pathPattern;
+
+    /**
+     *
+     *
+     * @var ParameterDefinition[]
+     */
+    private $parameterDefinitions = array();
 
     /**
      * Constructor.
      *
-     * @param Address $address
-     * @param string[] $httpMethods HTTP methods.
-     * @param PathMatcher $pathMatcher
-     * @return void
+     * @param Address               $address
+     * @param string[]              $httpMethods          HTTP methods.
+     * @param string                $pathPattern
+     * @param ParameterDefinition[] $parameterDefinitions
      */
-    public function __construct(Address $address, array $httpMethods, PathMatcher $pathMatcher)
+    public function __construct(Address $address, array $httpMethods, $pathPattern, array $parameterDefinitions)
     {
-        $this->address     = $address;
-        $this->httpMethods = $httpMethods;
-        $this->pathMatcher = $pathMatcher;
+        $this->address              = $address;
+        $this->httpMethods          = $httpMethods; // @xxx
+        $this->pathPattern          = $pathPattern;
+        $this->parameterDefinitions = $parameterDefinitions; // @xxx
     }
 
     /**
@@ -52,6 +60,7 @@ class RoutingRule implements RoutingRuleInterface
      *
      * @param Request $request Request.
      * @return null|Route
+     * @throws \RuntimeException
      */
     public function tryMatch(Request $request)
     {
@@ -61,12 +70,26 @@ class RoutingRule implements RoutingRuleInterface
             }
         }
 
-        $pathMatchingResult = $this->pathMatcher->match($request->getPath());
+        $matches = array();
+        $result  = preg_match($this->pathPattern, ltrim($request->getPath(), '/'), $matches); // @xxx preg_match_all() ?
 
-        if (!$pathMatchingResult->matched()) {
+        if (0 === $result) {
             return null;
         }
 
-        return new Route($this->address, $pathMatchingResult->getParameters());
+        if (1 !== $result) {
+            throw new \RuntimeException('Failed to match path. Invalid regular expression?');
+        }
+
+        $parameters = array();
+        foreach ($this->parameterDefinitions as $definition) {
+            $parameters[$definition->getName()] = $definition->getDefaultValue();
+        }
+
+        if (array_key_exists(1, $matches)) {
+            $parameters = array_replace($parameters, $matches[1]);
+        }
+
+        return new Route($this->address, $parameters);
     }
 }

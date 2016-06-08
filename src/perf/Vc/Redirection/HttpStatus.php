@@ -34,9 +34,8 @@ class HttpStatus
      * Constructor.
      *
      * @param string $httpVersion
-     * @param int $code
+     * @param int    $code
      * @param string $reason
-     * @return void
      */
     public function __construct($httpVersion, $code, $reason)
     {

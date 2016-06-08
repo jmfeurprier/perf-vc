@@ -3,7 +3,7 @@
 namespace perf\Vc\Routing;
 
 /**
- * MVC route.
+ * Route.
  *
  */
 class Route
@@ -26,9 +26,8 @@ class Route
     /**
      * Constructor.
      *
-     * @param Address $address
+     * @param Address        $address
      * @param {string:mixed} $parameters Parameters.
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function __construct(Address $address, array $parameters = array())

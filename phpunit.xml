@@ -11,13 +11,13 @@
 
     <testsuites>
         <testsuite>
-          <directory>./test/unit/lib</directory>
+          <directory>./test/unit/src</directory>
         </testsuite>
     </testsuites>
 
     <filter>
       <whitelist addUncoveredFilesFromWhitelist="true">
-        <directory suffix=".php">./lib</directory>
+        <directory suffix=".php">./src</directory>
       </whitelist>
     </filter>
 

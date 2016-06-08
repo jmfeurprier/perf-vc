@@ -76,7 +76,6 @@ class Request
      * @param {string:mixed} $post    POST channel content.
      * @param {string:mixed} $cookies Cookies channel content.
      * @param {string:mixed} $server  Server channel content.
-     * @return void
      */
     public function __construct($method, $path, array $query, array $post, array $cookies, array $server)
     {

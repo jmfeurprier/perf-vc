@@ -5,27 +5,59 @@ namespace perf\Vc\Routing;
 use perf\Vc\Request;
 
 /**
- * MVC router.
+ * Router.
  *
  */
 class Router implements RouterInterface
 {
 
     /**
-     * MVC routing rules.
+     * Routing rules.
      *
-     * @var RoutingRule[]
+     * @var RoutingRuleInterface[]
      */
     private $rules = array();
 
     /**
      * Constructor.
      *
-     * @param RoutingRule[] $rules
-     * @return void
+     * @param RoutingRuleInterface[] $rules
      * @throws \InvalidArgumentException
      */
     public function __construct(array $rules = array())
+    {
+        $this->addRules($rules);
+    }
+
+    /**
+     * Sets routing rules.
+     *
+     * @param RoutingRuleInterface[] $rules Routing rules.
+     * @return void
+     */
+    public function setRules(array $rules)
+    {
+        $this->clear();
+        $this->addRules($rules);
+    }
+
+    /**
+     * Removes all routing rules.
+     *
+     * @return void
+     */
+    public function clear()
+    {
+        $this->rules = array();
+    }
+
+    /**
+     * Adds routing rules.
+     *
+     * @param RoutingRuleInterface[] $rules Routing rule.
+     * @return void
+     */
+    public function addRules(array $rules)
     {
         foreach ($rules as $rule) {
             $this->addRule($rule);
@@ -33,12 +65,12 @@ class Router implements RouterInterface
     }
 
     /**
-     * Adds a MVC routing rule.
+     * Adds a routing rule.
      *
-     * @param RoutingRule $rule MVC routing rule.
+     * @param RoutingRuleInterface $rule Routing rule.
      * @return void
      */
-    public function addRule(RoutingRule $rule)
+    public function addRule(RoutingRuleInterface $rule)
     {
         $this->rules[] = $rule;
     }

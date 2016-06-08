@@ -22,7 +22,6 @@ class HtmlEscaper implements EscaperInterface
      * Constructor.
      *
      * @param string $charset
-     * @return void
      */
     public function __construct($charset = self::CHARSET_DEFAULT)
     {

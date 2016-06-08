@@ -3,11 +3,13 @@
 namespace perf\Vc\Routing;
 
 /**
- * MVC address (module and action).
+ * Address (module and action).
  *
  */
 class Address
 {
+
+    const DELIMITER = ':';
 
     /**
      * Module.
@@ -28,7 +30,6 @@ class Address
      *
      * @param string $module
      * @param string $action
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function __construct($module, $action)
@@ -64,6 +65,6 @@ class Address
      */
     public function __toString()
     {
-        return "{$this->module}:{$this->action}";
+        return $this->module . self::DELIMITER . $this->action;
     }
 }

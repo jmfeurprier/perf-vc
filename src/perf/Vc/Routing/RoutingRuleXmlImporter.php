@@ -8,22 +8,39 @@ use perf\Source\Source;
  * Imports routing rules from a XML source.
  *
  */
-class RoutingRuleXmlImporter implements RoutingRuleImporter
+class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
 {
+
+    /**
+     *
+     *
+     * @var PathPatternParser
+     */
+    private $pathPatternParser;
 
     /**
      *
      * Temporary property.
      *
-     * @var \perf\Vc\Routing\RoutingRuleInterface[]
+     * @var RoutingRuleInterface[]
      */
     private $rules = array();
+
+    /**
+     * Constructor.
+     *
+     * @param PathPatternParser $pathPatternParser
+     */
+    public function __construct(PathPatternParser $pathPatternParser)
+    {
+        $this->pathPatternParser = $pathPatternParser;
+    }
 
     /**
      * Retrieves routing rules from provided source.
      *
      * @param Source $source Routing source.
-     * @return RoutingRule[]
+     * @return RoutingRuleInterface[]
      * @throws \RuntimeException
      */
     public function import(Source $source)
@@ -100,13 +117,15 @@ class RoutingRuleXmlImporter implements RoutingRuleImporter
      */
     private function parseRule(Address $address, \SimpleXMLElement $sxeRule)
     {
-        $methods     = $this->parseHttpMethods($sxeRule);
-        $pathMatcher = $this->parsePathMatcher($sxeRule);
+        $httpMethods          = $this->parseHttpMethods($sxeRule);
+        $parameterDefinitions = $this->parseParameterDefinitions($sxeRule);
+        $pathPattern          = $this->parsePath($sxeRule, $parameterDefinitions);
 
         $rule = new RoutingRule(
             $address,
-            $methods,
-            $pathMatcher
+            $httpMethods,
+            $pathPattern,
+            $parameterDefinitions
         );
 
         $this->rules[] = $rule;
@@ -126,6 +145,7 @@ class RoutingRuleXmlImporter implements RoutingRuleImporter
 
         if ('' !== $methodsString) {
             foreach (preg_split('|\s+|', $methodsString, -1, \PREG_SPLIT_NO_EMPTY) as $methodString) {
+                // @todo Force case.
                 $method = $methodString;
 
                 $methods[] = $method;
@@ -139,28 +159,50 @@ class RoutingRuleXmlImporter implements RoutingRuleImporter
      *
      *
      * @param \SimpleXMLElement $sxeRule
-     * @return PathMatcher
+     * @return ParameterDefinition[]
      */
-    private function parsePathMatcher(\SimpleXMLElement $sxeRule)
+    private function parseParameterDefinitions(\SimpleXMLElement $sxeRule)
     {
-        $matcherType = (string) $sxeRule['type'];
+        $parameterDefinitions = array();
 
-        if ('regex' === $matcherType) {
-            $pattern        = (string) $sxeRule['pattern'];
-            $parameterNames = array();
+        foreach ($sxeRule->parameter as $sxeParameter) {
+            $name         = (string) $sxeParameter['name'];
+            $format       = (string) $sxeParameter['format'];
+            $defaultValue = (string) $sxeParameter['default'];
 
-            foreach ($sxeRule->parameter as $sxeParameter) {
-                $parameterNames[] = (string) $sxeParameter;
+            if ('' === $name) {
+                throw new \RuntimeException();
             }
 
-            $pathMatcher = new RegexPathMatcher($pattern, $parameterNames);
-        } else {
-            $path = (string) $sxeRule['path'];
+            if ('' === $format) {
+                $format = '[^/]+';
+            }
 
-            $pathMatcher = new LiteralPathMatcher($path);
+            if ('' === $defaultValue) {
+                $defaultValue = null;
+            }
+
+            $parameterDefinitions[] = new ParameterDefinition(
+                $name,
+                $format,
+                $defaultValue
+            );
         }
 
+        return $parameterDefinitions;
+    }
 
-        return $pathMatcher;
+    /**
+     *
+     *
+     * @param \SimpleXMLElement     $sxeRule
+     * @param ParameterDefinition[] $parameterDefinitions
+     * @return string
+     */
+    private function parsePath(\SimpleXMLElement $sxeRule, array $parameterDefinitions)
+    {
+        $path = (string) $sxeRule['path'];
+
+        return $this->pathPatternParser->parse($path, $parameterDefinitions);
     }
 }

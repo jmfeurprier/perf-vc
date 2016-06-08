@@ -61,9 +61,8 @@ abstract class ViewBase implements ViewInterface
     /**
      * Constructor.
      *
-     * @param string $viewPath Path to the view file.
+     * @param string         $viewPath   Path to view file.
      * @param {string:mixed} $parameters Optional view parameters.
-     * @return void
      */
     public function __construct($viewPath, array $parameters = array())
     {
@@ -220,7 +219,7 @@ abstract class ViewBase implements ViewInterface
      * @return void
      * @throws \Exception
      */
-    protected abstract function includeViewFile();
+    abstract protected function includeViewFile();
 
     /**
      *

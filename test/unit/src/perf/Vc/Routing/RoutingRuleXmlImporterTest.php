@@ -13,7 +13,9 @@ class RoutingRuleXmlImporterTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->importer = new RoutingRuleXmlImporter();
+        $this->pathPatternParser = new PathPatternParser();
+
+        $this->importer = new RoutingRuleXmlImporter($this->pathPatternParser);
     }
 
     /**
@@ -24,7 +26,7 @@ class RoutingRuleXmlImporterTest extends \PHPUnit_Framework_TestCase
     {
         $xml = '';
 
-        $source = $this->getMock('\\perf\\Source\\Source');
+        $source = $this->getMock('perf\\Source\\Source');
         $source->expects($this->once())->method('getContent')->willReturn($xml);
 
         $this->importer->import($source);
@@ -37,7 +39,7 @@ class RoutingRuleXmlImporterTest extends \PHPUnit_Framework_TestCase
     {
         $xml = '<nothing />';
 
-        $source = $this->getMock('\\perf\\Source\\Source');
+        $source = $this->getMock('perf\\Source\\Source');
         $source->expects($this->once())->method('getContent')->willReturn($xml);
 
         $result = $this->importer->import($source);
@@ -57,7 +59,7 @@ class RoutingRuleXmlImporterTest extends \PHPUnit_Framework_TestCase
 </root>
 XML;
 
-        $source = $this->getMock('\\perf\\Source\\Source');
+        $source = $this->getMock('perf\\Source\\Source');
         $source->expects($this->once())->method('getContent')->willReturn($xml);
 
         $result = $this->importer->import($source);
@@ -79,7 +81,7 @@ XML;
 </root>
 XML;
 
-        $source = $this->getMock('\\perf\\Source\\Source');
+        $source = $this->getMock('perf\\Source\\Source');
         $source->expects($this->once())->method('getContent')->willReturn($xml);
 
         $result = $this->importer->import($source);
@@ -103,14 +105,14 @@ XML;
 </root>
 XML;
 
-        $source = $this->getMock('\\perf\\Source\\Source');
+        $source = $this->getMock('perf\\Source\\Source');
         $source->expects($this->once())->method('getContent')->willReturn($xml);
 
         $result = $this->importer->import($source);
 
         $this->assertInternalType('array', $result);
         $this->assertCount(1, $result);
-        $this->assertContainsOnly('\\perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
     }
 
     /**
@@ -128,14 +130,14 @@ XML;
 </root>
 XML;
 
-        $source = $this->getMock('\\perf\\Source\\Source');
+        $source = $this->getMock('perf\\Source\\Source');
         $source->expects($this->once())->method('getContent')->willReturn($xml);
 
         $result = $this->importer->import($source);
 
         $this->assertInternalType('array', $result);
         $this->assertCount(1, $result);
-        $this->assertContainsOnly('\\perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
     }
 
     /**
@@ -153,42 +155,39 @@ XML;
 </root>
 XML;
 
-        $source = $this->getMock('\\perf\\Source\\Source');
+        $source = $this->getMock('perf\\Source\\Source');
         $source->expects($this->once())->method('getContent')->willReturn($xml);
 
         $result = $this->importer->import($source);
 
         $this->assertInternalType('array', $result);
         $this->assertCount(1, $result);
-        $this->assertContainsOnly('\\perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
     }
 
     /**
      *
      */
-    public function testImportWithRegexPathRuleAndParameters()
+    public function testImportWithParameter()
     {
         $xml = <<<XML
 <root>
     <module id="foo">
         <action id="bar">
-            <rule type="regex" pattern="^foo/([a-z])/(\d+)$">
-                <parameter>bar</parameter>
-                <parameter>baz</parameter>
-            </rule>
+            <rule path="foo/{id}" />
         </action>
     </module>
 </root>
 XML;
 
-        $source = $this->getMock('\\perf\\Source\\Source');
+        $source = $this->getMock('perf\\Source\\Source');
         $source->expects($this->once())->method('getContent')->willReturn($xml);
 
         $result = $this->importer->import($source);
 
         $this->assertInternalType('array', $result);
         $this->assertCount(1, $result);
-        $this->assertContainsOnly('\\perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
     }
 
     /**
@@ -206,14 +205,14 @@ XML;
 </root>
 XML;
 
-        $source = $this->getMock('\\perf\\Source\\Source');
+        $source = $this->getMock('perf\\Source\\Source');
         $source->expects($this->once())->method('getContent')->willReturn($xml);
 
         $result = $this->importer->import($source);
 
         $this->assertInternalType('array', $result);
         $this->assertCount(1, $result);
-        $this->assertContainsOnly('\\perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
     }
 
     /**
@@ -232,13 +231,13 @@ XML;
 </root>
 XML;
 
-        $source = $this->getMock('\\perf\\Source\\Source');
+        $source = $this->getMock('perf\\Source\\Source');
         $source->expects($this->once())->method('getContent')->willReturn($xml);
 
         $result = $this->importer->import($source);
 
         $this->assertInternalType('array', $result);
         $this->assertCount(2, $result);
-        $this->assertContainsOnly('\\perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
     }
 }

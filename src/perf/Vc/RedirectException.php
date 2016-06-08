@@ -26,9 +26,8 @@ class RedirectException extends \Exception
     /**
      * Constructor.
      *
-     * @param string $url Redirect URL.
-     * @param int $httpStatusCode
-     * @return void
+     * @param string $url            Redirect URL.
+     * @param int    $httpStatusCode
      */
     public function __construct($url, $httpStatusCode)
     {

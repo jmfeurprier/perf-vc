@@ -13,14 +13,12 @@ use perf\Vc\Routing\Route;
 class ControllerFactory implements ControllerFactoryInterface
 {
 
-    const NAMESPACE_DEFAULT = 'Controller';
-
     /**
      * Controllers namespace.
      *
      * @var string
      */
-    private $namespace;
+    private $controllersNamespace;
 
     /**
      * View factory.
@@ -32,23 +30,13 @@ class ControllerFactory implements ControllerFactoryInterface
     /**
      * Constructor.
      *
-     * @param string $namespace
-     * @return void
+     * @param string               $controllersNamespace
+     * @param ViewFactoryInterface $viewFactory          View factory.
      */
-    public function __construct($namespace = self::NAMESPACE_DEFAULT)
+    public function __construct($controllersNamespace, ViewFactoryInterface $viewFactory)
     {
-        $this->namespace = trim($namespace, '\\');
-    }
-
-    /**
-     * Sets the view factory.
-     *
-     * @param ViewFactoryInterface $factory View factory.
-     * @return void
-     */
-    public function setViewFactory(ViewFactoryInterface $factory)
-    {
-        $this->viewFactory = $factory;
+        $this->controllersNamespace = trim($controllersNamespace, '\\');
+        $this->viewFactory          = $viewFactory;
     }
 
     /**
@@ -93,6 +81,6 @@ class ControllerFactory implements ControllerFactoryInterface
         $module = $address->getModule();
         $action = $address->getAction();
 
-        return "\\{$this->namespace}\\{$module}\\{$action}Controller";
+        return "\\{$this->controllersNamespace}\\{$module}\\{$action}Controller";
     }
 }

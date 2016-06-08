@@ -16,23 +16,9 @@ class RedirectionHeadersGenerator
     private $protocol;
 
     /**
-     * Static constructor.
-     *
-     * @param HttpProtocol $protocol
-     * @return RedirectionHeadersGenerator
-     */
-    public static function createDefault()
-    {
-        $protocol = new Http11Protocol();
-
-        return new self($protocol);
-    }
-
-    /**
      * Constructor.
      *
      * @param HttpProtocol $protocol
-     * @return void
      */
     public function __construct(HttpProtocol $protocol)
     {

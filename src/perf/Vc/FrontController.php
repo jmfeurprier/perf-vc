@@ -59,47 +59,23 @@ class FrontController implements FrontControllerInterface
     private $route;
 
     /**
-     * Sets the controller factory.
+     * Constructor.
      *
-     * @param ControllerFactoryInterface $factory Controller factory.
-     * @return void
+     * @param ControllerFactoryInterface  $controllerFactory           Controller factory.
+     * @param RouterInterface             $router                      Router.
+     * @param ResponseFactoryInterface    $responseFactory             Response factory.
+     * @param RedirectionHeadersGenerator $redirectionHeadersGenerator
      */
-    public function setControllerFactory(ControllerFactoryInterface $factory)
-    {
-        $this->controllerFactory = $factory;
-    }
-
-    /**
-     * Sets the router.
-     *
-     * @param RouterInterface $router Router.
-     * @return void
-     */
-    public function setRouter(RouterInterface $router)
-    {
-        $this->router = $router;
-    }
-
-    /**
-     * Sets the response factory.
-     *
-     * @param ResponseFactoryInterface $factory Response factory.
-     * @return void
-     */
-    public function setResponseFactory(ResponseFactoryInterface $factory)
-    {
-        $this->responseFactory = $factory;
-    }
-
-    /**
-     * Sets redirection headers generator.
-     *
-     * @param RedirectionHeadersGenerator $generator
-     * @return void
-     */
-    public function setRedirectionHeadersGenerator(RedirectionHeadersGenerator $generator)
-    {
-        $this->redirectionHeadersGenerator = $generator;
+    public function __construct(
+        ControllerFactoryInterface $controllerFactory,
+        RouterInterface $router,
+        ResponseFactoryInterface $responseFactory,
+        RedirectionHeadersGenerator $redirectionHeadersGenerator
+    ) {
+        $this->controllerFactory           = $controllerFactory;
+        $this->router                      = $router;
+        $this->responseFactory             = $responseFactory;
+        $this->redirectionHeadersGenerator = $redirectionHeadersGenerator;
     }
 
     /**
