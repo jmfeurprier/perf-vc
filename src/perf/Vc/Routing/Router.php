@@ -19,6 +19,25 @@ class Router implements RouterInterface
     private $rules = array();
 
     /**
+     * Static constructor.
+     *
+     * @param string $path
+     * @return Router
+     */
+    public static function createFromXmlFile($path)
+    {
+        $pathPatternParser = new PathPatternParser();
+
+        $routingRuleImporter = new RoutingRuleXmlImporter($pathPatternParser);
+
+        $source = \perf\Source\LocalFileSource::create($path);
+
+        $rules = $routingRuleImporter->import($source);
+
+        return new self($rules);
+    }
+
+    /**
      * Constructor.
      *
      * @param RoutingRuleInterface[] $rules
