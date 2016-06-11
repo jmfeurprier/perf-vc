@@ -22,15 +22,15 @@ class PathPatternParser
      */
     public function parse($pattern, array $parameterDefinitions)
     {
-        $parameterByName = array();
+        $parameterDefinitionByName = array();
         foreach ($parameterDefinitions as $parameterDefinition) {
             $name = $parameterDefinition->getName();
 
-            if (array_key_exists($name, $parameterByName)) {
+            if (array_key_exists($name, $parameterDefinitionByName)) {
                 throw new \InvalidArgumentException("More than one definition provided for parameter '{$name}'.");
             }
 
-            $parameterByName[$name] = $parameterDefinition->getFormat();
+            $parameterDefinitionByName[$name] = $parameterDefinition;
         }
 
         $matches = array();
@@ -53,8 +53,8 @@ class PathPatternParser
         foreach ($tokens as $offset => $token) {
             $parameterName   = substr($token, 1, -1);
             $parameterFormat = self::PARAMETER_FORMAT_DEFAULT;
-            if (array_key_exists($parameterName, $parameterByName)) {
-                $parameterFormat = $parameterByName[$parameterName]->getFormat();
+            if (array_key_exists($parameterName, $parameterDefinitionByName)) {
+                $parameterFormat = $parameterDefinitionByName[$parameterName]->getFormat();
             }
 
             $length = strlen($token);
