@@ -61,7 +61,7 @@ class PathPatternParser
 
             $regex = substr_replace(
                 $regex,
-                "(:P<{$parameterName}>{$parameterFormat})",
+                "(?P<{$parameterName}>{$parameterFormat})",
                 $offset,
                 $length
             );

@@ -71,7 +71,7 @@ class RoutingRule implements RoutingRuleInterface
         }
 
         $matches = array();
-        $result  = preg_match($this->pathPattern, $request->getPath(), $matches); // @xxx preg_match_all() ?
+        $result  = preg_match($this->pathPattern, $request->getPath(), $matches);
 
         if (0 === $result) {
             return null;
@@ -81,14 +81,18 @@ class RoutingRule implements RoutingRuleInterface
             throw new \RuntimeException('Failed to match path. Invalid regular expression?');
         }
 
+        foreach ($matches as $key => $value) {
+            if (is_int($key) === true) {
+                unset($matches[$key]);
+            }
+        }
+
         $parameters = array();
         foreach ($this->parameterDefinitions as $definition) {
             $parameters[$definition->getName()] = $definition->getDefaultValue();
         }
 
-        if (array_key_exists(1, $matches)) {
-            $parameters = array_replace($parameters, $matches[1]);
-        }
+        $parameters = array_replace($parameters, $matches);
 
         return new Route($this->address, $parameters);
     }
