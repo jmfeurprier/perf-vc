@@ -129,7 +129,7 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function getRequest()
     {
-        return $this->getContext()->getRequest();
+        return $this->context->getRequest();
     }
 
     /**
@@ -198,17 +198,7 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function getRoute()
     {
-        return $this->getContext()->getRoute();
-    }
-
-    /**
-     *
-     *
-     * @return Context
-     */
-    private function getContext()
-    {
-        return $this->context;
+        return $this->context->getRoute();
     }
 
     /**

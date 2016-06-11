@@ -64,7 +64,7 @@ class FrontController implements FrontControllerInterface
      * @param ControllerFactoryInterface  $controllerFactory           Controller factory.
      * @param RouterInterface             $router                      Router.
      * @param ResponseFactoryInterface    $responseFactory             Response factory.
-     * @param RedirectionHeadersGenerator $redirectionHeadersGenerator
+     * @param RedirectionHeadersGenerator $redirectionHeadersGenerator Redirection HTTP headers generator.
      */
     public function __construct(
         ControllerFactoryInterface $controllerFactory,

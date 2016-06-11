@@ -9,6 +9,8 @@ namespace perf\Vc\Routing;
 class PathPatternParser
 {
 
+    const PARAMETER_FORMAT_DEFAULT = '[^/]+';
+
     /**
      * Attempts to parse provided path pattern.
      *
@@ -20,15 +22,15 @@ class PathPatternParser
      */
     public function parse($pattern, array $parameterDefinitions)
     {
-        $parameterFormatByName = array();
+        $parameterByName = array();
         foreach ($parameterDefinitions as $parameterDefinition) {
             $name = $parameterDefinition->getName();
 
-            if (array_key_exists($name, $parameterFormatByName)) {
+            if (array_key_exists($name, $parameterByName)) {
                 throw new \InvalidArgumentException("More than one definition provided for parameter '{$name}'.");
             }
 
-            $parameterFormatByName[$name] = $parameterDefinition->getFormat();
+            $parameterByName[$name] = $parameterDefinition->getFormat();
         }
 
         $matches = array();
@@ -49,10 +51,10 @@ class PathPatternParser
         $regex = $pattern;
 
         foreach ($tokens as $offset => $token) {
-            $parameterName = substr($token, 1, -1);
-            $parameterFormat = '[^/]+'; // Default
-            if (array_key_exists($parameterName, $parameterFormatByName)) {
-                $parameterFormat = $parameterFormatByName[$parameterName];
+            $parameterName   = substr($token, 1, -1);
+            $parameterFormat = self::PARAMETER_FORMAT_DEFAULT;
+            if (array_key_exists($parameterName, $parameterByName)) {
+                $parameterFormat = $parameterByName[$parameterName]->getFormat();
             }
 
             $length = strlen($token);

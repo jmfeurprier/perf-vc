@@ -5,7 +5,7 @@ namespace perf\Vc\Routing;
 use perf\Vc\Request;
 
 /**
- * Router.
+ * Registers routing rules and allows to retrieve route and parameters based on provided request.
  *
  */
 class Router implements RouterInterface
@@ -46,7 +46,7 @@ class Router implements RouterInterface
      *
      * @return void
      */
-    public function clear()
+    public function removeRules()
     {
         $this->rules = array();
     }
@@ -54,7 +54,7 @@ class Router implements RouterInterface
     /**
      * Adds routing rules.
      *
-     * @param RoutingRuleInterface[] $rules Routing rule.
+     * @param RoutingRuleInterface[] $rules Routing rules.
      * @return void
      */
     public function addRules(array $rules)

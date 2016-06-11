@@ -47,7 +47,7 @@ abstract class ViewBase implements ViewInterface
     /**
      *
      *
-     * @var Escaper
+     * @var EscaperInterface
      */
     private $escaper;
 
@@ -355,12 +355,12 @@ abstract class ViewBase implements ViewInterface
     /**
      *
      *
-     * @param bool $escape
+     * @param bool $autoEscape
      * @return void
      */
-    protected function autoEscape($escape = true)
+    protected function setAutoEscape($autoEscape = true)
     {
-        $this->autoEscape = $escape;
+        $this->autoEscape = $autoEscape;
     }
 
     /**
@@ -368,7 +368,7 @@ abstract class ViewBase implements ViewInterface
      *
      * @return void
      */
-    protected function noAutoEscape()
+    protected function setNoAutoEscape()
     {
         $this->autoEscape = false;
     }

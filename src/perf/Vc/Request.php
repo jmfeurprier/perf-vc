@@ -31,28 +31,28 @@ class Request
     /**
      * GET channel.
      *
-     * @var {string:mixed}
+     * @var RequestChannel
      */
     private $query;
 
     /**
      * POST channel.
      *
-     * @var {string:mixed}
+     * @var RequestChannel
      */
     private $post;
 
     /**
      * Cookies channel.
      *
-     * @var {string:mixed}
+     * @var RequestChannel
      */
     private $cookies;
 
     /**
      * Server channel.
      *
-     * @var {string:mixed}
+     * @var RequestChannel
      */
     private $server;
 
@@ -81,10 +81,10 @@ class Request
     {
         $this->method  = $method;
         $this->path    = $path;
-        $this->query   = $query;
-        $this->post    = $post;
-        $this->cookies = $cookies;
-        $this->server  = $server;
+        $this->query   = new RequestChannel($query);
+        $this->post    = new RequestChannel($post);
+        $this->cookies = new RequestChannel($cookies);
+        $this->server  = new RequestChannel($server);
     }
 
     /**
@@ -150,7 +150,7 @@ class Request
     /**
      * Returns the GET channel.
      *
-     * @return {string:mixed}
+     * @return RequestChannel
      */
     public function getQuery()
     {
@@ -160,7 +160,7 @@ class Request
     /**
      * Returns the POST channel.
      *
-     * @return {string:mixed}
+     * @return RequestChannel
      */
     public function getPost()
     {
@@ -170,7 +170,7 @@ class Request
     /**
      * Returns the cookies channel.
      *
-     * @return {string:mixed}
+     * @return RequestChannel
      */
     public function getCookies()
     {
@@ -180,7 +180,7 @@ class Request
     /**
      * Returns the server channel.
      *
-     * @return {string:mixed}
+     * @return RequestChannel
      */
     public function getServer()
     {
