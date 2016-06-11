@@ -71,7 +71,7 @@ class RoutingRule implements RoutingRuleInterface
         }
 
         $matches = array();
-        $result  = preg_match($this->pathPattern, ltrim($request->getPath(), '/'), $matches); // @xxx preg_match_all() ?
+        $result  = preg_match($this->pathPattern, $request->getPath(), $matches); // @xxx preg_match_all() ?
 
         if (0 === $result) {
             return null;
