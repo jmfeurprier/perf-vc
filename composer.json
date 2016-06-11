@@ -9,10 +9,9 @@
 	},
 	"require-dev": {
 		"ext-xdebug"                : "~2.1",
-		"pdepend/pdepend"           : "~2.0",
 		"phing/phing"               : "~2.0",
-		"phpunit/phpunit"           : "~4.0",
 		"phpmd/phpmd"               : "~2.1.0",
+		"phpunit/phpunit"           : "~4.0",
 		"sebastian/phpcpd"          : "~2.0",
 		"squizlabs/php_codesniffer" : "~2.0"
 	},
