@@ -2,7 +2,7 @@
 
 namespace perf\Vc\Routing;
 
-use perf\Vc\Request;
+use perf\Vc\Request\RequestInterface;
 
 /**
  * Registers routing rules and allows to retrieve route and parameters based on provided request.
@@ -97,10 +97,10 @@ class Router implements RouterInterface
     /**
      * Attempts to match provided request against routing rules.
      *
-     * @param Request $request Request.
+     * @param RequestInterface $request Request.
      * @return null|Route
      */
-    public function tryGetRoute(Request $request)
+    public function tryGetRoute(RequestInterface $request)
     {
         foreach ($this->rules as $rule) {
             $route = $rule->tryMatch($request);

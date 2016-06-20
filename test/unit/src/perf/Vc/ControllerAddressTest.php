@@ -1,11 +1,11 @@
 <?php
 
-namespace perf\Vc\Routing;
+namespace perf\Vc;
 
 /**
  *
  */
-class AddressTest extends \PHPUnit_Framework_TestCase
+class ControllerControllerAddressTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -16,7 +16,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         $module = 'foo';
         $action = 'bar';
 
-        $address = new Address($module, $action);
+        $address = new ControllerAddress($module, $action);
 
         $result = $address->getModule();
 
@@ -31,7 +31,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
         $module = 'foo';
         $action = 'bar';
 
-        $address = new Address($module, $action);
+        $address = new ControllerAddress($module, $action);
 
         $result = $address->getAction();
 
@@ -41,12 +41,12 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testAddressCastedAsString()
+    public function testControllerAddressCastedAsString()
     {
         $module = 'foo';
         $action = 'bar';
 
-        $address = new Address($module, $action);
+        $address = new ControllerAddress($module, $action);
 
         $result = (string) $address;
 

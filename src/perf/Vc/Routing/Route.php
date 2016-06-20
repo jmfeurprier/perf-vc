@@ -2,22 +2,23 @@
 
 namespace perf\Vc\Routing;
 
+use perf\Vc\ControllerAddress;
+
 /**
  * Route.
- *
  */
 class Route
 {
 
     /**
-     * Address.
+     * Controller address.
      *
-     * @var Address
+     * @var ControllerAddress
      */
     private $address;
 
     /**
-     * Parameters.
+     * Route parameters (from request).
      *
      * @var {string:mixed}
      */
@@ -26,11 +27,11 @@ class Route
     /**
      * Constructor.
      *
-     * @param Address        $address
-     * @param {string:mixed} $parameters Parameters.
+     * @param ControllerAddress $address    Controller address.
+     * @param {string:mixed}    $parameters Parameters.
      * @throws \InvalidArgumentException
      */
-    public function __construct(Address $address, array $parameters = array())
+    public function __construct(ControllerAddress $address, array $parameters = array())
     {
         $this->address = $address;
 
@@ -58,7 +59,7 @@ class Route
     /**
      *
      *
-     * @return Address
+     * @return ControllerAddress
      */
     public function getAddress()
     {

@@ -2,7 +2,7 @@
 
 namespace perf\Vc\Routing;
 
-use perf\Vc\Request;
+use perf\Vc\Request\RequestInterface;
 
 /**
  * Router.
@@ -14,8 +14,8 @@ interface RouterInterface
     /**
      * Attempts to match provided request against routing rules.
      *
-     * @param Request $request Request.
+     * @param RequestInterface $request Request.
      * @return null|Route
      */
-    public function tryGetRoute(Request $request);
+    public function tryGetRoute(RequestInterface $request);
 }

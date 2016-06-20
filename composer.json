@@ -4,8 +4,9 @@
 	"license"     : "MIT",
 	"description" : "Simple View-Controller stack",
 	"require"     : {
-		"php"         : ">=5.3.3",
-		"perf/source" : "~1.0"
+		"php"              : ">=5.3.3",
+		"perf/http-status" : "^1.0.2",
+		"perf/source"      : "^1.0.2"
 	},
 	"require-dev": {
 		"ext-xdebug"                : "~2.1",

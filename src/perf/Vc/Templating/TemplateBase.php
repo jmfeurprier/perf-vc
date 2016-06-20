@@ -1,34 +1,40 @@
 <?php
 
-namespace perf\Vc;
+namespace perf\Vc\Templating;
 
 /**
- * View.
- *
+ * Template base implementation.
  */
-abstract class ViewBase implements ViewInterface
+abstract class TemplateBase implements TemplateInterface
 {
 
     /**
-     * Path to the view file.
+     *
+     *
+     * @var EscaperInterface
+     */
+    private $escaper;
+
+    /**
+     * Path to the template.
      *
      * @var string
      */
-    private $viewPath;
+    private $path;
 
     /**
-     * View parameters.
+     * Template parameters.
      *
      * @var {string:mixed}
      */
     private $parameters = array();
 
     /**
-     * Parent view being extended.
+     * Parent template being extended.
      *
-     * @var null|View
+     * @var null|Template
      */
-    private $extendedView;
+    private $extendedTemplate;
 
     /**
      * Unique identifier of slot being populated.
@@ -47,13 +53,6 @@ abstract class ViewBase implements ViewInterface
     /**
      *
      *
-     * @var EscaperInterface
-     */
-    private $escaper;
-
-    /**
-     *
-     *
      * @var bool
      */
     private $autoEscape = true;
@@ -61,65 +60,19 @@ abstract class ViewBase implements ViewInterface
     /**
      * Constructor.
      *
-     * @param string         $viewPath   Path to view file.
-     * @param {string:mixed} $parameters Optional view parameters.
-     */
-    public function __construct($viewPath, array $parameters = array())
-    {
-        $this->viewPath = $viewPath;
-
-        $this->setParameters($parameters);
-
-        // @xxx
-        $this->setEscaper(new HtmlEscaper());
-    }
-
-    /**
-     *
-     *
      * @param EscaperInterface $escaper
-     * @return void
+     * @param string           $path       Path to template.
+     * @param {string:mixed}   $parameters Optional template parameters.
      */
-    public function setEscaper(EscaperInterface $escaper)
+    public function __construct(EscaperInterface $escaper, $path, array $parameters = array())
     {
-        $this->escaper = $escaper;
-    }
-
-    /**
-     *
-     *
-     * @param {string:mixed} $parameters
-     * @return void
-     */
-    public function setParameters(array $parameters)
-    {
+        $this->escaper    = $escaper;
+        $this->path       = $path;
         $this->parameters = $parameters;
     }
 
     /**
-     *
-     *
-     * @param string $name
-     * @param mixed $value
-     * @return void
-     */
-    public function setParameter($name, $value)
-    {
-        $this->parameter[$name] = $value;
-    }
-
-    /**
-     * Returns the path to the view file.
-     *
-     * @return string
-     */
-    protected function getViewPath()
-    {
-        return $this->viewPath;
-    }
-
-    /**
-     * Tells whether a view parameter is set or not.
+     * Tells whether a template parameter is set or not.
      * Magic method.
      *
      * @param string $name Name of the parameter.
@@ -131,7 +84,7 @@ abstract class ViewBase implements ViewInterface
     }
 
     /**
-     * Sets a view parameter.
+     * Sets a template parameter.
      * Magic method.
      *
      * @param string $name Name of the parameter.
@@ -144,7 +97,7 @@ abstract class ViewBase implements ViewInterface
     }
 
     /**
-     * Unsets a view parameter.
+     * Unsets a template parameter.
      * Magic method.
      *
      * @param string $name Name of the parameter.
@@ -156,7 +109,7 @@ abstract class ViewBase implements ViewInterface
     }
 
     /**
-     * Returns the value of a view parameter.
+     * Returns the value of a template parameter.
      * Magic method.
      *
      * @param string $name Name of the parameter.
@@ -173,7 +126,7 @@ abstract class ViewBase implements ViewInterface
     }
 
     /**
-     * Builds the view content into a string.
+     * Builds the template content into a string.
      *
      * @return string
      * @throws \RuntimeException
@@ -185,11 +138,11 @@ abstract class ViewBase implements ViewInterface
         ob_start();
 
         try {
-            $this->includeViewFile();
+            $this->includeTemplate();
         } catch (\Exception $e) {
             $this->fixOutputBufferringStack($outputBufferringStartLevel);
 
-            $message = "Failed to render view ({$this->viewPath}). << {$e->getMessage()}";
+            $message = "Failed to render template ({$this->path}). << {$e->getMessage()}";
 
             throw new \RuntimeException($message, 0, $e);
         }
@@ -197,17 +150,17 @@ abstract class ViewBase implements ViewInterface
         if (null !== $this->currentSlotId) {
             $this->fixOutputBufferringStack($outputBufferringStartLevel);
 
-            $message = "Failed to render view ({$this->viewPath}): slot '{$this->currentSlotId}' not ended.";
+            $message = "Failed to render template ({$this->path}): slot '{$this->currentSlotId}' not ended.";
 
             $this->currentSlotId = null;
 
             throw new \RuntimeException($message);
         }
 
-        if ($this->extendedView) {
+        if ($this->extendedTemplate) {
             $this->fixOutputBufferringStack($outputBufferringStartLevel);
 
-            return $this->extendedView->fetch();
+            return $this->extendedTemplate->fetch();
         }
 
         return ob_get_clean();
@@ -219,7 +172,7 @@ abstract class ViewBase implements ViewInterface
      * @return void
      * @throws \Exception
      */
-    abstract protected function includeViewFile();
+    abstract protected function includeTemplate();
 
     /**
      *
@@ -240,20 +193,20 @@ abstract class ViewBase implements ViewInterface
     }
 
     /**
-     * Extends another view.
+     * Extends another template.
      *
-     * @param string $extendedViewPath Path to view file to extend.
+     * @param string $path Path to template to extend.
      * @return void
      * @throws \RuntimeException
      */
-    protected function extend($extendedViewPath)
+    protected function extend($path)
     {
-        if (null !== $this->extendedView) {
-            throw new \RuntimeException('A view is already being extended.');
+        if (null !== $this->extendedTemplate) {
+            throw new \RuntimeException('A template is already being extended.');
         }
 
-        $this->extendedView = new View($extendedViewPath, $this->parameters);
-        $this->extendedView->slots = $this->slots;
+        $this->extendedTemplate = new Template($this->escaper, $path, $this->parameters);
+        $this->extendedTemplate->slots = $this->slots;
     }
 
     /**
@@ -265,8 +218,8 @@ abstract class ViewBase implements ViewInterface
      */
     protected function beginSlot($slotId)
     {
-        if (!$this->extendedView) {
-            throw new \RuntimeException("Cannot begin slot: not extending a view.");
+        if (!$this->extendedTemplate) {
+            throw new \RuntimeException("Cannot begin slot: not extending a template.");
         }
 
         if (null !== $this->currentSlotId) {
@@ -290,7 +243,7 @@ abstract class ViewBase implements ViewInterface
             throw new \RuntimeException('Cannot end slot: no slot is begun.');
         }
 
-        $this->extendedView->setSlotContent($this->currentSlotId, ob_get_clean());
+        $this->extendedTemplate->setSlotContent($this->currentSlotId, ob_get_clean());
 
         $this->currentSlotId = null;
     }
@@ -306,8 +259,8 @@ abstract class ViewBase implements ViewInterface
     {
         $this->slots[$slotId] = $content;
 
-        if ($this->extendedView) {
-            $this->extendedView->setSlotContent($slotId, $content);
+        if ($this->extendedTemplate) {
+            $this->extendedTemplate->setSlotContent($slotId, $content);
         }
     }
 
@@ -325,28 +278,28 @@ abstract class ViewBase implements ViewInterface
     }
 
     /**
-     * Includes another view file.
+     * Includes another template.
      *
-     * @param string $subViewPath Path to sub-view.
-     * @param {string:mixed} $childParameters Sub-view parameters.
+     * @param string $path Path to sub-template.
+     * @param {string:mixed} $childParameters Sub-template parameters.
      * @return void
      * @throws \RuntimeException
      */
-    protected function embed($subViewPath, array $childParameters = array())
+    protected function embed($path, array $childParameters = array())
     {
-        $subViewFullPath = dirname($this->viewPath) . '/' . $subViewPath;
+        $subTemplateFullPath = dirname($this->path) . '/' . $path;
 
-        $parameters = array_merge(
+        $parameters = array_replace(
             $this->parameters,
             $childParameters
         );
 
-        $subView = new View($subViewFullPath, $parameters);
+        $subTemplate = new Template($this->escaper, $subTemplateFullPath, $parameters);
 
         try {
-            echo $subView->getContent();
+            echo $subTemplate->getContent();
         } catch (\Exception $e) {
-            $message = "Failed to embed sub-view at '{$subView->viewPath}'. << {$e->getMessage()}";
+            $message = "Failed to embed sub-template at '{$subTemplate->path}'. << {$e->getMessage()}";
 
             throw new \RuntimeException($message, 0, $e);
         }
@@ -419,5 +372,15 @@ abstract class ViewBase implements ViewInterface
     protected function raw($content)
     {
         echo $content;
+    }
+
+    /**
+     * Returns the path to the template.
+     *
+     * @return string
+     */
+    protected function getPath()
+    {
+        return $this->path;
     }
 }

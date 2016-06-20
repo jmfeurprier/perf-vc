@@ -2,7 +2,9 @@
 
 namespace perf\Vc;
 
-use perf\Vc\Routing\Address;
+use perf\Vc\Request\RequestInterface;
+use perf\Vc\Response\ResponseBuilderInterface;
+use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Routing\Route;
 
 /**
@@ -15,16 +17,10 @@ interface ControllerInterface
     /**
      *
      *
-     * @param Response $response
-     * @return void
+     * @param RequestInterface         $request
+     * @param Route                    $route
+     * @param ResponseBuilderInterface $responseBuilder
+     * @return ResponseInterface
      */
-    public function setResponse(Response $response);
-
-    /**
-     *
-     *
-     * @param Context $context
-     * @return Response
-     */
-    public function run(Context $context);
+    public function run(RequestInterface $request, Route $route, ResponseBuilderInterface $responseBuilder);
 }

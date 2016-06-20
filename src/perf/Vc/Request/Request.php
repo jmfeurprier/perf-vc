@@ -1,18 +1,13 @@
 <?php
 
-namespace perf\Vc;
+namespace perf\Vc\Request;
 
 /**
  * HTTP request.
  *
  */
-class Request
+class Request implements RequestInterface
 {
-
-    const METHOD_GET    = 'GET';
-    const METHOD_POST   = 'POST';
-    const METHOD_PUT    = 'PUT';
-    const METHOD_DELETE = 'DELETE';
 
     /**
      * Request HTTP method.
@@ -59,7 +54,7 @@ class Request
     /**
      * Static constructor.
      *
-     * @return Request
+     * @return RequestInterface
      * @throws \RuntimeException
      */
     public static function createPopulated()

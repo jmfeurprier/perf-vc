@@ -1,12 +1,12 @@
 <?php
 
-namespace perf\Vc\Routing;
+namespace perf\Vc;
 
 /**
- * Address (module and action).
+ * Controller address (module and action).
  *
  */
-class Address
+class ControllerAddress
 {
 
     const DELIMITER = ':';

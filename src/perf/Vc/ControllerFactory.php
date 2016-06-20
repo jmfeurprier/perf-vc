@@ -2,7 +2,6 @@
 
 namespace perf\Vc;
 
-use perf\Vc\Routing\Address;
 use perf\Vc\Routing\Route;
 
 /**
@@ -21,22 +20,13 @@ class ControllerFactory implements ControllerFactoryInterface
     private $controllersNamespace;
 
     /**
-     * View factory.
-     *
-     * @var ViewFactoryInterface
-     */
-    private $viewFactory;
-
-    /**
      * Constructor.
      *
-     * @param string               $controllersNamespace
-     * @param ViewFactoryInterface $viewFactory          View factory.
+     * @param string $controllersNamespace
      */
-    public function __construct($controllersNamespace, ViewFactoryInterface $viewFactory)
+    public function __construct($controllersNamespace)
     {
         $this->controllersNamespace = trim($controllersNamespace, '\\');
-        $this->viewFactory          = $viewFactory;
     }
 
     /**
@@ -64,19 +54,16 @@ class ControllerFactory implements ControllerFactoryInterface
             throw new \RuntimeException($message);
         }
 
-        $controller = new $controllerClass();
-        $controller->setViewFactory($this->viewFactory);
-
-        return $controller;
+        return new $controllerClass();
     }
 
     /**
      *
      *
-     * @param Address $address
+     * @param ControllerAddress $address
      * @return string
      */
-    protected function getControllerClass(Address $address)
+    protected function getControllerClass(ControllerAddress $address)
     {
         $module = $address->getModule();
         $action = $address->getAction();

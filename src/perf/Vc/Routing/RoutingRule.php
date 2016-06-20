@@ -2,7 +2,8 @@
 
 namespace perf\Vc\Routing;
 
-use perf\Vc\Request;
+use perf\Vc\ControllerAddress;
+use perf\Vc\Request\RequestInterface;
 
 /**
  * Routing rule.
@@ -14,7 +15,7 @@ class RoutingRule implements RoutingRuleInterface
     /**
      *
      *
-     * @var Address
+     * @var ControllerAddress
      */
     private $address;
 
@@ -42,13 +43,17 @@ class RoutingRule implements RoutingRuleInterface
     /**
      * Constructor.
      *
-     * @param Address               $address
+     * @param ControllerAddress     $address
      * @param string[]              $httpMethods          HTTP methods.
      * @param string                $pathPattern
      * @param ParameterDefinition[] $parameterDefinitions
      */
-    public function __construct(Address $address, array $httpMethods, $pathPattern, array $parameterDefinitions)
-    {
+    public function __construct(
+        ControllerAddress $address,
+        array $httpMethods,
+        $pathPattern,
+        array $parameterDefinitions
+    ) {
         $this->address              = $address;
         $this->httpMethods          = $httpMethods; // @xxx
         $this->pathPattern          = $pathPattern;
@@ -58,11 +63,11 @@ class RoutingRule implements RoutingRuleInterface
     /**
      * Attempts to match provided request.
      *
-     * @param Request $request Request.
+     * @param RequestInterface $request Request.
      * @return null|Route
      * @throws \RuntimeException
      */
-    public function tryMatch(Request $request)
+    public function tryMatch(RequestInterface $request)
     {
         if (count($this->httpMethods) > 0) {
             if (!in_array($request->getMethod(), $this->httpMethods, true)) {
@@ -81,7 +86,7 @@ class RoutingRule implements RoutingRuleInterface
             throw new \RuntimeException('Failed to match path. Invalid regular expression?');
         }
 
-        foreach ($matches as $key => $value) {
+        foreach (array_keys($matches) as $key) {
             if (is_int($key) === true) {
                 unset($matches[$key]);
             }

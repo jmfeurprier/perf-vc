@@ -1,16 +1,16 @@
 <?php
 
-namespace perf\Vc;
+namespace perf\Vc\Templating;
 
 /**
- * View.
+ * Template interface.
  *
  */
-interface ViewInterface
+interface TemplateInterface
 {
 
     /**
-     * Builds the view content into a string.
+     * Builds the template content into a string.
      *
      * @return string
      * @throws \RuntimeException

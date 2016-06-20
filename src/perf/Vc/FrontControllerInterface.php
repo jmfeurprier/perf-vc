@@ -2,6 +2,9 @@
 
 namespace perf\Vc;
 
+use perf\Vc\Request\RequestInterface;
+use perf\Vc\Response\ResponseInterface;
+
 /**
  *
  *
@@ -12,9 +15,9 @@ interface FrontControllerInterface
     /**
      * Runs the front controller.
      *
-     * @param Request $request
-     * @return Response
+     * @param RequestInterface $request
+     * @return ResponseInterface
      * @throws \Exception
      */
-    public function run(Request $request);
+    public function run(RequestInterface $request);
 }

@@ -13,7 +13,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->address = $this->getMockBuilder('\\perf\\Vc\\Routing\\Address')->disableOriginalConstructor()->getMock();
+        $this->address = $this->getMockBuilder('perf\\Vc\\ControllerAddress')->disableOriginalConstructor()->getMock();
     }
 
     /**

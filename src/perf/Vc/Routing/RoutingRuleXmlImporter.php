@@ -3,6 +3,7 @@
 namespace perf\Vc\Routing;
 
 use perf\Source\Source;
+use perf\Vc\ControllerAddress;
 
 /**
  * Imports routing rules from a XML source.
@@ -101,7 +102,7 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
     {
         $action = (string) $sxeAction['id'];
 
-        $address = new Address($module, $action);
+        $address = new ControllerAddress($module, $action);
 
         foreach ($sxeAction->rule as $sxeRule) {
             $this->parseRule($address, $sxeRule);
@@ -111,11 +112,11 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
     /**
      *
      *
-     * @param Address $address
+     * @param ControllerAddress $address
      * @param \SimpleXMLElement $sxePath
      * @return void
      */
-    private function parseRule(Address $address, \SimpleXMLElement $sxeRule)
+    private function parseRule(ControllerAddress $address, \SimpleXMLElement $sxeRule)
     {
         $httpMethods          = $this->parseHttpMethods($sxeRule);
         $parameterDefinitions = $this->parseParameterDefinitions($sxeRule);

@@ -1,10 +1,11 @@
 <?php
 
-namespace perf\Vc;
+namespace perf\Vc\Request;
 
 /**
  * HTTP request populator.
  *
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
 class RequestPopulator
 {
@@ -20,7 +21,7 @@ class RequestPopulator
     /**
      * Returns a new HTTP request instance, populated with global values.
      *
-     * @return Request
+     * @return RequestInterface
      * @throws \RuntimeException
      */
     public function populate()
@@ -29,11 +30,11 @@ class RequestPopulator
         $cookies      = isset($_COOKIE) ? $_COOKIE : array();
         $this->server = isset($_SERVER) ? $_SERVER : array();
 
-        $method = $this->getMethod();
-        $path   = $this->getPath();
-        $post   = $this->getPost();
+        $method     = $this->getMethod();
+        $path       = $this->getPath();
+        $attachment = $this->getAttachment($method);
 
-        return new Request($method, $path, $query, $post, $cookies, $this->server);
+        return new Request($method, $path, $query, $attachment, $cookies, $this->server);
     }
 
     /**
@@ -79,20 +80,31 @@ class RequestPopulator
     /**
      *
      *
+     * @param string $method
      * @return array
      */
-    private function getPost()
+    private function getAttachment($method)
     {
-        $post = $_POST;
+        $attachment = array();
+
+        switch ($method) {
+            case 'POST':
+                $attachment = $_POST;
+                break;
+
+            case 'DELETE':
+            case 'PATCH':
+            case 'PUT':
+                parse_str(file_get_contents('php://input'), $attachment);
+                break;
+        }
 
         if (isset($_FILES)) {
             foreach ($_FILES as $key => $file) {
-                $fileKey = "@{$key}";
-
-                $post[$fileKey] = $file;
+                $attachment[$key] = $file;
             }
         }
 
-        return $post;
+        return $attachment;
     }
 }

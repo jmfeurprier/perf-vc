@@ -1,6 +1,6 @@
 <?php
 
-namespace perf\Vc;
+namespace perf\Vc\Templating;
 
 /**
  *

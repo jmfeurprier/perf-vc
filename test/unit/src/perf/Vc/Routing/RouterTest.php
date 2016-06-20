@@ -15,7 +15,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $router = new Router();
 
-        $request = $this->getMockBuilder('perf\\Vc\\Request')->disableOriginalConstructor()->getMock();
+        $request = $this->getMock('perf\\Vc\\Request\\RequestInterface');
         $request->expects($this->any())->method('getMethod')->willReturn('GET');
         $request->expects($this->any())->method('getPath')->willReturn('/foo/bar');
 
@@ -31,11 +31,14 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $route = $this->getMockBuilder('perf\\Vc\\Routing\\Route')->disableOriginalConstructor()->getMock();
 
-        $request = $this->getMockBuilder('perf\\Vc\\Request')->disableOriginalConstructor()->getMock();
+        $request = $this->getMockBuilder('perf\\Vc\\Request\\Request')->disableOriginalConstructor()->getMock();
         $request->expects($this->any())->method('getMethod')->willReturn('GET');
         $request->expects($this->any())->method('getPath')->willReturn('/foo/bar');
 
-        $routingRule = $this->getMockBuilder('perf\\Vc\\Routing\\RoutingRule')->disableOriginalConstructor()->getMock();
+        $routingRule = $this->getMockBuilder('perf\\Vc\\Routing\\RoutingRule')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $routingRule->expects($this->atLeastOnce())->method('tryMatch')->willReturn($route);
 
         $rules = array(
@@ -54,12 +57,11 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testTryGetRouteWithNoMatchingRule()
     {
-        $request = $this->getMockBuilder('perf\\Vc\\Request')->disableOriginalConstructor()->getMock();
+        $request = $this->getMockBuilder('perf\\Vc\\Request\\Request')->disableOriginalConstructor()->getMock();
         $request->expects($this->any())->method('getMethod')->willReturn('GET');
         $request->expects($this->any())->method('getPath')->willReturn('/foo/bar');
 
-        $routingRule = $this->getMockBuilder('perf\\Vc\\Routing\\RoutingRule')->disableOriginalConstructor()->getMock();
-        $routingRule->expects($this->atLeastOnce())->method('tryMatch')->willReturn(null);
+        $routingRule = $this->getRoutingRuleMock(null);
 
         $rules = array(
             $routingRule,
@@ -79,14 +81,12 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $route = $this->getMockBuilder('perf\\Vc\\Routing\\Route')->disableOriginalConstructor()->getMock();
 
-        $request = $this->getMockBuilder('perf\\Vc\\Request')->disableOriginalConstructor()->getMock();
+        $request = $this->getMockBuilder('perf\\Vc\\Request\\Request')->disableOriginalConstructor()->getMock();
         $request->expects($this->any())->method('getMethod')->willReturn('GET');
         $request->expects($this->any())->method('getPath')->willReturn('/foo/bar');
 
-        $routingRulePrimary = $this->getMockBuilder('perf\\Vc\\Routing\\RoutingRule')->disableOriginalConstructor()->getMock();
-        $routingRulePrimary->expects($this->atLeastOnce())->method('tryMatch')->willReturn(null);
-        $routingRuleSecondary = $this->getMockBuilder('perf\\Vc\\Routing\\RoutingRule')->disableOriginalConstructor()->getMock();
-        $routingRuleSecondary->expects($this->atLeastOnce())->method('tryMatch')->willReturn($route);
+        $routingRulePrimary = $routingRule = $this->getRoutingRuleMock(null);
+        $routingRuleSecondary = $routingRule = $this->getRoutingRuleMock($route);
 
         $rules = array(
             $routingRulePrimary,
@@ -98,5 +98,17 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $result = $router->tryGetRoute($request);
 
         $this->assertSame($route, $result);
+    }
+
+    /**
+     *
+     */
+    private function getRoutingRuleMock(Route $matchedRoute = null)
+    {
+        $routingRule = $this->getMock('perf\\Vc\\Routing\\RoutingRuleInterface');
+
+        $routingRule->expects($this->atLeastOnce())->method('tryMatch')->willReturn($matchedRoute);
+
+        return $routingRule;
     }
 }

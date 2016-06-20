@@ -1,6 +1,6 @@
 <?php
 
-namespace perf\Vc;
+namespace perf\Vc\Request;
 
 /**
  * HTTP request channel (GET, POST, etc).

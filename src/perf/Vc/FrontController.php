@@ -2,7 +2,12 @@
 
 namespace perf\Vc;
 
+use perf\Source\NullSource;
 use perf\Vc\Redirection\RedirectionHeadersGenerator;
+use perf\Vc\Request\RequestInterface;
+use perf\Vc\Response\Response;
+use perf\Vc\Response\ResponseInterface;
+use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Routing\Route;
 use perf\Vc\Routing\Router;
 use perf\Vc\Routing\RouterInterface;
@@ -15,6 +20,13 @@ class FrontController implements FrontControllerInterface
 {
 
     /**
+     * Router.
+     *
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * Controller factory.
      *
      * @var ControllerFactoryInterface
@@ -24,16 +36,9 @@ class FrontController implements FrontControllerInterface
     /**
      * Router.
      *
-     * @var RouterInterface
+     * @var ResponseBuilderFactoryInterface
      */
-    private $router;
-
-    /**
-     * Response factory.
-     *
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private $responseBuilderFactory;
 
     /**
      * HTTP redirection headers generator.
@@ -46,7 +51,7 @@ class FrontController implements FrontControllerInterface
      * Current request.
      * Temporary property.
      *
-     * @var Request
+     * @var RequestInterface
      */
     private $request;
 
@@ -61,33 +66,33 @@ class FrontController implements FrontControllerInterface
     /**
      * Constructor.
      *
-     * @param ControllerFactoryInterface  $controllerFactory           Controller factory.
-     * @param RouterInterface             $router                      Router.
-     * @param ResponseFactoryInterface    $responseFactory             Response factory.
-     * @param RedirectionHeadersGenerator $redirectionHeadersGenerator Redirection HTTP headers generator.
+     * @param ControllerFactoryInterface      $controllerFactory           Controller factory.
+     * @param RouterInterface                 $router                      Router.
+     * @param ResponseBuilderFactoryInterface $responseBuilderFactory      Response builder factory.
+     * @param RedirectionHeadersGenerator     $redirectionHeadersGenerator Redirection HTTP headers generator.
      */
     public function __construct(
-        ControllerFactoryInterface $controllerFactory,
         RouterInterface $router,
-        ResponseFactoryInterface $responseFactory,
+        ControllerFactoryInterface $controllerFactory,
+        ResponseBuilderFactoryInterface $responseBuilderFactory,
         RedirectionHeadersGenerator $redirectionHeadersGenerator
     ) {
         $this->controllerFactory           = $controllerFactory;
         $this->router                      = $router;
-        $this->responseFactory             = $responseFactory;
+        $this->responseBuilderFactory      = $responseBuilderFactory;
         $this->redirectionHeadersGenerator = $redirectionHeadersGenerator;
     }
 
     /**
      * Runs the front controller.
      *
-     * @param Request $request
-     * @return Response
+     * @param RequestInterface $request
+     * @return ResponseInterface
      * @throws \Exception
      */
-    public function run(Request $request)
+    public function run(RequestInterface $request)
     {
-        $this->setRequest($request);
+        $this->request = $request;
 
         $route = $this->router->tryGetRoute($this->request);
 
@@ -100,17 +105,6 @@ class FrontController implements FrontControllerInterface
         } catch (\Exception $exception) {
             return $this->failure($exception);
         }
-    }
-
-    /**
-     * Sets the current request.
-     *
-     * @param Request $request
-     * @return void
-     */
-    protected function setRequest(Request $request)
-    {
-        $this->request = $request;
     }
 
     /**
@@ -133,7 +127,7 @@ class FrontController implements FrontControllerInterface
      * Override this method to forward to a dedicated error-processing controller.
      *
      * @param \Exception $exception Exception which was thrown.
-     * @return Response
+     * @return ResponseInterface
      * @throws \Exception
      */
     protected function failure(\Exception $exception)
@@ -151,27 +145,21 @@ class FrontController implements FrontControllerInterface
      * Forwards execution to a controller.
      *
      * @param Route $route Route.
-     * @return Response
+     * @return ResponseInterface
      */
     protected function forward(Route $route)
     {
-        $this->route = $route;
-        $controller  = $this->getController();
-        $response    = $this->responseFactory->getResponse();
-
-        $context = new Context($this->request, $route);
-
-        $controller->setResponse($response);
+        $this->route     = $route;
+        $controller      = $this->getController();
+        $responseBuilder = $this->responseBuilderFactory->create();
 
         try {
-            $controller->run($context);
+            return $controller->run($this->request, $route, $responseBuilder);
         } catch (ForwardException $exception) {
             return $this->forward($exception->getRoute());
         } catch (RedirectException $exception) {
             return $this->redirectToUrl($exception->getUrl(), $exception->getHttpStatusCode());
         }
-
-        return $controller->getResponse();
     }
 
     /**
@@ -203,30 +191,22 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     * Returns current route.
-     *
-     * @return Route
-     */
-    protected function getRoute()
-    {
-        return $this->route;
-    }
-
-    /**
      * Redirects execution to given URL.
      *
      * @param string $url Redirect URL.
      * @param int $httpStatusCode
-     * @return Response
+     * @return ResponseInterface
      */
     private function redirectToUrl($url, $httpStatusCode)
     {
-        $response = $this->responseFactory->getResponse();
+        $headers = array();
 
         foreach ($this->redirectionHeadersGenerator->generate($url, $httpStatusCode) as $header) {
-            $response->addHeader($header);
+            $headers[$header] = null;
         }
 
-        return $response;
+        $source = NullSource::create();
+
+        return new Response($headers, $source);
     }
 }

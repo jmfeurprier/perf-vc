@@ -2,7 +2,9 @@
 
 namespace perf\Vc;
 
-use perf\Vc\Routing\Address;
+use perf\Vc\Request\RequestInterface;
+use perf\Vc\Response\ResponseBuilderInterface;
+use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Routing\Route;
 
 /**
@@ -13,85 +15,48 @@ abstract class ControllerBase implements ControllerInterface
 {
 
     /**
+     * Current request.
+     * Temporary property.
      *
-     *
-     * @return Response
+     * @var RequestInterface
      */
-    private $response;
+    private $request;
 
     /**
-     * View factory.
+     * Current route.
+     * Temporary property.
      *
-     * @var ViewFactoryInterface
+     * @var Route
      */
-    private $viewFactory;
+    private $route;
 
     /**
+     * Response builder.
+     * Temporary property.
      *
-     *
-     * @var bool
+     * @return ResponseBuilderInterface
      */
-    private $render = true;
-
-    /**
-     * Current context.
-     *
-     * @var Context
-     */
-    private $context;
+    private $responseBuilder;
 
     /**
      *
      *
-     * @var ViewInterface
+     * @param RequestInterface         $request
+     * @param Route                    $route
+     * @param ResponseBuilderInterface $responseBuilder
+     * @return ResponseInterface
      */
-    private $view;
-
-    /**
-     *
-     *
-     * @param Response $response
-     * @return void
-     */
-    public function setResponse(Response $response)
+    public function run(RequestInterface $request, Route $route, ResponseBuilderInterface $responseBuilder)
     {
-        $this->response = $response;
-    }
-
-    /**
-     * Sets the view factory.
-     *
-     * @param ViewFactoryInterface $factory View factory.
-     * @return void
-     */
-    public function setViewFactory(ViewFactoryInterface $factory)
-    {
-        $this->viewFactory = $factory;
-    }
-
-    /**
-     *
-     *
-     * @param Context $context
-     * @return Response
-     */
-    public function run(Context $context)
-    {
-        $this->context = $context;
+        $this->request         = $request;
+        $this->route           = $route;
+        $this->responseBuilder = $responseBuilder;
 
         $this->executeHookPre();
         $this->execute();
         $this->executeHookPost();
 
-        $response = $this->getResponse();
-
-        if ($this->render) {
-            $viewContent = $this->getView()->fetch();
-
-            $response->setContent($viewContent);
-        }
-
-        return $response;
+        return $this->responseBuilder->build($route);
     }
 
     /**
@@ -125,44 +90,11 @@ abstract class ControllerBase implements ControllerInterface
      *
      * Helper method.
      *
-     * @return Request
+     * @return RequestInterface
      */
     protected function getRequest()
     {
-        return $this->context->getRequest();
-    }
-
-    /**
-     *
-     * Helper method.
-     *
-     * @return string
-     */
-    protected function getModule()
-    {
-        return $this->getAddress()->getModule();
-    }
-
-    /**
-     *
-     * Helper method.
-     *
-     * @return string
-     */
-    protected function getAction()
-    {
-        return $this->getAddress()->getAction();
-    }
-
-    /**
-     *
-     * Helper method.
-     *
-     * @return string
-     */
-    protected function getAddress()
-    {
-        return $this->getRoute()->getAddress();
+        return $this->request;
     }
 
     /**
@@ -174,7 +106,7 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function hasParameter($parameter)
     {
-        return $this->getRoute()->hasParameter($parameter);
+        return $this->route->hasParameter($parameter);
     }
 
     /**
@@ -187,18 +119,29 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function getParameter($parameter)
     {
-        return $this->getRoute()->getParameter($parameter);
+        return $this->route->getParameter($parameter);
     }
 
     /**
      *
      * Helper method.
      *
-     * @return string
+     * @return Route
      */
     protected function getRoute()
     {
-        return $this->context->getRoute();
+        return $this->route;
+    }
+
+    /**
+     *
+     * Helper method.
+     *
+     * @return ResponseBuilderInterface
+     */
+    protected function getResponseBuilder()
+    {
+        return $this->responseBuilder;
     }
 
     /**
@@ -213,50 +156,10 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function forward($module, $action, array $parameters = array())
     {
-        $address = new Address($module, $action);
+        $address = new ControllerAddress($module, $action);
         $route   = new Route($address, $parameters);
 
         throw new ForwardException($route);
-    }
-
-    /**
-     *
-     *
-     * @return ViewInterface
-     */
-    protected function getView()
-    {
-        if (!$this->view) {
-            $this->view = $this->viewFactory->getView($this->getRoute());
-
-            $this->configureView($this->view);
-        }
-
-        return $this->view;
-    }
-
-    /**
-     *
-     * Hook.
-     * Default implementation.
-     *
-     * @param ViewInterface $view
-     * @return void
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    protected function configureView(ViewInterface $view)
-    {
-    }
-
-    /**
-     *
-     *
-     * @return void
-     */
-    protected function noRender()
-    {
-        $this->render = false;
     }
 
     /**
@@ -271,15 +174,5 @@ abstract class ControllerBase implements ControllerInterface
     protected function redirectToUrl($url, $httpStatusCode)
     {
         throw new RedirectException($url, $httpStatusCode);
-    }
-
-    /**
-     *
-     *
-     * @return Response
-     */
-    public function getResponse()
-    {
-        return $this->response;
     }
 }
