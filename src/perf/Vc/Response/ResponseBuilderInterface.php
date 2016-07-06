@@ -19,6 +19,14 @@ interface ResponseBuilderInterface
     public function setType($type);
 
     /**
+     *
+     *
+     * @param int $code
+     * @return ResponseBuilderInterface Fluent return.
+     */
+    public function setHttpStatusCode($code);
+
+    /**
      * Adds a HTTP header.
      *
      * @param string $header
