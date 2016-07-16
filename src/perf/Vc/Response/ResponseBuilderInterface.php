@@ -87,6 +87,23 @@ interface ResponseBuilderInterface
     /**
      *
      *
+     * @param string $key
+     * @param mixed  $value
+     * @return ResponseBuilderInterface Fluent return.
+     */
+    public function setSetting($key, $value);
+
+    /**
+     *
+     *
+     * @param {string:mixed} $settings
+     * @return ResponseBuilderInterface Fluent return.
+     */
+    public function setSettings(array $settings);
+
+    /**
+     *
+     *
      * @param Route $route
      * @return ResponseInterface
      */
