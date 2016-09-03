@@ -31,11 +31,11 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testGetParametersWithoutParameters()
+    public function testGetArgumentsWithoutArguments()
     {
         $route = $this->buildRoute();
 
-        $result = $route->getParameters();
+        $result = $route->getArguments();
 
         $this->assertCount(0, $result);
     }
@@ -43,11 +43,11 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testHasParametersWithNonExistingParameterWillReturnFalse()
+    public function testHasArgumentsWithNonExistingArgumentWillReturnFalse()
     {
         $route = $this->buildRoute();
 
-        $result = $route->hasParameter('foo');
+        $result = $route->hasArgument('foo');
 
         $this->assertFalse($result);
     }
@@ -55,15 +55,15 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testHasParametersWithExistingParameterWillReturnTrue()
+    public function testHasArgumentsWithExistingArgumentWillReturnTrue()
     {
-        $parameters = array(
+        $arguments = array(
             'foo' => 'bar',
         );
 
-        $route = $this->buildRoute($parameters);
+        $route = $this->buildRoute($arguments);
 
-        $result = $route->hasParameter('foo');
+        $result = $route->hasArgument('foo');
 
         $this->assertTrue($result);
     }
@@ -72,25 +72,25 @@ class RouteTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException \DomainException
      */
-    public function testHasParametersWithNonExistingParameterWillThrowException()
+    public function testHasArgumentsWithNonExistingArgumentWillThrowException()
     {
         $route = $this->buildRoute();
 
-        $route->getParameter('foo');
+        $route->getArgument('foo');
     }
 
     /**
      *
      */
-    public function testGetParametersWithExistingParameterWillReturnExpected()
+    public function testGetArgumentsWithExistingArgumentWillReturnExpected()
     {
-        $parameters = array(
+        $arguments = array(
             'foo' => 'bar',
         );
 
-        $route = $this->buildRoute($parameters);
+        $route = $this->buildRoute($arguments);
 
-        $result = $route->getParameter('foo');
+        $result = $route->getArgument('foo');
 
         $this->assertSame('bar', $result);
     }
@@ -99,20 +99,20 @@ class RouteTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException \InvalidArgumentException
      */
-    public function testWithInvalidParameterKeyWillThrowException()
+    public function testWithInvalidArgumentKeyWillThrowException()
     {
-        $parameters = array(
+        $arguments = array(
             123 => 'bar',
         );
 
-        $this->buildRoute($parameters);
+        $this->buildRoute($arguments);
     }
 
     /**
      *
      */
-    private function buildRoute(array $parameters = array())
+    private function buildRoute(array $arguments = array())
     {
-        return new Route($this->address, $parameters);
+        return new Route($this->address, $arguments);
     }
 }

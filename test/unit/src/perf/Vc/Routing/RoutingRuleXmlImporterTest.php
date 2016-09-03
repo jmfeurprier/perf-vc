@@ -168,7 +168,7 @@ XML;
     /**
      *
      */
-    public function testImportWithParameter()
+    public function testImportWithArgument()
     {
         $xml = <<<XML
 <root>

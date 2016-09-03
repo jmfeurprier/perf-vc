@@ -21,15 +21,15 @@ class RoutingRuleTest extends \PHPUnit_Framework_TestCase
 
         $pathPattern = '#^/foo/bar$#';
         $methods = array();
-        $parameterDefinitions = array();
+        $argumentDefinitions = array();
 
-        $routingRule = new RoutingRule($address, $methods, $pathPattern, $parameterDefinitions);
+        $routingRule = new RoutingRule($address, $methods, $pathPattern, $argumentDefinitions);
 
         $result = $routingRule->tryMatch($request);
 
         $this->assertInstanceOf('perf\\Vc\\Routing\\Route', $result);
         $this->assertSame($address, $result->getAddress());
-        $this->assertCount(0, $result->getParameters());
+        $this->assertCount(0, $result->getArguments());
     }
 
     /**
@@ -45,9 +45,9 @@ class RoutingRuleTest extends \PHPUnit_Framework_TestCase
 
         $pathPattern = '#^/foo/bar$#';
         $methods = array('POST');
-        $parameterDefinitions = array();
+        $argumentDefinitions = array();
 
-        $routingRule = new RoutingRule($address, $methods, $pathPattern, $parameterDefinitions);
+        $routingRule = new RoutingRule($address, $methods, $pathPattern, $argumentDefinitions);
 
         $result = $routingRule->tryMatch($request);
 
@@ -67,15 +67,15 @@ class RoutingRuleTest extends \PHPUnit_Framework_TestCase
 
         $pathPattern = '#^/foo/bar$#';
         $methods = array('GET');
-        $parameterDefinitions = array();
+        $argumentDefinitions = array();
 
-        $routingRule = new RoutingRule($address, $methods, $pathPattern, $parameterDefinitions);
+        $routingRule = new RoutingRule($address, $methods, $pathPattern, $argumentDefinitions);
 
         $result = $routingRule->tryMatch($request);
 
         $this->assertInstanceOf('perf\\Vc\\Routing\\Route', $result);
         $this->assertSame($address, $result->getAddress());
-        $this->assertCount(0, $result->getParameters());
+        $this->assertCount(0, $result->getArguments());
     }
 
     /**
@@ -95,9 +95,9 @@ class RoutingRuleTest extends \PHPUnit_Framework_TestCase
 
         $pathPattern = '#^/baz/qux$#';
         $methods = array();
-        $parameterDefinitions = array();
+        $argumentDefinitions = array();
 
-        $routingRule = new RoutingRule($address, $methods, $pathPattern, $parameterDefinitions);
+        $routingRule = new RoutingRule($address, $methods, $pathPattern, $argumentDefinitions);
 
         $result = $routingRule->tryMatch($request);
 

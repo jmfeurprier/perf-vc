@@ -5,7 +5,7 @@ namespace perf\Vc\Routing;
 use perf\Vc\Request\RequestInterface;
 
 /**
- * Registers routing rules and allows to retrieve route and parameters based on provided request.
+ * Registers routing rules and allows to retrieve route and arguments based on provided request.
  *
  */
 class Router implements RouterInterface

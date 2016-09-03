@@ -9,34 +9,36 @@ namespace perf\Vc\Routing;
 class PathPatternParser
 {
 
-    const PARAMETER_FORMAT_DEFAULT = '[^/]+';
+    const ARGUMENT_FORMAT_DEFAULT = '[^/]+';
 
     /**
      * Attempts to parse provided path pattern.
      *
-     * @param string                $pattern
-     * @param ParameterDefinition[] $parameterDefinitions
+     * @param string               $pattern
+     * @param ArgumentDefinition[] $argumentDefinitions
      * @return string
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function parse($pattern, array $parameterDefinitions)
+    public function parse($pattern, array $argumentDefinitions)
     {
-        $parameterDefinitionByName = array();
-        foreach ($parameterDefinitions as $parameterDefinition) {
-            $name = $parameterDefinition->getName();
+        $argumentDefinitionByName = array();
+        foreach ($argumentDefinitions as $argumentDefinition) {
+            $name = $argumentDefinition->getName();
 
-            if (array_key_exists($name, $parameterDefinitionByName)) {
-                throw new \InvalidArgumentException("More than one definition provided for parameter '{$name}'.");
+            if (array_key_exists($name, $argumentDefinitionByName)) {
+                throw new \InvalidArgumentException(
+                    "More than one definition provided for routing rule argument with name '{$name}'."
+                );
             }
 
-            $parameterDefinitionByName[$name] = $parameterDefinition;
+            $argumentDefinitionByName[$name] = $argumentDefinition;
         }
 
         $matches = array();
 
         if (false === preg_match_all('|({[^}]+})|', $pattern, $matches, \PREG_OFFSET_CAPTURE)) {
-            throw new \RuntimeException('Failed to parse pattern.');
+            throw new \RuntimeException("Failed to parse routing rule argument pattern.");
         }
 
         $tokens = array();
@@ -51,17 +53,17 @@ class PathPatternParser
         $regex = $pattern;
 
         foreach ($tokens as $offset => $token) {
-            $parameterName   = substr($token, 1, -1);
-            $parameterFormat = self::PARAMETER_FORMAT_DEFAULT;
-            if (array_key_exists($parameterName, $parameterDefinitionByName)) {
-                $parameterFormat = $parameterDefinitionByName[$parameterName]->getFormat();
+            $argumentName   = substr($token, 1, -1);
+            $argumentFormat = self::ARGUMENT_FORMAT_DEFAULT;
+            if (array_key_exists($argumentName, $argumentDefinitionByName)) {
+                $argumentFormat = $argumentDefinitionByName[$argumentName]->getFormat();
             }
 
             $length = strlen($token);
 
             $regex = substr_replace(
                 $regex,
-                "(?P<{$parameterName}>{$parameterFormat})",
+                "(?P<{$argumentName}>{$argumentFormat})",
                 $offset,
                 $length
             );

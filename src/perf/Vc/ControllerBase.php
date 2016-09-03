@@ -101,25 +101,25 @@ abstract class ControllerBase implements ControllerInterface
      *
      * Helper method.
      *
-     * @param string $parameter
+     * @param string $name
      * @return bool
      */
-    protected function hasParameter($parameter)
+    protected function hasArgument($name)
     {
-        return $this->route->hasParameter($parameter);
+        return $this->route->hasArgument($name);
     }
 
     /**
      *
      * Helper method.
      *
-     * @param string $parameter
+     * @param string $name
      * @return mixed
      * @throws \DomainException
      */
-    protected function getParameter($parameter)
+    protected function getArgument($name)
     {
-        return $this->route->getParameter($parameter);
+        return $this->route->getArgument($name);
     }
 
     /**
@@ -148,16 +148,16 @@ abstract class ControllerBase implements ControllerInterface
      *
      * Helper method.
      *
-     * @param string $module
-     * @param string $action
-     * @param {string:mixed} $parameters
+     * @param string         $module
+     * @param string         $action
+     * @param {string:mixed} $arguments
      * @return void
      * @throws ForwardException Always thrown.
      */
-    protected function forward($module, $action, array $parameters = array())
+    protected function forward($module, $action, array $arguments = array())
     {
         $address = new ControllerAddress($module, $action);
-        $route   = new Route($address, $parameters);
+        $route   = new Route($address, $arguments);
 
         throw new ForwardException($route);
     }

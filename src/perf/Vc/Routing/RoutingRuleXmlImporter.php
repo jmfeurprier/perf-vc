@@ -28,6 +28,30 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
     private $rules = array();
 
     /**
+     *
+     * Temporary property.
+     *
+     * @var unknown_type
+     */
+    private $module;
+
+    /**
+     *
+     * Temporary property.
+     *
+     * @var unknown_type
+     */
+    private $action;
+
+    /**
+     *
+     * Temporary property.
+     *
+     * @var ControllerAddress
+     */
+    private $address;
+
+    /**
      * Constructor.
      *
      * @param PathPatternParser $pathPatternParser
@@ -84,49 +108,47 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
      */
     private function importModuleRules(\SimpleXMLElement $sxeModule)
     {
-        $module = (string) $sxeModule['id'];
+        $this->module = (string) $sxeModule['id'];
 
         foreach ($sxeModule->action as $sxeAction) {
-            $this->importActionRules($module, $sxeAction);
+            $this->importActionRules($sxeAction);
         }
     }
 
     /**
      *
      *
-     * @param string $module
      * @param \SimpleXMLElement $sxeAction
      * @return void
      */
-    private function importActionRules($module, \SimpleXMLElement $sxeAction)
+    private function importActionRules(\SimpleXMLElement $sxeAction)
     {
-        $action = (string) $sxeAction['id'];
+        $this->action = (string) $sxeAction['id'];
 
-        $address = new ControllerAddress($module, $action);
+        $this->address = new ControllerAddress($this->module, $this->action);
 
         foreach ($sxeAction->rule as $sxeRule) {
-            $this->parseRule($address, $sxeRule);
+            $this->parseRule($sxeRule);
         }
     }
 
     /**
      *
      *
-     * @param ControllerAddress $address
      * @param \SimpleXMLElement $sxePath
      * @return void
      */
-    private function parseRule(ControllerAddress $address, \SimpleXMLElement $sxeRule)
+    private function parseRule(\SimpleXMLElement $sxeRule)
     {
-        $httpMethods          = $this->parseHttpMethods($sxeRule);
-        $parameterDefinitions = $this->parseParameterDefinitions($sxeRule);
-        $pathPattern          = $this->parsePath($sxeRule, $parameterDefinitions);
+        $httpMethods         = $this->parseHttpMethods($sxeRule);
+        $argumentDefinitions = $this->parseArgumentDefinitions($sxeRule);
+        $pathPattern         = $this->parsePath($sxeRule, $argumentDefinitions);
 
         $rule = new RoutingRule(
-            $address,
+            $this->address,
             $httpMethods,
             $pathPattern,
-            $parameterDefinitions
+            $argumentDefinitions
         );
 
         $this->rules[] = $rule;
@@ -160,50 +182,52 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
      *
      *
      * @param \SimpleXMLElement $sxeRule
-     * @return ParameterDefinition[]
+     * @return ArgumentDefinition[]
      */
-    private function parseParameterDefinitions(\SimpleXMLElement $sxeRule)
+    private function parseArgumentDefinitions(\SimpleXMLElement $sxeRule)
     {
-        $parameterDefinitions = array();
+        $argumentDefinitions = array();
 
-        foreach ($sxeRule->parameter as $sxeParameter) {
-            $name         = (string) $sxeParameter['name'];
-            $format       = (string) $sxeParameter['format'];
-            $defaultValue = (string) $sxeParameter['default'];
+        foreach ($sxeRule->argument as $sxeArgument) {
+            $name         = (string) $sxeArgument['name'];
+            $format       = (string) $sxeArgument['format'];
+            $defaultValue = (string) $sxeArgument['default'];
 
             if ('' === $name) {
-                throw new \RuntimeException();
+                throw new \RuntimeException(
+                    "Missing name for routing rule argument ({$this->address})."
+                );
             }
 
             if ('' === $format) {
-                $format = '[^/]+';
+                $format = '[^/]+'; // @xxx
             }
 
             if ('' === $defaultValue) {
                 $defaultValue = null;
             }
 
-            $parameterDefinitions[] = new ParameterDefinition(
+            $argumentDefinitions[] = new ArgumentDefinition(
                 $name,
                 $format,
                 $defaultValue
             );
         }
 
-        return $parameterDefinitions;
+        return $argumentDefinitions;
     }
 
     /**
      *
      *
-     * @param \SimpleXMLElement     $sxeRule
-     * @param ParameterDefinition[] $parameterDefinitions
+     * @param \SimpleXMLElement    $sxeRule
+     * @param ArgumentDefinition[] $argumentDefinitions
      * @return string
      */
-    private function parsePath(\SimpleXMLElement $sxeRule, array $parameterDefinitions)
+    private function parsePath(\SimpleXMLElement $sxeRule, array $argumentDefinitions)
     {
         $path = (string) $sxeRule['path'];
 
-        return $this->pathPatternParser->parse($path, $parameterDefinitions);
+        return $this->pathPatternParser->parse($path, $argumentDefinitions);
     }
 }

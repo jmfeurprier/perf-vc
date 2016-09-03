@@ -3,27 +3,27 @@
 namespace perf\Vc\Routing;
 
 /**
- * Parameter definition.
+ * Argument definition.
  */
-class ParameterDefinition
+class ArgumentDefinition
 {
 
     /**
-     * Parameter name.
+     * Argument name.
      *
      * @var string
      */
     private $name;
 
     /**
-     * Parameter format (regular expression).
+     * Argument format (regular expression).
      *
      * @var string
      */
     private $format;
 
     /**
-     * Parameter default value.
+     * Argument default value.
      *
      * @var mixed
      */
@@ -32,9 +32,9 @@ class ParameterDefinition
     /**
      * Constructor.
      *
-     * @param string $name         Parameter name.
-     * @param string $format       Parameter format (regular expression).
-     * @param mixed  $defaultValue Parameter default value.
+     * @param string $name         Argument name.
+     * @param string $format       Argument format (regular expression).
+     * @param mixed  $defaultValue Argument default value.
      */
     public function __construct($name, $format, $defaultValue)
     {
@@ -44,7 +44,7 @@ class ParameterDefinition
     }
 
     /**
-     * Returns parameter name.
+     * Returns argument name.
      *
      * @return string
      */
@@ -54,7 +54,7 @@ class ParameterDefinition
     }
 
     /**
-     * Returns parameter format.
+     * Returns argument format.
      *
      * @return string
      */
@@ -64,7 +64,7 @@ class ParameterDefinition
     }
 
     /**
-     * Returns parameter default value.
+     * Returns argument default value.
      *
      * @return mixed
      */

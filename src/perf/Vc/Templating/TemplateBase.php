@@ -23,11 +23,11 @@ abstract class TemplateBase implements TemplateInterface
     private $path;
 
     /**
-     * Template parameters.
+     * Template variables.
      *
      * @var {string:mixed}
      */
-    private $parameters = array();
+    private $variables = array();
 
     /**
      * Parent template being extended.
@@ -61,68 +61,68 @@ abstract class TemplateBase implements TemplateInterface
      * Constructor.
      *
      * @param EscaperInterface $escaper
-     * @param string           $path       Path to template.
-     * @param {string:mixed}   $parameters Optional template parameters.
+     * @param string           $path      Path to template.
+     * @param {string:mixed}   $variables Optional template variables.
      */
-    public function __construct(EscaperInterface $escaper, $path, array $parameters = array())
+    public function __construct(EscaperInterface $escaper, $path, array $variables = array())
     {
-        $this->escaper    = $escaper;
-        $this->path       = $path;
-        $this->parameters = $parameters;
+        $this->escaper   = $escaper;
+        $this->path      = $path;
+        $this->variables = $variables;
     }
 
     /**
-     * Tells whether a template parameter is set or not.
+     * Tells whether a template variable is set or not.
      * Magic method.
      *
-     * @param string $name Name of the parameter.
+     * @param string $name Name of the variable.
      * @return bool
      */
     public function __isset($name)
     {
-        return isset($this->parameters[$name]);
+        return isset($this->variables[$name]);
     }
 
     /**
-     * Sets a template parameter.
+     * Sets a template variable.
      * Magic method.
      *
-     * @param string $name Name of the parameter.
-     * @param mixed $value Value of the parameter.
+     * @param string $name Name of the variable.
+     * @param mixed  $value Value of the variable.
      * @return void
      */
     public function __set($name, $value)
     {
-        $this->parameters[$name] = $value;
+        $this->variables[$name] = $value;
     }
 
     /**
-     * Unsets a template parameter.
+     * Unsets a template variable.
      * Magic method.
      *
-     * @param string $name Name of the parameter.
+     * @param string $name Name of the variable.
      * @return void
      */
     public function __unset($name)
     {
-        unset($this->parameters[$name]);
+        unset($this->variables[$name]);
     }
 
     /**
-     * Returns the value of a template parameter.
+     * Returns the value of a template variable.
      * Magic method.
      *
-     * @param string $name Name of the parameter.
+     * @param string $name Name of the variable.
      * @return mixed
      * @throws \DomainException
      */
     public function &__get($name)
     {
-        if (array_key_exists($name, $this->parameters)) {
-            return $this->parameters[$name];
+        if (array_key_exists($name, $this->variables)) {
+            return $this->variables[$name];
         }
 
-        throw new \DomainException("Parameter '{$name}' does not exist.");
+        throw new \DomainException("Template variable '{$name}' is not defined in template at {$this->path}.");
     }
 
     /**
@@ -205,7 +205,7 @@ abstract class TemplateBase implements TemplateInterface
             throw new \RuntimeException('A template is already being extended.');
         }
 
-        $this->extendedTemplate = new Template($this->escaper, $path, $this->parameters);
+        $this->extendedTemplate = new Template($this->escaper, $path, $this->variables);
         $this->extendedTemplate->slots = $this->slots;
     }
 
@@ -274,34 +274,6 @@ abstract class TemplateBase implements TemplateInterface
     {
         if (array_key_exists($slotId, $this->slots)) {
             echo $this->slots[$slotId];
-        }
-    }
-
-    /**
-     * Includes another template.
-     *
-     * @param string $path Path to sub-template.
-     * @param {string:mixed} $childParameters Sub-template parameters.
-     * @return void
-     * @throws \RuntimeException
-     */
-    protected function embed($path, array $childParameters = array())
-    {
-        $subTemplateFullPath = dirname($this->path) . '/' . $path;
-
-        $parameters = array_replace(
-            $this->parameters,
-            $childParameters
-        );
-
-        $subTemplate = new Template($this->escaper, $subTemplateFullPath, $parameters);
-
-        try {
-            echo $subTemplate->getContent();
-        } catch (\Exception $e) {
-            $message = "Failed to embed sub-template at '{$subTemplate->path}'. << {$e->getMessage()}";
-
-            throw new \RuntimeException($message, 0, $e);
         }
     }
 

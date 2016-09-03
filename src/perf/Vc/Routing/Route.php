@@ -18,42 +18,42 @@ class Route
     private $address;
 
     /**
-     * Route parameters (from request).
+     * Route arguments (from request).
      *
      * @var {string:mixed}
      */
-    private $parameters = array();
+    private $arguments = array();
 
     /**
      * Constructor.
      *
-     * @param ControllerAddress $address    Controller address.
-     * @param {string:mixed}    $parameters Parameters.
+     * @param ControllerAddress $address   Controller address.
+     * @param {string:mixed}    $arguments Arguments.
      * @throws \InvalidArgumentException
      */
-    public function __construct(ControllerAddress $address, array $parameters = array())
+    public function __construct(ControllerAddress $address, array $arguments = array())
     {
         $this->address = $address;
 
-        $this->setParameters($parameters);
+        $this->setArguments($arguments);
     }
 
     /**
      *
      *
-     * @param {string:mixed} $parameters
+     * @param {string:mixed} $arguments
      * @return void
      * @throws \InvalidArgumentException
      */
-    private function setParameters(array $parameters)
+    private function setArguments(array $arguments)
     {
-        foreach (array_keys($parameters) as $parameter) {
-            if (!is_string($parameter)) {
-                throw new \InvalidArgumentException('Invalid parameter.');
+        foreach (array_keys($arguments) as $argument) {
+            if (!is_string($argument)) {
+                throw new \InvalidArgumentException('Invalid route argument: key must be a string.');
             }
         }
 
-        $this->parameters = $parameters;
+        $this->arguments = $arguments;
     }
 
     /**
@@ -67,39 +67,39 @@ class Route
     }
 
     /**
-     * Returns the parameters.
+     * Returns the arguments as key-value pairs.
      *
      * @return {string:mixed}
      */
-    public function getParameters()
+    public function getArguments()
     {
-        return $this->parameters;
+        return $this->arguments;
     }
 
     /**
      *
      *
-     * @param string $parameter
+     * @param string $name
      * @return mixed
      * @throws \DomainException
      */
-    public function getParameter($parameter)
+    public function getArgument($name)
     {
-        if (array_key_exists($parameter, $this->parameters)) {
-            return $this->parameters[$parameter];
+        if (array_key_exists($name, $this->arguments)) {
+            return $this->arguments[$name];
         }
 
-        throw new \DomainException("Parameter {$parameter} not found.");
+        throw new \DomainException("Route argument with name '{$name}' does not exist.");
     }
 
     /**
      *
      *
-     * @param string $parameter
+     * @param string $name
      * @return bool
      */
-    public function hasParameter($parameter)
+    public function hasArgument($name)
     {
-        return array_key_exists($parameter, $this->parameters);
+        return array_key_exists($name, $this->arguments);
     }
 }

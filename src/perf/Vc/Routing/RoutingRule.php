@@ -36,28 +36,28 @@ class RoutingRule implements RoutingRuleInterface
     /**
      *
      *
-     * @var ParameterDefinition[]
+     * @var ArgumentDefinition[]
      */
-    private $parameterDefinitions = array();
+    private $argumentDefinitions = array();
 
     /**
      * Constructor.
      *
-     * @param ControllerAddress     $address
-     * @param string[]              $httpMethods          HTTP methods.
-     * @param string                $pathPattern
-     * @param ParameterDefinition[] $parameterDefinitions
+     * @param ControllerAddress    $address
+     * @param string[]             $httpMethods         HTTP methods.
+     * @param string               $pathPattern
+     * @param ArgumentDefinition[] $argumentDefinitions
      */
     public function __construct(
         ControllerAddress $address,
         array $httpMethods,
         $pathPattern,
-        array $parameterDefinitions
+        array $argumentDefinitions
     ) {
-        $this->address              = $address;
-        $this->httpMethods          = $httpMethods; // @xxx
-        $this->pathPattern          = $pathPattern;
-        $this->parameterDefinitions = $parameterDefinitions; // @xxx
+        $this->address             = $address;
+        $this->httpMethods         = $httpMethods; // @xxx
+        $this->pathPattern         = $pathPattern;
+        $this->argumentDefinitions = $argumentDefinitions; // @xxx
     }
 
     /**
@@ -83,7 +83,11 @@ class RoutingRule implements RoutingRuleInterface
         }
 
         if (1 !== $result) {
-            throw new \RuntimeException('Failed to match path. Invalid regular expression?');
+            throw new \RuntimeException(
+                "Failed to match request path {$request->getPath()} " .
+                "with pattern {$this->pathPattern} for controller address {$this->address}. " .
+                "Invalid regular expression?"
+            );
         }
 
         foreach (array_keys($matches) as $key) {
@@ -92,13 +96,13 @@ class RoutingRule implements RoutingRuleInterface
             }
         }
 
-        $parameters = array();
-        foreach ($this->parameterDefinitions as $definition) {
-            $parameters[$definition->getName()] = $definition->getDefaultValue();
+        $arguments = array();
+        foreach ($this->argumentDefinitions as $definition) {
+            $arguments[$definition->getName()] = $definition->getDefaultValue();
         }
 
-        $parameters = array_replace($parameters, $matches);
+        $arguments = array_replace($arguments, $matches);
 
-        return new Route($this->address, $parameters);
+        return new Route($this->address, $arguments);
     }
 }
