@@ -31,7 +31,7 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
      *
      * Temporary property.
      *
-     * @var unknown_type
+     * @var string
      */
     private $module;
 
@@ -39,7 +39,7 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
      *
      * Temporary property.
      *
-     * @var unknown_type
+     * @var string
      */
     private $action;
 
@@ -135,7 +135,7 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
     /**
      *
      *
-     * @param \SimpleXMLElement $sxePath
+     * @param \SimpleXMLElement $sxeRule
      * @return void
      */
     private function parseRule(\SimpleXMLElement $sxeRule)
@@ -194,9 +194,7 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
             $defaultValue = (string) $sxeArgument['default'];
 
             if ('' === $name) {
-                throw new \RuntimeException(
-                    "Missing name for routing rule argument ({$this->address})."
-                );
+                throw new \RuntimeException("Missing name for routing rule argument ({$this->address}).");
             }
 
             if ('' === $format) {

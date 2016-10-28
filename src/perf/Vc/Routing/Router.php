@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Routing;
 
+use perf\Source\LocalFileSource;
 use perf\Vc\Request\RequestInterface;
 
 /**
@@ -30,7 +31,7 @@ class Router implements RouterInterface
 
         $routingRuleImporter = new RoutingRuleXmlImporter($pathPatternParser);
 
-        $source = \perf\Source\LocalFileSource::create($path);
+        $source = LocalFileSource::create($path);
 
         $rules = $routingRuleImporter->import($source);
 
@@ -56,7 +57,7 @@ class Router implements RouterInterface
      */
     public function setRules(array $rules)
     {
-        $this->clear();
+        $this->removeRules();
         $this->addRules($rules);
     }
 

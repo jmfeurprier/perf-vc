@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Templating;
 
+use perf\Source\Source;
 use perf\Vc\Routing\Route;
 
 /**
