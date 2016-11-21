@@ -103,7 +103,7 @@ class FrontController implements FrontControllerInterface
         try {
             return $this->forward($route);
         } catch (\Exception $exception) {
-            return $this->failure($exception);
+            return $this->onFailure($exception);
         }
     }
 
@@ -113,12 +113,11 @@ class FrontController implements FrontControllerInterface
      * Override this method to forward to a dedicated error-processing controller.
      *
      * @return void
-     * @throws \RuntimeException
-     * @throws ForwardException
+     * @throws \Exception
      */
     protected function routeNotFound()
     {
-        throw new \RuntimeException('Route not found.');
+        throw new RouteNotFoundException('Route not found.');
     }
 
     /**
@@ -130,7 +129,7 @@ class FrontController implements FrontControllerInterface
      * @return ResponseInterface
      * @throws \Exception
      */
-    protected function failure(\Exception $exception)
+    protected function onFailure(\Exception $exception)
     {
         $message = "{$exception->getFile()}:{$exception->getLine()} "
                  . "{$exception->getMessage()}\n"

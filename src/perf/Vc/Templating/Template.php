@@ -15,7 +15,7 @@ class Template extends TemplateBase
      *
      *
      * @return void
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     protected function includeTemplate()
     {

@@ -2,6 +2,8 @@
 
 namespace perf\Vc\Request;
 
+use perf\Vc\RequestChannelKeyNotFoundException;
+
 /**
  * HTTP request channel (GET, POST, etc).
  *
@@ -57,7 +59,7 @@ class RequestChannel
      *
      * @param string $key
      * @return mixed
-     * @throws \DomainException
+     * @throws RequestChannelKeyNotFoundException
      */
     public function get($key)
     {
@@ -65,7 +67,7 @@ class RequestChannel
             return $this->values[$key];
         }
 
-        throw new \DomainException("Request channel key '{$key}' not set.");
+        throw new RequestChannelKeyNotFoundException("Request channel key '{$key}' not set.");
     }
 
     /**

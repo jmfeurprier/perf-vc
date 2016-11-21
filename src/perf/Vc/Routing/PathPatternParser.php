@@ -17,7 +17,6 @@ class PathPatternParser
      * @param string               $pattern
      * @param ArgumentDefinition[] $argumentDefinitions
      * @return string
-     * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
     public function parse($pattern, array $argumentDefinitions)
@@ -27,7 +26,7 @@ class PathPatternParser
             $name = $argumentDefinition->getName();
 
             if (array_key_exists($name, $argumentDefinitionByName)) {
-                throw new \InvalidArgumentException(
+                throw new \RuntimeException(
                     "More than one definition provided for routing rule argument with name '{$name}'."
                 );
             }

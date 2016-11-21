@@ -23,6 +23,7 @@ class TemplateLocator implements TemplateLocatorInterface
      * Constructor.
      *
      * @param string $basePath Templates base path.
+     * @throws \InvalidArgumentException
      */
     public function __construct($basePath)
     {
