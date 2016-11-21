@@ -19,6 +19,16 @@ class RequestPopulator
     private $server;
 
     /**
+     * Static constructor.
+     *
+     * @return RequestPopulator
+     */
+    public static function create()
+    {
+        return new self();
+    }
+
+    /**
      * Returns a new HTTP request instance, populated with global values.
      *
      * @return RequestInterface

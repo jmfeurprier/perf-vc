@@ -5,6 +5,7 @@ namespace perf\Vc;
 use perf\Source\NullSource;
 use perf\Vc\Redirection\RedirectionHeadersGenerator;
 use perf\Vc\Request\RequestInterface;
+use perf\Vc\Request\RequestPopulator;
 use perf\Vc\Response\Response;
 use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
@@ -81,6 +82,22 @@ class FrontController implements FrontControllerInterface
         $this->router                      = $router;
         $this->responseBuilderFactory      = $responseBuilderFactory;
         $this->redirectionHeadersGenerator = $redirectionHeadersGenerator;
+    }
+
+    /**
+     * Runs the front controller automatically and conveniently.
+     *
+     * @param RequestInterface $request
+     * @return void
+     * @throws \Exception
+     */
+    public function autoHandle()
+    {
+        $request = RequestPopulator::create()->populate();
+
+        $response = $this->run($request);
+
+        $response->send();
     }
 
     /**
