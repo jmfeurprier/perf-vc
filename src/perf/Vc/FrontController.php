@@ -97,7 +97,7 @@ class FrontController implements FrontControllerInterface
         $route = $this->router->tryGetRoute($this->request);
 
         if (!$route) {
-            return $this->routeNotFound();
+            return $this->onRouteNotFound();
         }
 
         try {
@@ -115,7 +115,7 @@ class FrontController implements FrontControllerInterface
      * @return void
      * @throws \Exception
      */
-    protected function routeNotFound()
+    protected function onRouteNotFound()
     {
         throw new RouteNotFoundException('Route not found.');
     }
