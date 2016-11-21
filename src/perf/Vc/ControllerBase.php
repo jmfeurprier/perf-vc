@@ -6,6 +6,7 @@ use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilderInterface;
 use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Routing\Route;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Controller.
@@ -13,6 +14,14 @@ use perf\Vc\Routing\Route;
  */
 abstract class ControllerBase implements ControllerInterface
 {
+
+    /**
+     * Current dependency injection container.
+     * Temporary property.
+     *
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * Current request.
@@ -41,13 +50,19 @@ abstract class ControllerBase implements ControllerInterface
     /**
      *
      *
+     * @param ContainerInterface       $container
      * @param RequestInterface         $request
      * @param Route                    $route
      * @param ResponseBuilderInterface $responseBuilder
      * @return ResponseInterface
      */
-    public function run(RequestInterface $request, Route $route, ResponseBuilderInterface $responseBuilder)
-    {
+    public function run(
+        ContainerInterface $container,
+        RequestInterface $request,
+        Route $route,
+        ResponseBuilderInterface $responseBuilder
+    ) {
+        $this->container       = $container;
         $this->request         = $request;
         $this->route           = $route;
         $this->responseBuilder = $responseBuilder;
@@ -136,6 +151,35 @@ abstract class ControllerBase implements ControllerInterface
     protected function getArgument($name)
     {
         return $this->route->getArgument($name);
+    }
+
+    /**
+     *
+     * Helper method.
+     *
+     * @param string $serviceId
+     * @return mixed
+     * @throws \DomainException
+     */
+    protected function getService($serviceId)
+    {
+        if ($this->container->has($serviceId)) {
+            return $this->container->get($serviceId);
+        }
+
+        throw new \DomainException("Service {$serviceId} not found.");
+    }
+
+    /**
+     *
+     * Helper method.
+     *
+     * @param string $name
+     * @return mixed
+     */
+    protected function getParameter($name)
+    {
+        return $this->container->getParameter($name);
     }
 
     /**

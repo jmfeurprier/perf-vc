@@ -12,6 +12,7 @@ use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Routing\Route;
 use perf\Vc\Routing\Router;
 use perf\Vc\Routing\RouterInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  *
@@ -19,6 +20,13 @@ use perf\Vc\Routing\RouterInterface;
  */
 class FrontController implements FrontControllerInterface
 {
+
+    /**
+     *
+     *
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * Router.
@@ -67,17 +75,20 @@ class FrontController implements FrontControllerInterface
     /**
      * Constructor.
      *
+     * @param ContainerInterface              $container                   Dependency-injection container.
      * @param ControllerFactoryInterface      $controllerFactory           Controller factory.
      * @param RouterInterface                 $router                      Router.
      * @param ResponseBuilderFactoryInterface $responseBuilderFactory      Response builder factory.
      * @param RedirectionHeadersGenerator     $redirectionHeadersGenerator Redirection HTTP headers generator.
      */
     public function __construct(
+        ContainerInterface $container,
         RouterInterface $router,
         ControllerFactoryInterface $controllerFactory,
         ResponseBuilderFactoryInterface $responseBuilderFactory,
         RedirectionHeadersGenerator $redirectionHeadersGenerator
     ) {
+        $this->container                   = $container;
         $this->controllerFactory           = $controllerFactory;
         $this->router                      = $router;
         $this->responseBuilderFactory      = $responseBuilderFactory;
@@ -170,7 +181,7 @@ class FrontController implements FrontControllerInterface
         $responseBuilder = $this->responseBuilderFactory->create();
 
         try {
-            return $controller->run($this->request, $route, $responseBuilder);
+            return $controller->run($this->container, $this->request, $route, $responseBuilder);
         } catch (ForwardException $exception) {
             return $this->forward($exception->getRoute());
         } catch (RedirectException $exception) {
