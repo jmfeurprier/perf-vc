@@ -52,9 +52,13 @@ abstract class ControllerBase implements ControllerInterface
         $this->route           = $route;
         $this->responseBuilder = $responseBuilder;
 
-        $this->executeHookPre();
-        $this->execute();
-        $this->executeHookPost();
+        try {
+            $this->executeHookPre();
+            $this->execute();
+            $this->executeHookPost();
+        } catch (\Exception $e) {
+            return $this->onExecutionException($e);
+        }
 
         return $this->responseBuilder->build($route);
     }
@@ -84,6 +88,18 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function executeHookPost()
     {
+    }
+
+    /**
+     *
+     * Default implementation.
+     *
+     * @return ResponseInterface
+     * @throws \Exception
+     */
+    protected function onExecutionException(\Exception $e)
+    {
+        throw $e;
     }
 
     /**
