@@ -25,7 +25,7 @@ class ResponseDriver
      * @var {string:mixed}
      */
     private $settings = array(
-        'charset'      => 'utf-8',
+        'charset'      => null,
         'content-type' => null,
     );
 
@@ -66,7 +66,13 @@ class ResponseDriver
 
         $baseHeaders = array();
         if (null !== $settings['content-type']) {
-            $baseHeaders['Content-Type'] = "{$settings['content-type']}; charset={$settings['charset']}";
+            $header = $settings['content-type'];
+
+            if (null !== $settings['charset']) {
+                $header .= "; charset={$settings['charset']}";
+            }
+
+            $baseHeaders['Content-Type'] = $header;
         }
 
         return array_replace(
