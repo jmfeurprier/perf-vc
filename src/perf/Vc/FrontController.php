@@ -140,7 +140,7 @@ class FrontController implements FrontControllerInterface
      * Default implementation.
      * Override this method to forward to a dedicated error-processing controller.
      *
-     * @return void
+     * @return ResponseInterface
      * @throws \Exception
      */
     protected function onRouteNotFound()
