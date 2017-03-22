@@ -4,9 +4,10 @@
 	"license"     : "MIT",
 	"description" : "Simple View-Controller stack",
 	"require"     : {
-		"php"              : ">=5.3.3",
-		"perf/http-status" : "^1.0.2",
-		"perf/source"      : "^1.0.2"
+		"php"                          : ">=5.3.3",
+		"perf/http-status"             : "^1.0.2",
+		"perf/source"                  : "^1.0.2",
+		"symfony/dependency-injection" : "^2.7.0"
 	},
 	"require-dev": {
 		"ext-xdebug"                   : "^2.1",
@@ -14,8 +15,7 @@
 		"phpmd/phpmd"                  : "^2.1.0",
 		"phpunit/phpunit"              : "^4.0",
 		"sebastian/phpcpd"             : "^2.0",
-		"squizlabs/php_codesniffer"    : "^2.0",
-		"symfony/dependency-injection" : "^2.7.0"
+		"squizlabs/php_codesniffer"    : "^2.0"
 	},
 	"autoload" : {
 		"psr-4" : {
