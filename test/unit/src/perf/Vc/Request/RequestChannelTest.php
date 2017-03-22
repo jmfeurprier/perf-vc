@@ -86,7 +86,7 @@ class RequestChannelTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * @expectedException \DomainException
+     * @expectedException \perf\Vc\RequestChannelKeyNotFoundException
      */
     public function testGetWithUndefinedKey()
     {
