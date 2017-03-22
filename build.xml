@@ -3,6 +3,7 @@
 
 	<property name="rootdir" value="${project.basedir}/" override="true" />
 	<property name="bindir" value="${rootdir}vendor/bin/" override="false" />
+	<property name="srcdir" value="${rootdir}src/" override="false" />
 
 	<target name="help" description="Shows available targets">
 		<exec executable="${bindir}phing" passthru="true">
@@ -39,13 +40,13 @@
 		<exec executable="${bindir}phpcpd" passthru="true">
 			<arg line="--min-lines 7" />
 			<arg line="--min-tokens 65" />
-			<arg line="${rootdir}src" />
+			<arg line="${srcdir}" />
 		</exec>
 	</target>
 
 	<target name="phpmd" description="Performs project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
 		<exec executable="${bindir}phpmd" passthru="true">
-			<arg line="${rootdir}src" />
+			<arg line="${srcdir}" />
 			<arg line="text" />
 			<arg line="${rootdir}phpmd.xml" />
 		</exec>

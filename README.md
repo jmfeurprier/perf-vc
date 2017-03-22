@@ -31,11 +31,13 @@ $routesPath = __DIR__ . '/routes.xml';
 // Base path for view files (which must follow this structure: {views-base-path}/{module}/{action}.php)
 $viewsBasePath = __DIR__ . '/view/';
 
-$frontController = \perf\Vc\FrontController::createBuilder()
-	->setViewsBasePath($viewsBasePath)
-	->setRoutesPath($routesPath)
-	->build()
-;
+$frontController = new \perf\Vc\FrontController(
+	$container,
+	$controllerFactory,
+	$router,
+	$responseBuilderFactory,
+	$redirectionHeadersGenerator
+);
 ```
 
 ### Running the front controller
@@ -58,5 +60,5 @@ Or, shorter:
 ```php
 <?php
 
-$frontController->runAll();
+$frontController->autoHandle();
 ```
