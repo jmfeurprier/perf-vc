@@ -2,6 +2,8 @@
 
 namespace perf\Vc\Templating;
 
+use perf\Vc\Templating\Plugin\PluginInterface;
+
 /**
  * Template base implementation.
  */
@@ -58,6 +60,13 @@ abstract class TemplateBase implements TemplateInterface
     private $autoEscape = true;
 
     /**
+     *
+     *
+     * @var {string:PluginInterface}
+     */
+    private $plugins = array();
+
+    /**
      * Constructor.
      *
      * @param EscaperInterface $escaper
@@ -69,6 +78,15 @@ abstract class TemplateBase implements TemplateInterface
         $this->escaper   = $escaper;
         $this->path      = $path;
         $this->variables = $variables;
+    }
+
+    /**
+     * @param PluginInterface $plugin
+     * @return void
+     */
+    public function addPlugin(PluginInterface $plugin)
+    {
+        $this->plugins[$plugin->getName()] = $plugin;
     }
 
     /**
@@ -106,6 +124,23 @@ abstract class TemplateBase implements TemplateInterface
     public function __unset($name)
     {
         unset($this->variables[$name]);
+    }
+
+    /**
+     * Invoke plugin.
+     * Magic method.
+     *
+     * @param string $method
+     * @param array  $arguments
+     * @return mixed
+     */
+    public function __call($method, array $arguments)
+    {
+        if (!array_key_exists($method, $this->plugins)) {
+            throw new \BadMethodCallException("No plugin with name '{$method}'.");
+        }
+
+        return $this->plugins[$method]->execute($arguments);
     }
 
     /**
