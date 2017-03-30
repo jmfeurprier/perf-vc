@@ -4,6 +4,8 @@ namespace perf\Vc\Templating;
 
 use perf\Source\Source;
 use perf\Source\StringSource;
+use perf\Vc\Routing\Route;
+use perf\Vc\Templating\Plugin\PluginStack;
 
 /**
  * Template renderer.
