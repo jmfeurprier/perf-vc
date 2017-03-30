@@ -15,7 +15,9 @@ abstract class PluginBase implements PluginInterface
      */
     public function getOperations()
     {
-        return array_keys($this->operationsMapping);
+        $operationsMapping = $this->getOperationsMapping();
+
+        return array_keys($operationsMapping);
     }
 
     /**
