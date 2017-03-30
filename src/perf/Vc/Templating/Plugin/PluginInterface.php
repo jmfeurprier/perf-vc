@@ -13,15 +13,24 @@ interface PluginInterface
     /**
      *
      *
-     * @param array $arguments
-     * @return mixed
+     * @param string $operation
+     * @return bool
      */
-    public function execute(array $arguments);
+    public function supports($operation);
 
     /**
      *
      *
-     * @return string
+     * @param string $operation
+     * @param array  $arguments
+     * @return mixed
      */
-    public function getName();
+    public function execute($operation, array $arguments);
+
+    /**
+     *
+     *
+     * @return string[]
+     */
+    public function getOperations();
 }

@@ -3,6 +3,7 @@
 namespace perf\Vc\Templating;
 
 use perf\Vc\Templating\Plugin\PluginInterface;
+use perf\Vc\Templating\Plugin\PluginStack;
 
 /**
  * Template base implementation.
@@ -16,6 +17,20 @@ abstract class TemplateBase implements TemplateInterface
      * @var EscaperInterface
      */
     private $escaper;
+
+    /**
+     *
+     *
+     * @var TemplateRendererInterface
+     */
+    private $renderer;
+
+    /**
+     *
+     *
+     * @var PluginStack
+     */
+    private $plugins;
 
     /**
      * Path to the template.
@@ -60,33 +75,26 @@ abstract class TemplateBase implements TemplateInterface
     private $autoEscape = true;
 
     /**
-     *
-     *
-     * @var {string:PluginInterface}
-     */
-    private $plugins = array();
-
-    /**
      * Constructor.
      *
-     * @param EscaperInterface $escaper
-     * @param string           $path      Path to template.
-     * @param {string:mixed}   $variables Optional template variables.
+     * @param EscaperInterface          $escaper
+     * @param TemplateRendererInterface $renderer  Template renderer.
+     * @param PluginStack               $plugins   Plugins.
+     * @param string                    $path      Path to template file.
+     * @param {string:mixed}            $variables Optional template variables.
      */
-    public function __construct(EscaperInterface $escaper, $path, array $variables = array())
-    {
+    public function __construct(
+        EscaperInterface $escaper,
+        TemplateRendererInterface $renderer,
+        PluginStack $plugins,
+        $path,
+        array $variables
+    ) {
         $this->escaper   = $escaper;
+        $this->renderer  = $renderer;
+        $this->plugins   = $plugins;
         $this->path      = $path;
         $this->variables = $variables;
-    }
-
-    /**
-     * @param PluginInterface $plugin
-     * @return void
-     */
-    public function addPlugin(PluginInterface $plugin)
-    {
-        $this->plugins[$plugin->getName()] = $plugin;
     }
 
     /**
@@ -127,7 +135,7 @@ abstract class TemplateBase implements TemplateInterface
     }
 
     /**
-     * Invoke plugin.
+     * Invoke plugin operation.
      * Magic method.
      *
      * @param string $method
@@ -136,11 +144,7 @@ abstract class TemplateBase implements TemplateInterface
      */
     public function __call($method, array $arguments)
     {
-        if (!array_key_exists($method, $this->plugins)) {
-            throw new \BadMethodCallException("No plugin with name '{$method}'.");
-        }
-
-        return $this->plugins[$method]->execute($arguments);
+        return $this->plugins->execute($method, $arguments);
     }
 
     /**
@@ -240,7 +244,13 @@ abstract class TemplateBase implements TemplateInterface
             throw new \RuntimeException('A template is already being extended.');
         }
 
-        $this->extendedTemplate = new Template($this->escaper, $path, $this->variables);
+        $this->extendedTemplate = new Template(
+            $this->escaper,
+            $this->renderer,
+            $this->plugins,
+            $path,
+            $this->variables
+        );
         $this->extendedTemplate->slots = $this->slots;
     }
 
