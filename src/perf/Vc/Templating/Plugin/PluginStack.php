@@ -73,6 +73,6 @@ class PluginStack
      */
     public function supports($operation)
     {
-        return array_key_exists($operation, $this->operationMapping);
+        return array_key_exists($operation, $this->pluginByOperation);
     }
 }
