@@ -5,8 +5,6 @@ VC (View, Controller) is a simple and lightweight PHP View Controller stack.
 
 ## Installation & Requirements
 
-VC has no dependencies on other libraries.
-
 Install it with [Composer](https://getcomposer.org/):
 
 ```shell script
