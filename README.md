@@ -7,15 +7,10 @@ VC (View, Controller) is a simple and lightweight PHP View Controller stack.
 
 VC has no dependencies on other libraries.
 
-Install it with [Composer](http://getcomposer.org/):
+Install it with [Composer](https://getcomposer.org/):
 
-```json
-{
-	"require":
-	{
-		"perf/vc"  : "~2.0"
-	}
-}
+```shell script
+composer require perf/vc
 ```
 
 ## Usage
@@ -25,10 +20,12 @@ Install it with [Composer](http://getcomposer.org/):
 ```php
 <?php
 
+use perf\Vc\FrontController;
+
 $routesPath    = __DIR__ . '/routes.xml';
 $viewsBasePath = __DIR__ . '/view/';
 
-$frontController = \perf\Vc\FrontController::createBuilder()
+$frontController = FrontController::createBuilder()
 	->setViewsBasePath($viewsBasePath)
 	->setRoutesPath($routesPath)
 	->build()
@@ -40,8 +37,11 @@ $frontController = \perf\Vc\FrontController::createBuilder()
 ```php
 <?php
 
+use perf\Vc\RequestPopulator;
+
 // Create and populate a HTTP request with values from super-globals ($_GET, $_POST, $_SERVER, etc).
-$requestPopulator = new \perf\Vc\RequestPopulator();
+$requestPopulator = new RequestPopulator();
+
 $request = $requestPopulator->populate();
 
 // Route, execute, and retrieve result into a HTTP response.
@@ -56,6 +56,7 @@ Or, shorter:
 ```php
 <?php
 
-$requestPopulator = new \perf\Vc\RequestPopulator();
+$requestPopulator = new RequestPopulator();
+
 $frontController->run($requestPopulator->populate())->send();
 ```

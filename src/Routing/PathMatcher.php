@@ -1,0 +1,15 @@
+<?php
+
+namespace perf\Vc\Routing;
+
+interface PathMatcher
+{
+    /**
+     * Attempts to match provided request path.
+     *
+     * @param string $path Request path.
+     *
+     * @return PathMatchingResult
+     */
+    public function match($path);
+}
