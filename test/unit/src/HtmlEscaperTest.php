@@ -2,7 +2,9 @@
 
 namespace perf\Vc;
 
-class HtmlEscaperTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class HtmlEscaperTest extends TestCase
 {
     public static function dataProviderCharacters()
     {

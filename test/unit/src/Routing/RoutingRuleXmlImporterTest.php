@@ -2,10 +2,11 @@
 
 namespace perf\Vc\Routing;
 
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use perf\Source\SourceInterface;
 
-class RoutingRuleXmlImporterTest extends \PHPUnit_Framework_TestCase
+class RoutingRuleXmlImporterTest extends TestCase
 {
     protected function setUp()
     {

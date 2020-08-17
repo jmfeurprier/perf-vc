@@ -4,8 +4,9 @@ namespace perf\Vc\Routing;
 
 use DomainException;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-class RouteTest extends \PHPUnit_Framework_TestCase
+class RouteTest extends TestCase
 {
     protected function setUp()
     {

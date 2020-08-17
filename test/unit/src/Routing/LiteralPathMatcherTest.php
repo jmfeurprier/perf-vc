@@ -2,7 +2,9 @@
 
 namespace perf\Vc\Routing;
 
-class LiteralPathMatcherTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class LiteralPathMatcherTest extends TestCase
 {
     public function testWithMatchingPath()
     {

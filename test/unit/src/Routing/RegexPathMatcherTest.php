@@ -2,7 +2,9 @@
 
 namespace perf\Vc\Routing;
 
-class RegexPathMatcherTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class RegexPathMatcherTest extends TestCase
 {
 
     public function testWithNotMatchingPath()

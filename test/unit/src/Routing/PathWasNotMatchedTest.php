@@ -2,9 +2,10 @@
 
 namespace perf\Vc\Routing;
 
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-class PathWasNotMatchedTest extends \PHPUnit_Framework_TestCase
+class PathWasNotMatchedTest extends TestCase
 {
     public function testMatchedReturnsFalse()
     {

@@ -3,8 +3,9 @@
 namespace perf\Vc\Routing;
 
 use perf\Vc\Request;
+use PHPUnit\Framework\TestCase;
 
-class RouterTest extends \PHPUnit_Framework_TestCase
+class RouterTest extends TestCase
 {
 
     public function testWithoutRoutingRuleWillMatchnigNothing()

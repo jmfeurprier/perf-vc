@@ -3,8 +3,9 @@
 namespace perf\Vc;
 
 use perf\Vc\Routing\RouterInterface;
+use PHPUnit\Framework\TestCase;
 
-class FrontControllerBuilderTest extends \PHPUnit_Framework_TestCase
+class FrontControllerBuilderTest extends TestCase
 {
     public function testBuild()
     {
