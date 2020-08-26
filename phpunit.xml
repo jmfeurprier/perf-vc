@@ -7,11 +7,11 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         bootstrap="./test/unit/bootstrap.php">
+>
 
     <testsuites>
-        <testsuite>
-          <directory>./test/unit/src</directory>
+        <testsuite name="default">
+          <directory>./tests/unit/src</directory>
         </testsuite>
     </testsuites>
 
