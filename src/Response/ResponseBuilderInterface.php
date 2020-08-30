@@ -28,13 +28,6 @@ interface ResponseBuilderInterface
     public function setVars(array $vars): self;
 
     /**
-     * @param {string:mixed} $vars
-     *
-     * @return ResponseBuilder
-     */
-    public function addVars(array $vars): self;
-
-    /**
      * @param string $key
      * @param mixed  $value
      *
@@ -42,7 +35,7 @@ interface ResponseBuilderInterface
      */
     public function setVar(string $key, $value): self;
 
-    public function unsetVar(string $key): self;
+    public function vars(): KeyValueCollection;
 
     /**
      * @param RouteInterface $route

@@ -1,8 +1,7 @@
 <?php
 
-namespace perf\Vc;
+namespace perf\Vc\Exception;
 
-use perf\Vc\Exception\RedirectException;
 use PHPUnit\Framework\TestCase;
 
 class RedirectExceptionTest extends TestCase

@@ -8,16 +8,8 @@ class ArgumentDefinition
 
     private string $format;
 
-    /**
-     * @var mixed
-     */
     private $defaultValue;
 
-    /**
-     * @param string $name
-     * @param string $format
-     * @param mixed  $defaultValue
-     */
     public function __construct(string $name, string $format, $defaultValue)
     {
         $this->name         = $name;
@@ -35,9 +27,6 @@ class ArgumentDefinition
         return $this->format;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDefaultValue()
     {
         return $this->defaultValue;

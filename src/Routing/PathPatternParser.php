@@ -10,6 +10,9 @@ class PathPatternParser
 
     private string $pattern;
 
+    /**
+     * @var ArgumentDefinition[]|{string:ArgumentDefinition}
+     */
     private array $argumentDefinitionsByName;
 
     private string $regex;
@@ -17,16 +20,16 @@ class PathPatternParser
     /**
      * Attempts to parse provided path pattern.
      *
-     * @param string               $pattern
+     * @param string               $path
      * @param ArgumentDefinition[] $argumentDefinitions
      *
      * @return string
      *
      * @throws VcException
      */
-    public function parse(string $pattern, array $argumentDefinitions): string
+    public function parse(string $path, array $argumentDefinitions): string
     {
-        $this->init($pattern, $argumentDefinitions);
+        $this->init($path, $argumentDefinitions);
 
         foreach ($this->getTokens() as $offset => $token) {
             $this->processToken($token, $offset);
@@ -85,7 +88,8 @@ class PathPatternParser
         $tokens = [];
 
         foreach ($matches[1] as $match) {
-            list($token, $offset) = $match;
+            $token  = $match[0];
+            $offset = $match[1];
 
             $tokens[$offset] = $token;
         }

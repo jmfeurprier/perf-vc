@@ -3,8 +3,6 @@
 namespace perf\Vc\Routing;
 
 use perf\Vc\Controller\ControllerAddress;
-use perf\Vc\Exception\VcException;
-use perf\Vc\Request\RequestInterface;
 
 class RoutingRule implements RoutingRuleInterface
 {
@@ -24,10 +22,6 @@ class RoutingRule implements RoutingRuleInterface
      */
     private array $argumentDefinitions = [];
 
-    private RequestInterface $request;
-
-    private array $matches;
-
     /**
      * @param ControllerAddress    $address
      * @param string[]             $httpMethods
@@ -46,86 +40,29 @@ class RoutingRule implements RoutingRuleInterface
         $this->argumentDefinitions = $argumentDefinitions; // @xxx
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function tryMatch(RequestInterface $request): ?RouteInterface
+    public function getAddress(): ControllerAddress
     {
-        $this->init($request);
-
-        if (!$this->isExpectedMethod()) {
-            return null;
-        }
-
-        if (!$this->isExpectedPath()) {
-            return null;
-        }
-
-        return $this->buildRoute();
-    }
-
-    private function init(RequestInterface $request): void
-    {
-        $this->request = $request;
-    }
-
-    private function isExpectedMethod(): bool
-    {
-        if (empty($this->httpMethods)) {
-            return true;
-        }
-
-        return in_array($this->request->getMethod(), $this->httpMethods, true);
+        return $this->address;
     }
 
     /**
-     * @return bool
-     *
-     * @throws VcException
+     * @return string[]
      */
-    private function isExpectedPath(): bool
+    public function getHttpMethods(): array
     {
-        $matches = [];
-        $result = preg_match($this->pathPattern, $this->request->getPath(), $matches);
-        $this->matches = $matches;
-
-        if (0 === $result) {
-            return false;
-        }
-
-        if (1 === $result) {
-            return true;
-        }
-
-        throw new VcException(
-            "Failed to match request path {$this->request->getPath()} " .
-            "with pattern {$this->pathPattern} for controller address {$this->address}. " .
-            "Invalid regular expression?"
-        );
+        return $this->httpMethods;
     }
 
-    private function buildRoute(): RouteInterface
+    public function getPathPattern(): string
     {
-        return new Route(
-            $this->address,
-            $this->getArguments()
-        );
+        return $this->pathPattern;
     }
 
-    private function getArguments(): array
+    /**
+     * @return ArgumentDefinition[]
+     */
+    public function getArgumentDefinitions(): array
     {
-        foreach (array_keys($this->matches) as $key) {
-            if (is_int($key)) {
-                unset($this->matches[$key]);
-            }
-        }
-
-        $arguments = [];
-
-        foreach ($this->argumentDefinitions as $definition) {
-            $arguments[$definition->getName()] = $definition->getDefaultValue();
-        }
-
-        return array_replace($arguments, $this->matches);
+        return $this->argumentDefinitions;
     }
 }

@@ -40,7 +40,7 @@ class ResponseBuilderFactoryTest extends TestCase
             $this->templateRenderer
         );
 
-        $result = $factory->create();
+        $result = $factory->make();
 
         $this->assertInstanceOf(ResponseBuilder::class, $result);
     }

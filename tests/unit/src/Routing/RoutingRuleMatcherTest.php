@@ -7,10 +7,10 @@ use perf\Vc\Request\RequestInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class RoutingRuleTest extends TestCase
+class RoutingRuleMatcherTest extends TestCase
 {
     /**
-     * @var \perf\Vc\Controller\ControllerAddress|MockObject
+     * @var ControllerAddress|MockObject
      */
     private $address;
 
@@ -18,6 +18,8 @@ class RoutingRuleTest extends TestCase
      * @var RequestInterface|MockObject
      */
     private $request;
+
+    private RoutingRuleMatcher $routingRuleMatcher;
 
     private RoutingRule $routingRule;
 
@@ -27,6 +29,8 @@ class RoutingRuleTest extends TestCase
     {
         $this->address = $this->createMock(ControllerAddress::class);
         $this->request = $this->createMock(RequestInterface::class);
+
+        $this->routingRuleMatcher = new RoutingRuleMatcher();
     }
 
     public function testTryMatchWithUnspecifiedMethodWillReturnExpected()
@@ -82,7 +86,7 @@ class RoutingRuleTest extends TestCase
 
     private function whenTryMatch(): void
     {
-        $this->result = $this->routingRule->tryMatch($this->request);
+        $this->result = $this->routingRuleMatcher->tryMatch($this->request, $this->routingRule);
     }
 
     private function thenMatch(): void

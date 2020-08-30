@@ -8,6 +8,8 @@ use perf\Source\SourceInterface;
 use perf\Source\StringSource;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
+use perf\Vc\Response\Transformation\Transformation;
+use perf\Vc\Response\Transformation\TransformerRepositoryInterface;
 use perf\Vc\Routing\RouteInterface;
 use perf\Vc\View\ViewLocatorInterface;
 use perf\Vc\View\ViewRendererInterface;
@@ -19,6 +21,8 @@ class ResponseBuilder implements ResponseBuilderInterface
     private ViewLocatorInterface $templateLocator;
 
     private ViewRendererInterface $templateRenderer;
+
+    private TransformerRepositoryInterface $transformerRepository;
 
     private ?int $httpStatusCode;
 
@@ -32,19 +36,25 @@ class ResponseBuilder implements ResponseBuilderInterface
      */
     private $content = '';
 
+    private KeyValueCollection $vars;
+
     /**
-     * @var {string:mixed}
+     * @var Transformation[]
      */
-    private array $vars = [];
+    private array $transformations = [];
 
     public function __construct(
         HttpStatusRepositoryInterface $httpStatusRepository,
         ViewLocatorInterface $templateLocator,
-        ViewRendererInterface $templateRenderer
+        ViewRendererInterface $templateRenderer,
+        TransformerRepositoryInterface $transformerRepository,
+        array $vars = []
     ) {
-        $this->httpStatusRepository = $httpStatusRepository;
-        $this->templateLocator      = $templateLocator;
-        $this->templateRenderer     = $templateRenderer;
+        $this->httpStatusRepository  = $httpStatusRepository;
+        $this->templateLocator       = $templateLocator;
+        $this->templateRenderer      = $templateRenderer;
+        $this->transformerRepository = $transformerRepository;
+        $this->vars                  = new KeyValueCollection($vars);
     }
 
     public function setHttpStatusCode(int $code): self
@@ -87,23 +97,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      */
     public function setVars(array $vars): self
     {
-        $this->vars = [];
-
-        $this->addVars($vars);
-
-        return $this;
-    }
-
-    /**
-     * @param {string:mixed} $vars
-     *
-     * @return ResponseBuilder
-     */
-    public function addVars(array $vars): self
-    {
-        foreach ($vars as $key => $value) {
-            $this->setVar($key, $value);
-        }
+        $this->vars->setMany($vars);
 
         return $this;
     }
@@ -116,20 +110,29 @@ class ResponseBuilder implements ResponseBuilderInterface
      */
     public function setVar(string $key, $value): self
     {
-        $this->vars[$key] = $value;
+        $this->vars->set($key, $value);
 
         return $this;
     }
 
-    public function unsetVar(string $key): self
+    public function vars(): KeyValueCollection
     {
-        unset($this->vars[$key]);
+        return $this->vars;
+    }
+
+    public function addTransformation(string $transformerClass, array $parameters = []): self
+    {
+        $transformer = $this->transformerRepository->get($transformerClass);
+
+        $this->transformations[] = new Transformation($transformer, $parameters);
 
         return $this;
     }
 
     public function renderTemplate(RouteInterface $route, array $vars = []): void
     {
+        $vars = array_merge($this->vars->getAll(), $vars);
+
         $templatePath = $this->templateLocator->locate($route);
 
         $this->content = $this->templateRenderer->render($templatePath, $vars);
@@ -157,7 +160,17 @@ class ResponseBuilder implements ResponseBuilderInterface
      */
     private function buildHeaders(): array
     {
-        $headers = [];
+        $headers = $this->headers;
+
+        foreach ($this->transformations as $transformation) {
+            $headers = $transformation->getTransformer()
+                ->transformHeaders(
+                    $headers,
+                    $this->vars->getAll(),
+                    $transformation->getParameters()
+                )
+            ;
+        }
 
         if (!empty($this->httpStatusCode)) {
             try {
@@ -166,11 +179,7 @@ class ResponseBuilder implements ResponseBuilderInterface
                 throw new VcException('HTTP status code not found.', 0, $e);
             }
 
-            $headers[] = new Header($httpStatus->toHeader());
-        }
-
-        foreach ($this->headers as $header) {
-            $headers[] = $header;
+            array_unshift($headers, new Header($httpStatus->toHeader()));
         }
 
         return $headers;
@@ -183,12 +192,24 @@ class ResponseBuilder implements ResponseBuilderInterface
      */
     private function buildContent(): SourceInterface
     {
-        if (is_string($this->content)) {
-            return StringSource::create($this->content);
+        $content = $this->content;
+
+        foreach ($this->transformations as $transformation) {
+            $content = $transformation->getTransformer()
+                ->transformContent(
+                    $content,
+                    $this->vars->getAll(),
+                    $transformation->getParameters()
+                )
+            ;
         }
 
-        if ($this->content instanceof SourceInterface) {
-            return $this->content;
+        if (is_string($content)) {
+            return StringSource::create($content);
+        }
+
+        if ($content instanceof SourceInterface) {
+            return $content;
         }
 
         throw new VcException('Invalid content type (expected SourceInterface or string types.');

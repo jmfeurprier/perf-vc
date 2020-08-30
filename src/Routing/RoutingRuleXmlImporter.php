@@ -22,19 +22,20 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
 
     private ControllerAddress $address;
 
+    public static function createDefault(): self
+    {
+        return new self(
+            new PathPatternParser()
+        );
+    }
+
     public function __construct(PathPatternParser $pathPatternParser)
     {
         $this->pathPatternParser = $pathPatternParser;
     }
 
     /**
-     * Retrieves routing rules from provided source.
-     *
-     * @param SourceInterface $source Routing source.
-     *
-     * @return RoutingRuleInterface[]
-     *
-     * @throws VcException
+     * {@inheritDoc}
      */
     public function import(SourceInterface $source): array
     {
@@ -146,30 +147,42 @@ class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
         $argumentDefinitions = [];
 
         foreach ($sxeRule->argument as $sxeArgument) {
-            $name         = (string) $sxeArgument['name'];
-            $format       = (string) $sxeArgument['format'];
-            $defaultValue = (string) $sxeArgument['default'];
-
-            if ('' === $name) {
-                throw new VcException("Missing name for routing rule argument ({$this->address}).");
-            }
-
-            if ('' === $format) {
-                $format = '[^/]+'; // @xxx
-            }
-
-            if ('' === $defaultValue) {
-                $defaultValue = null;
-            }
-
-            $argumentDefinitions[] = new ArgumentDefinition(
-                $name,
-                $format,
-                $defaultValue
-            );
+            $argumentDefinitions[] = $this->parseArgumentDefinition($sxeArgument);
         }
 
         return $argumentDefinitions;
+    }
+
+    /**
+     * @param SimpleXMLElement $sxeArgument
+     *
+     * @return ArgumentDefinition
+     *
+     * @throws VcException
+     */
+    private function parseArgumentDefinition(SimpleXMLElement $sxeArgument): ArgumentDefinition
+    {
+        $name         = (string) $sxeArgument['name'];
+        $format       = (string) $sxeArgument['format'];
+        $defaultValue = (string) $sxeArgument['default'];
+
+        if ('' === $name) {
+            throw new VcException("Missing name for routing rule argument ({$this->address}).");
+        }
+
+        if ('' === $format) {
+            $format = '[^/]+'; // @xxx
+        }
+
+        if ('' === $defaultValue) {
+            $defaultValue = null;
+        }
+
+        return new ArgumentDefinition(
+            $name,
+            $format,
+            $defaultValue
+        );
     }
 
     /**

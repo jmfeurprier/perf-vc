@@ -2,7 +2,8 @@
 
 namespace perf\Vc\Controller;
 
-use perf\Vc\Exception\VcException;
+use perf\Vc\Exception\ControllerClassNotFoundException;
+use perf\Vc\Exception\InvalidControllerException;
 use perf\Vc\Routing\RouteInterface;
 
 interface ControllerFactoryInterface
@@ -12,7 +13,8 @@ interface ControllerFactoryInterface
      *
      * @return ControllerInterface
      *
-     * @throws VcException
+     * @throws ControllerClassNotFoundException
+     * @throws InvalidControllerException
      */
-    public function getController(RouteInterface $route): ControllerInterface;
+    public function make(RouteInterface $route): ControllerInterface;
 }

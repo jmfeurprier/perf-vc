@@ -1,0 +1,29 @@
+Homepage:
+    Index:
+        '':
+            methods:
+                - 'GET'
+Hello:
+    World:
+        'hello-world/{firstName}/{lastName}':
+            parameters:
+                firstName:
+                    format: '[^/]+'
+                lastName:
+                    format: '[^/]+'
+                reversed:
+                    value: false
+            methods:
+                - 'GET'
+                - 'POST'
+        'hello-world/{firstName}/{lastName}/reversed':
+            parameters:
+                firstName:
+                    format: '[^/]+'
+                lastName:
+                    format: '[^/]+'
+                reversed:
+                    value: true
+            methods:
+                - 'GET'
+                - 'POST'

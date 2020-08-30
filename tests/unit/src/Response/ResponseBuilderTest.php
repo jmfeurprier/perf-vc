@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Response;
 
+use perf\HttpStatus\HttpStatusInterface;
 use perf\HttpStatus\HttpStatusRepositoryInterface;
 use perf\Vc\Routing\RouteInterface;
 use perf\Vc\View\ViewLocatorInterface;
@@ -58,8 +59,36 @@ class ResponseBuilderTest extends TestCase
 
         $result = $this->responseBuilder->build($this->route);
 
-        $this->assertInstanceOf(ResponseInterface::class, $result);
         $this->assertSame($content, $result->getContent());
         $this->assertCount(0, $result->getHeaders());
+    }
+
+    public function testBuildWithHttpStatus()
+    {
+        $header = 'foo';
+
+        $httpStatus = $this->createMock(HttpStatusInterface::class);
+        $httpStatus->expects($this->once())->method('toHeader')->willReturn($header);
+
+        $this->httpStatusRepository->expects($this->once())->method('get')->with(200)->willReturn($httpStatus);
+
+        $this->responseBuilder->setHttpStatusCode(200);
+
+        $result = $this->responseBuilder->build($this->route);
+
+        $headers = $result->getHeaders();
+
+        $this->assertCount(1, $headers);
+    }
+
+    public function testBuildWithHeader()
+    {
+        $this->responseBuilder->addHeader('Foo', 'bar');
+
+        $result = $this->responseBuilder->build($this->route);
+
+        $headers = $result->getHeaders();
+
+        $this->assertCount(1, $headers);
     }
 }

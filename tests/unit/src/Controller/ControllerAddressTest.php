@@ -1,8 +1,7 @@
 <?php
 
-namespace perf\Vc;
+namespace perf\Vc\Controller;
 
-use perf\Vc\Controller\ControllerAddress;
 use PHPUnit\Framework\TestCase;
 
 class ControllerControllerAddressTest extends TestCase

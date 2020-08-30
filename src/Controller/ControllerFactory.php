@@ -2,47 +2,56 @@
 
 namespace perf\Vc\Controller;
 
+use perf\Vc\Exception\ControllerClassNotFoundException;
+use perf\Vc\Exception\InvalidControllerException;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Routing\RouteInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ControllerFactory implements ControllerFactoryInterface
 {
+    private ControllerClassResolverInterface $controllerClassResolver;
+
     private string $controllersNamespace;
 
-    public function __construct(string $controllersNamespace)
-    {
-        $this->controllersNamespace = trim($controllersNamespace, '\\');
+    private ContainerInterface $container;
+
+    private RouteInterface $route;
+
+    public function __construct(
+        ControllerClassResolverInterface $controllerClassResolver,
+        string $controllersNamespace,
+        ContainerInterface $container
+    ) {
+        $this->controllerClassResolver = $controllerClassResolver;
+        $this->controllersNamespace    = trim($controllersNamespace, '\\');
+        $this->container               = $container;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getController(RouteInterface $route): ControllerInterface
+    public function make(RouteInterface $route): ControllerInterface
     {
-        $address = $route->getAddress();
+        $this->route = $route;
 
-        $controllerClass = $this->getControllerClass($address);
+        $controllerClass = $this->getControllerClass();
 
-        if (!class_exists($controllerClass, true)) {
-            $message = "Controller not found for {$address}, expected class {$controllerClass} not found.";
-
-            throw new VcException($message);
+        if (!$this->container->has($controllerClass)) {
+            throw new ControllerClassNotFoundException($controllerClass, $route);
         }
 
-        if (!is_subclass_of($controllerClass, ControllerInterface::class)) {
-            $message = "Controller not valid for {$address}.";
+        $controller = $this->container->get($controllerClass);
 
-            throw new VcException($message);
+        if (!($controller instanceof ControllerInterface)) {
+            throw new InvalidControllerException($controllerClass, $route);
         }
 
         return new $controllerClass();
     }
 
-    protected function getControllerClass(ControllerAddress $address): string
+    private function getControllerClass(): string
     {
-        $module = $address->getModule();
-        $action = $address->getAction();
-
-        return "\\{$this->controllersNamespace}\\{$module}\\{$action}Controller";
+        return $this->controllerClassResolver->resolve($this->route, $this->controllersNamespace);
     }
 }

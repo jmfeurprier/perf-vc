@@ -88,21 +88,9 @@ class RequestPopulator implements RequestPopulatorInterface
             if ($this->server['HTTPS'] !== 'off') {
                 return RequestInterface::TRANSPORT_HTTPS;
             }
-
-            return RequestInterface::TRANSPORT_HTTP;
         }
 
-        if (isset($this->server['SERVER_PROTOCOL'])) {
-            $protocol = strtolower(substr($this->server['SERVER_PROTOCOL'], 0, 5));
-
-            if ('https' === $protocol) {
-                return RequestInterface::TRANSPORT_HTTPS;
-            }
-
-            return RequestInterface::TRANSPORT_HTTP;
-        }
-
-        throw new VcException('Failed to retrieve request transport.');
+        return RequestInterface::TRANSPORT_HTTP;
     }
 
     private function getHost(): string

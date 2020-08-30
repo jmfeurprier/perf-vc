@@ -12,8 +12,8 @@ interface RequestInterface
     public const METHOD_DELETE  = 'DELETE';
     public const METHOD_OPTIONS = 'OPTIONS';
 
-    public const TRANSPORT_HTTP  = 'HTTP';
-    public const TRANSPORT_HTTPS = 'HTTPS';
+    public const TRANSPORT_HTTP  = 'http';
+    public const TRANSPORT_HTTPS = 'https';
 
     public function isMethodGet(): bool;
 

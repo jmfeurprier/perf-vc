@@ -2,8 +2,10 @@
 
 namespace perf\Vc\View;
 
+use perf\Vc\Exception\VcException;
 use Twig\Cache\CacheInterface as TwigCacheInterface;
 use Twig\Environment as TwigEnvironment;
+use Twig\Error\Error as TwigError;
 use Twig\Loader\FilesystemLoader;
 
 class TwigViewRenderer implements ViewRendererInterface
@@ -13,7 +15,7 @@ class TwigViewRenderer implements ViewRendererInterface
     public function __construct(
         string $viewsBasePath,
         TwigCacheInterface $cache,
-        array $twigOptions
+        array $twigOptions = []
     ) {
         $viewsBasePath = rtrim($viewsBasePath, '\\/');
 
@@ -30,8 +32,15 @@ class TwigViewRenderer implements ViewRendererInterface
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function render(string $viewPath, array $vars): string
     {
-        return $this->environment->render($viewPath, $vars);
+        try {
+            return $this->environment->render($viewPath, $vars);
+        } catch (TwigError $e) {
+            throw new VcException("Failed rendering twig view at {$viewPath}", 0, $e);
+        }
     }
 }

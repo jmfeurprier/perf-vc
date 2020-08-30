@@ -37,24 +37,10 @@ class FrontController implements FrontControllerInterface
         ResponseBuilderFactoryInterface $responseBuilderFactory,
         RedirectorInterface $redirector
     ) {
-        $this->controllerFactory      = $controllerFactory;
         $this->router                 = $router;
+        $this->controllerFactory      = $controllerFactory;
         $this->responseBuilderFactory = $responseBuilderFactory;
         $this->redirector             = $redirector;
-    }
-
-    /**
-     * Runs the front controller automatically and conveniently.
-     *
-     * @return void
-     *
-     * @throws Exception
-     */
-    public function autoHandle(): void
-    {
-        $request = RequestPopulator::create()->populate();
-
-        $this->run($request)->send();
     }
 
     /**
@@ -129,7 +115,7 @@ class FrontController implements FrontControllerInterface
     {
         $this->route     = $route;
         $controller      = $this->getController();
-        $responseBuilder = $this->responseBuilderFactory->create();
+        $responseBuilder = $this->responseBuilderFactory->make();
 
         try {
             return $controller->run($this->request, $route, $responseBuilder);
@@ -142,22 +128,7 @@ class FrontController implements FrontControllerInterface
 
     private function getController(): ControllerInterface
     {
-        $controller = $this->controllerFactory->getController($this->route);
-
-        $this->configureController($controller);
-
-        return $controller;
-    }
-
-    /**
-     * @param ControllerInterface $controller
-     *
-     * @return void
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    protected function configureController(ControllerInterface $controller): void
-    {
+        return $this->controllerFactory->make($this->route);
     }
 
     private function redirectToUrl(string $url, int $httpStatusCode, string $httpVersion = null): ResponseInterface

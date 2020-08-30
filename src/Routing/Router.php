@@ -6,14 +6,20 @@ use perf\Vc\Request\RequestInterface;
 
 class Router implements RouterInterface
 {
+    private RoutingRuleMatcherInterface $routingRuleMatcher;
+
     private RoutingRuleCollection $routingRules;
 
     /**
-     * @param RoutingRuleInterface[] $rules
+     * @param RoutingRuleMatcherInterface $routingRuleMatcher
+     * @param RoutingRuleInterface[]      $rules
      */
-    public function __construct(array $rules)
-    {
-        $this->routingRules = new RoutingRuleCollection($rules);
+    public function __construct(
+        RoutingRuleMatcherInterface $routingRuleMatcher,
+        array $rules
+    ) {
+        $this->routingRuleMatcher = $routingRuleMatcher;
+        $this->routingRules       = new RoutingRuleCollection($rules);
     }
 
     /**
@@ -21,8 +27,8 @@ class Router implements RouterInterface
      */
     public function tryGetRoute(RequestInterface $request): ?RouteInterface
     {
-        foreach ($this->routingRules->getAll() as $rule) {
-            $route = $rule->tryMatch($request);
+        foreach ($this->routingRules->getAll() as $routingRule) {
+            $route = $this->routingRuleMatcher->tryMatch($request, $routingRule);
 
             if ($route) {
                 return $route;
