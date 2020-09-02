@@ -32,19 +32,6 @@ class Response implements ResponseInterface
         $this->headers[] = $header;
     }
 
-    public function send(): void
-    {
-        $this->sendHeaders();
-        $this->sendContent();
-    }
-
-    public function sendHeaders(): void
-    {
-        foreach ($this->headers as $header) {
-            $header->send();
-        }
-    }
-
     /**
      * @return string[]
      */
@@ -53,13 +40,8 @@ class Response implements ResponseInterface
         return $this->headers;
     }
 
-    public function sendContent(): void
+    public function getContent(): SourceInterface
     {
-        $this->source->send();
-    }
-
-    public function getContent(): string
-    {
-        return $this->source->getContent();
+        return $this->source;
     }
 }

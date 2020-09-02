@@ -7,11 +7,11 @@ use perf\Vc\Exception\VcException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class RoutingRuleYamlImporterTest extends TestCase
+class YamlRoutingRuleImporterTest extends TestCase
 {
     private PathPatternParser $pathPatternParser;
 
-    private RoutingRuleYamlImporter $importer;
+    private YamlRoutingRuleImporter $importer;
 
     /**
      * @var SourceInterface|MockObject
@@ -22,7 +22,7 @@ class RoutingRuleYamlImporterTest extends TestCase
     {
         $this->pathPatternParser = new PathPatternParser();
 
-        $this->importer = new RoutingRuleYamlImporter($this->pathPatternParser);
+        $this->importer = new YamlRoutingRuleImporter($this->pathPatternParser);
 
         $this->source = $this->createMock(SourceInterface::class);
     }

@@ -9,7 +9,7 @@ use perf\Vc\Exception\VcException;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
-class RoutingRuleYamlImporter implements RoutingRuleImporterInterface
+class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
 {
     private PathPatternParser $pathPatternParser;
 
@@ -116,23 +116,24 @@ class RoutingRuleYamlImporter implements RoutingRuleImporterInterface
 
     private function parseAction($actionRules)
     {
-        foreach ($actionRules as $actionRule) {
-            $this->rules[] = $this->parseRule($actionRule);
+        foreach ($actionRules as $path => $actionRule) {
+            $this->rules[] = $this->parseRule($path, $actionRule);
         }
     }
 
     /**
-     * @param array $actionRule
+     * @param string $path
+     * @param array  $actionRule
      *
      * @return RoutingRule
      *
      * @throws VcException
      */
-    private function parseRule(array $actionRule): RoutingRule
+    private function parseRule(string $path, array $actionRule): RoutingRule
     {
         $httpMethods         = $this->parseHttpMethods($actionRule);
         $argumentDefinitions = $this->parseArgumentDefinitions($actionRule);
-        $pathPattern         = $this->parsePathPattern($actionRule, $argumentDefinitions);
+        $pathPattern         = $this->parsePathPattern($path, $argumentDefinitions);
 
         return new RoutingRule(
             $this->address,
@@ -221,15 +222,13 @@ class RoutingRuleYamlImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array                $rule
+     * @param string               $path
      * @param ArgumentDefinition[] $argumentDefinitions
      *
      * @return string
      */
-    private function parsePathPattern(array $rule, array $argumentDefinitions): string
+    private function parsePathPattern(string $path, array $argumentDefinitions): string
     {
-        $path = $rule['path'];
-
         return $this->pathPatternParser->parse($path, $argumentDefinitions);
     }
 }

@@ -2,12 +2,14 @@
 
 namespace perf\Vc\Response\Transformation;
 
+use perf\Vc\Exception\VcException;
+
 class TransformerRepository implements TransformerRepositoryInterface
 {
     /**
      * @var TransformerInterface[]
      */
-    private array $transformers;
+    private array $transformers = [];
 
     public static function createDefault(): self
     {
@@ -15,6 +17,7 @@ class TransformerRepository implements TransformerRepositoryInterface
             [
                 new HtmlTransformer(),
                 new JsonTransformer(),
+                new TextTransformer(),
                 new XmlTransformer(),
             ]
         );
@@ -39,6 +42,10 @@ class TransformerRepository implements TransformerRepositoryInterface
 
     public function get(string $class): TransformerInterface
     {
-        return $this->transformers[$class];
+        if (array_key_exists($class, $this->transformers)) {
+            return $this->transformers[$class];
+        }
+
+        throw new VcException('Transformer not found.');
     }
 }

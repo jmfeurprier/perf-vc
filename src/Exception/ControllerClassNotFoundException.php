@@ -12,7 +12,7 @@ class ControllerClassNotFoundException extends VcException
 
     public function __construct(string $controllerClass, RouteInterface $route)
     {
-        $message = "Controller not found for {$this->route->getAddress()} " .
+        $message = "Controller not found for {$route->getAddress()} " .
             "(expected class {$controllerClass} not found).";
 
         parent::__construct($message);

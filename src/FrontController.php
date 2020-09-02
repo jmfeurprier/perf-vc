@@ -10,10 +10,11 @@ use perf\Vc\Exception\RedirectException;
 use perf\Vc\Exception\RouteNotFoundException;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Redirection\RedirectorInterface;
+use perf\Vc\Request\Request;
 use perf\Vc\Request\RequestInterface;
-use perf\Vc\Request\RequestPopulator;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Response\ResponseInterface;
+use perf\Vc\Response\ResponseSender;
 use perf\Vc\Routing\RouteInterface;
 use perf\Vc\Routing\RouterInterface;
 

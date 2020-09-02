@@ -4,6 +4,7 @@ namespace perf\Vc\Response;
 
 use perf\HttpStatus\HttpStatusInterface;
 use perf\HttpStatus\HttpStatusRepositoryInterface;
+use perf\Vc\Response\Transformation\TransformerRepositoryInterface;
 use perf\Vc\Routing\RouteInterface;
 use perf\Vc\View\ViewLocatorInterface;
 use perf\Vc\View\ViewRendererInterface;
@@ -32,6 +33,11 @@ class ResponseBuilderTest extends TestCase
      */
     private $templateRenderer;
 
+    /**
+     * @var TransformerRepositoryInterface|MockObject
+     */
+    private $transformerRepository;
+
     private ResponseBuilder $responseBuilder;
 
     protected function setUp(): void
@@ -44,10 +50,13 @@ class ResponseBuilderTest extends TestCase
 
         $this->templateRenderer = $this->createMock(ViewRendererInterface::class);
 
+        $this->transformerRepository = $this->createMock(TransformerRepositoryInterface::class);
+
         $this->responseBuilder = new ResponseBuilder(
             $this->httpStatusRepository,
             $this->templateLocator,
-            $this->templateRenderer
+            $this->templateRenderer,
+            $this->transformerRepository
         );
     }
 
@@ -59,7 +68,7 @@ class ResponseBuilderTest extends TestCase
 
         $result = $this->responseBuilder->build($this->route);
 
-        $this->assertSame($content, $result->getContent());
+        $this->assertSame($content, $result->getContent()->getContent());
         $this->assertCount(0, $result->getHeaders());
     }
 

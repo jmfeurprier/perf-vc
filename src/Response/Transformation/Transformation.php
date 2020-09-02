@@ -8,7 +8,7 @@ class Transformation
 
     private array $parameters;
 
-    public function __construct(TransformerInterface $transformer, array $parameters)
+    public function __construct(TransformerInterface $transformer, array $parameters = [])
     {
         $this->transformer = $transformer;
         $this->parameters  = $parameters;

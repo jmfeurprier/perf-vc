@@ -15,9 +15,9 @@ class RoutingRuleXmlImporterTest extends TestCase
     private PathPatternParser $pathPatternParser;
 
     /**
-     * @var RoutingRuleXmlImporter
+     * @var XmlRoutingRuleImporter
      */
-    private RoutingRuleXmlImporter $importer;
+    private XmlRoutingRuleImporter $importer;
 
     /**
      * @var SourceInterface|MockObject
@@ -30,7 +30,7 @@ class RoutingRuleXmlImporterTest extends TestCase
 
         $this->source = $this->createMock(SourceInterface::class);
 
-        $this->importer = new RoutingRuleXmlImporter($this->pathPatternParser);
+        $this->importer = new XmlRoutingRuleImporter($this->pathPatternParser);
     }
 
     public function testImportWithNotXmlSourceWillThrowException()

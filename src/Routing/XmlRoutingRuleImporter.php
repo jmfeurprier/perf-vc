@@ -7,7 +7,7 @@ use perf\Vc\Controller\ControllerAddress;
 use perf\Vc\Exception\VcException;
 use SimpleXMLElement;
 
-class RoutingRuleXmlImporter implements RoutingRuleImporterInterface
+class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
 {
     private PathPatternParser $pathPatternParser;
 

@@ -4,7 +4,6 @@ namespace perf\Vc\Controller;
 
 use perf\Vc\Exception\ControllerClassNotFoundException;
 use perf\Vc\Exception\InvalidControllerException;
-use perf\Vc\Exception\VcException;
 use perf\Vc\Routing\RouteInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -47,7 +46,7 @@ class ControllerFactory implements ControllerFactoryInterface
             throw new InvalidControllerException($controllerClass, $route);
         }
 
-        return new $controllerClass();
+        return $controller;
     }
 
     private function getControllerClass(): string

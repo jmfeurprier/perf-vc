@@ -3,6 +3,16 @@ Homepage:
         '':
             methods:
                 - 'GET'
+Contact:
+    Form:
+        '/contact-us':
+            methods:
+                - 'GET'
+                - 'POST'
+    Success:
+        '/contact-us/success':
+            methods:
+                - 'GET'
 Hello:
     World:
         'hello-world/{firstName}/{lastName}':

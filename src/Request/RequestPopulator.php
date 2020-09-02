@@ -30,17 +30,6 @@ class RequestPopulator implements RequestPopulatorInterface
         );
     }
 
-    public static function create(array $get, array $post, array $cookie, array $files, array $server): self
-    {
-        return new self(
-            $get,
-            $post,
-            $cookie,
-            $files,
-            $server
-        );
-    }
-
     public function __construct(array $get, array $post, array $cookies, array $files, array $server)
     {
         $this->get     = $get;

@@ -13,9 +13,6 @@ class Redirector implements RedirectorInterface
 {
     private RedirectionHeadersGeneratorInterface $redirectionHeadersGenerator;
 
-    /**
-     * @var RequestInterface
-     */
     private RequestInterface $request;
 
     private string $url;

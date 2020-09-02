@@ -6,11 +6,11 @@ use perf\Vc\Routing\RouteInterface;
 
 class ViewLocator implements ViewLocatorInterface
 {
-    private string $extension;
+    private string $viewFilesExtension;
 
-    public function __construct(string $extension)
+    public function __construct(string $viewFilesExtension)
     {
-        $this->extension = ltrim($extension, '.');
+        $this->viewFilesExtension = ltrim($viewFilesExtension, '.');
     }
 
     public function locate(RouteInterface $route): string
@@ -19,6 +19,6 @@ class ViewLocator implements ViewLocatorInterface
         $module  = $address->getModule();
         $action  = $address->getAction();
 
-        return "{$module}/{$action}.{$this->extension}";
+        return "{$module}/{$action}.{$this->viewFilesExtension}";
     }
 }

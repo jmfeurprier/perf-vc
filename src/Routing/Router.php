@@ -10,6 +10,14 @@ class Router implements RouterInterface
 
     private RoutingRuleCollection $routingRules;
 
+    public static function createDefault(array $routingRules): self
+    {
+        return new self(
+            new RoutingRuleMatcher(),
+            $routingRules
+        );
+    }
+
     /**
      * @param RoutingRuleMatcherInterface $routingRuleMatcher
      * @param RoutingRuleInterface[]      $rules

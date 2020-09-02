@@ -5,7 +5,6 @@ namespace perf\Vc\Controller;
 use Exception;
 use perf\Vc\Exception\ForwardException;
 use perf\Vc\Exception\RedirectException;
-use perf\Vc\Exception\VcException;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilder;
 use perf\Vc\Response\ResponseBuilderInterface;

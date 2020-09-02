@@ -29,5 +29,5 @@ interface ControllerInterface
         RequestInterface $request,
         RouteInterface $route,
         ResponseBuilder $responseBuilder
-    );
+    ): ResponseInterface;
 }

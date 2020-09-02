@@ -17,7 +17,7 @@ class ResponseTest extends TestCase
 
         $response = new Response($headers, $contentSource);
 
-        $this->assertSame($content, $response->getContent());
+        $this->assertSame($content, $response->getContent()->getContent());
     }
 
     public function testGetHeadersWithoutHeaders()

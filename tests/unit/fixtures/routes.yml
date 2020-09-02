@@ -1,0 +1,10 @@
+TestModule:
+    TestAction:
+        'test-path/{foo}':
+            methods:
+                - 'GET'
+            parameters:
+                foo:
+                    format: '[^/]+'
+                bar:
+                    value: 'baz'
