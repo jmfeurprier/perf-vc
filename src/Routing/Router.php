@@ -20,14 +20,14 @@ class Router implements RouterInterface
 
     /**
      * @param RoutingRuleMatcherInterface $routingRuleMatcher
-     * @param RoutingRuleInterface[]      $rules
+     * @param RoutingRuleInterface[]      $routingRules
      */
     public function __construct(
         RoutingRuleMatcherInterface $routingRuleMatcher,
-        array $rules
+        array $routingRules
     ) {
         $this->routingRuleMatcher = $routingRuleMatcher;
-        $this->routingRules       = new RoutingRuleCollection($rules);
+        $this->routingRules       = new RoutingRuleCollection($routingRules);
     }
 
     /**

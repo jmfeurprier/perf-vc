@@ -21,7 +21,7 @@ class RequestPopulator implements RequestPopulatorInterface
      */
     public static function createDefault(): self
     {
-        return self::create(
+        return new self(
             $_GET ?? [],
             $_POST ?? [],
             $_COOKIE ?? [],

@@ -13,7 +13,8 @@
 		"perf/timing"      : "^2.0",
 		"twig/twig"        : "^3.0",
 		"symfony/dependency-injection": "^5.0",
-		"symfony/yaml": "^5.0"
+		"symfony/yaml": "^5.0",
+		"symfony/expression-language": "^5.1"
     },
 	"require-dev": {
 		"ext-xdebug"                : "*",

@@ -1,0 +1,82 @@
+parameters:
+
+    perf.vc.controllers_namespace:   ~
+    perf.vc.view_files_base_path:    ~
+    perf.vc.view_files_extension:    'twig'
+    perf.vc.routing_rules_file_path: ~
+
+services:
+
+    _defaults:
+        autowire: true
+        public:   false
+
+    perf\Caching\Storage\CachingStorageInterface:
+        class: perf\Caching\Storage\VolatileCachingStorage
+
+    perf\Timing\ClockInterface:
+        class: perf\Timing\Clock
+
+    perf\Vc\Controller\ControllerClassResolverInterface:
+        class: perf\Vc\Controller\ControllerClassResolver
+
+    perf\Vc\Controller\ControllerFactoryInterface:
+        class: perf\Vc\Controller\ControllerFactory
+        arguments:
+            $controllersNamespace: '%perf.vc.controllers_namespace%'
+
+    perf\Vc\FrontControllerInterface:
+        class: perf\Vc\FrontController
+
+    perf\HttpStatus\HttpStatusRepositoryInterface:
+        factory: [perf\HttpStatus\HttpStatusRepository, createDefault]
+
+    perf\Vc\Redirection\RedirectionHeadersGeneratorInterface:
+        class: perf\Vc\Redirection\RedirectionHeadersGenerator
+
+    perf\Vc\Redirection\RedirectorInterface:
+        class: perf\Vc\Redirection\Redirector
+
+    perf\Vc\Request\RequestInterface:
+        factory: [perf\Vc\Request\RequestPopulatorInterface, populate]
+
+    perf\Vc\Request\RequestPopulatorInterface:
+        factory: [perf\Vc\Request\RequestPopulator, createDefault]
+
+    perf\Vc\Response\ResponseBuilderFactoryInterface:
+        class: perf\Vc\Response\ResponseBuilderFactory
+
+    perf\Vc\Response\ResponseSenderInterface:
+        class: perf\Vc\Response\ResponseSender
+
+    perf\Vc\Routing\RouterInterface:
+        class: perf\Vc\Routing\Router
+        arguments:
+            $routingRules: '@=service("perf\\Vc\\Routing\\RoutingRuleImporterInterface").import(service("perf\\Vc\\Routing\\_RoutingRulesSource"))'
+
+    perf\Vc\Routing\_RoutingRulesSource:
+        factory: [perf\Source\LocalFileSource, create]
+        arguments:
+            - '%perf.vc.routing_rules_file_path%'
+
+    perf\Vc\Routing\RoutingRuleImporterInterface:
+        factory: [perf\Vc\Routing\YamlRoutingRuleImporter, createDefault]
+
+    perf\Vc\Routing\RoutingRuleMatcherInterface:
+        class: perf\Vc\Routing\RoutingRuleMatcher
+
+    perf\Vc\Response\Transformation\TransformerRepositoryInterface:
+        factory: [perf\Vc\Response\Transformation\TransformerRepository, createDefault]
+
+    perf\Vc\View\ViewLocatorInterface:
+        class: perf\Vc\View\ViewLocator
+        arguments:
+            $viewFilesExtension: '%perf.vc.view_files_extension%'
+
+    perf\Vc\View\ViewRendererInterface:
+        class: perf\Vc\View\TwigViewRenderer
+        arguments:
+            $viewFilesBasePath: '%perf.vc.view_files_base_path%'
+
+    Twig\Cache\CacheInterface:
+        class: perf\Vc\View\TwigCache

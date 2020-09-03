@@ -13,11 +13,11 @@ class TwigViewRenderer implements ViewRendererInterface
     private TwigEnvironment $environment;
 
     public function __construct(
-        string $viewsBasePath,
+        string $viewFilesBasePath,
         TwigCacheInterface $cache,
         array $twigOptions = []
     ) {
-        $viewsBasePath = rtrim($viewsBasePath, '\\/');
+        $viewFilesBasePath = rtrim($viewFilesBasePath, '\\/');
 
         $twigOptions['cache']            = $cache;
         $twigOptions['strict_variables'] = true;
@@ -25,7 +25,7 @@ class TwigViewRenderer implements ViewRendererInterface
         $this->environment = new TwigEnvironment(
             new FilesystemLoader(
                 [
-                    $viewsBasePath,
+                    $viewFilesBasePath,
                 ]
             ),
             $twigOptions
