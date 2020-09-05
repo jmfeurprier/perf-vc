@@ -79,5 +79,8 @@ services:
         arguments:
             $viewFilesBasePath: '%perf.vc.view_files_base_path%'
 
+    perf\Vc\VcRunner:
+        public: true
+
     Twig\Cache\CacheInterface:
         class: perf\Vc\View\TwigCache
