@@ -6,7 +6,7 @@ use DomainException;
 
 class KeyValueCollection
 {
-    private array $vars;
+    private array $vars = [];
 
     public function __construct(array $vars = [])
     {

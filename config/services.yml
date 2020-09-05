@@ -20,6 +20,9 @@ services:
     perf\Timing\ClockInterface:
         class: perf\Timing\Clock
 
+    perf\Vc\:
+        resource: '../src/*'
+
     perf\Vc\Controller\ControllerClassResolverInterface:
         class: perf\Vc\Controller\ControllerClassResolver
 
@@ -38,7 +41,7 @@ services:
         class: perf\Vc\Redirection\Redirector
 
     perf\Vc\Request\RequestInterface:
-        factory: [perf\Vc\Request\RequestPopulatorInterface, populate]
+        factory: ['@perf\Vc\Request\RequestPopulatorInterface', populate]
 
     perf\Vc\Request\RequestPopulatorInterface:
         factory: [perf\Vc\Request\RequestPopulator, createDefault]
