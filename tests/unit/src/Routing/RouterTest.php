@@ -108,7 +108,10 @@ class RouterTest extends TestCase
             ->willReturnMap($map)
         ;
 
-        $router = new Router($this->routingRuleMatcher, $this->routingRules);
+        $router = new Router(
+            $this->routingRuleMatcher,
+            new RoutingRuleCollection($this->routingRules)
+        );
 
         $this->result = $router->tryGetRoute($this->request);
     }

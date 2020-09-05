@@ -19,7 +19,7 @@ class Route implements RouteInterface
     private array $arguments = [];
 
     /**
-     * @param \perf\Vc\Controller\ControllerAddress $address
+     * @param ControllerAddress $address
      * @param {string:mixed}    $arguments
      */
     public function __construct(ControllerAddress $address, array $arguments = [])

@@ -10,7 +10,7 @@ class Router implements RouterInterface
 
     private RoutingRuleCollection $routingRules;
 
-    public static function createDefault(array $routingRules): self
+    public static function createDefault(RoutingRuleCollection $routingRules): self
     {
         return new self(
             new RoutingRuleMatcher(),
@@ -18,16 +18,12 @@ class Router implements RouterInterface
         );
     }
 
-    /**
-     * @param RoutingRuleMatcherInterface $routingRuleMatcher
-     * @param RoutingRuleInterface[]      $routingRules
-     */
     public function __construct(
         RoutingRuleMatcherInterface $routingRuleMatcher,
-        array $routingRules
+        RoutingRuleCollection $routingRules
     ) {
         $this->routingRuleMatcher = $routingRuleMatcher;
-        $this->routingRules       = new RoutingRuleCollection($routingRules);
+        $this->routingRules       = $routingRules;
     }
 
     /**

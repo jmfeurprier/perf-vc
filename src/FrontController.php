@@ -5,16 +5,16 @@ namespace perf\Vc;
 use Exception;
 use perf\Vc\Controller\ControllerFactoryInterface;
 use perf\Vc\Controller\ControllerInterface;
+use perf\Vc\Exception\ControllerClassNotFoundException;
 use perf\Vc\Exception\ForwardException;
+use perf\Vc\Exception\InvalidControllerException;
 use perf\Vc\Exception\RedirectException;
 use perf\Vc\Exception\RouteNotFoundException;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Redirection\RedirectorInterface;
-use perf\Vc\Request\Request;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Response\ResponseInterface;
-use perf\Vc\Response\ResponseSender;
 use perf\Vc\Routing\RouteInterface;
 use perf\Vc\Routing\RouterInterface;
 
@@ -29,8 +29,6 @@ class FrontController implements FrontControllerInterface
     private RedirectorInterface $redirector;
 
     private RequestInterface $request;
-
-    private RouteInterface $route;
 
     public function __construct(
         RouterInterface $router,
@@ -115,7 +113,7 @@ class FrontController implements FrontControllerInterface
     protected function forward(RouteInterface $route): ResponseInterface
     {
         $this->route     = $route;
-        $controller      = $this->getController();
+        $controller      = $this->getController($route);
         $responseBuilder = $this->responseBuilderFactory->make();
 
         try {
@@ -127,9 +125,17 @@ class FrontController implements FrontControllerInterface
         }
     }
 
-    private function getController(): ControllerInterface
+    /**
+     * @param RouteInterface $route
+     *
+     * @return ControllerInterface
+     *
+     * @throws ControllerClassNotFoundException
+     * @throws InvalidControllerException
+     */
+    private function getController(RouteInterface $route): ControllerInterface
     {
-        return $this->controllerFactory->make($this->route);
+        return $this->controllerFactory->make($route);
     }
 
     private function redirectToUrl(string $url, int $httpStatusCode, string $httpVersion = null): ResponseInterface

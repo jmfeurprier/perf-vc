@@ -107,7 +107,7 @@ class RequestPopulator implements RequestPopulatorInterface
             throw new VcException('Failed to retrieve HTTP request path.');
         }
 
-        $path = parse_url($url, \PHP_URL_PATH);
+        $path = parse_url($url, PHP_URL_PATH);
 
         if (false === $path) {
             throw new VcException("Failed to retrieve HTTP request path from URL '{$url}'.");

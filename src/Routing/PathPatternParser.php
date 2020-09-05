@@ -81,7 +81,7 @@ class PathPatternParser
     {
         $matches = [];
 
-        if (false === preg_match_all('|({[^}]+})|', $this->pattern, $matches, \PREG_OFFSET_CAPTURE)) {
+        if (false === preg_match_all('|({[^}]+})|', $this->pattern, $matches, PREG_OFFSET_CAPTURE)) {
             throw new VcException("Failed to parse routing rule argument pattern.");
         }
 

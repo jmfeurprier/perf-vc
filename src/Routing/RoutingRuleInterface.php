@@ -3,8 +3,6 @@
 namespace perf\Vc\Routing;
 
 use perf\Vc\Controller\ControllerAddress;
-use perf\Vc\Exception\VcException;
-use perf\Vc\Request\RequestInterface;
 
 interface RoutingRuleInterface
 {

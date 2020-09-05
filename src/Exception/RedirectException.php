@@ -2,7 +2,9 @@
 
 namespace perf\Vc\Exception;
 
-class RedirectException extends \Exception
+use Exception;
+
+class RedirectException extends Exception
 {
     private string $url;
 

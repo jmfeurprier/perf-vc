@@ -14,6 +14,9 @@ services:
     perf\Caching\Storage\CachingStorageInterface:
         class: perf\Caching\Storage\VolatileCachingStorage
 
+    perf\HttpStatus\HttpStatusRepositoryInterface:
+        factory: [perf\HttpStatus\HttpStatusRepository, createDefault]
+
     perf\Timing\ClockInterface:
         class: perf\Timing\Clock
 
@@ -27,9 +30,6 @@ services:
 
     perf\Vc\FrontControllerInterface:
         class: perf\Vc\FrontController
-
-    perf\HttpStatus\HttpStatusRepositoryInterface:
-        factory: [perf\HttpStatus\HttpStatusRepository, createDefault]
 
     perf\Vc\Redirection\RedirectionHeadersGeneratorInterface:
         class: perf\Vc\Redirection\RedirectionHeadersGenerator
@@ -52,15 +52,16 @@ services:
     perf\Vc\Routing\RouterInterface:
         class: perf\Vc\Routing\Router
         arguments:
-            $routingRules: '@=service("perf\\Vc\\Routing\\RoutingRuleImporterInterface").import(service("perf\\Vc\\Routing\\_RoutingRulesSource"))'
+            $routingRules: '@=service("perf\\Vc\\Routing\\RoutingRuleImporterInterface").import(service("perf.vc.routing_rules_source"))'
 
-    perf\Vc\Routing\_RoutingRulesSource:
+    perf.vc.routing_rules_source:
+        class: perf\Source\SourceInterface
         factory: [perf\Source\LocalFileSource, create]
         arguments:
             - '%perf.vc.routing_rules_file_path%'
 
     perf\Vc\Routing\RoutingRuleImporterInterface:
-        factory: [perf\Vc\Routing\YamlRoutingRuleImporter, createDefault]
+        class: perf\Vc\Routing\YamlRoutingRuleImporter
 
     perf\Vc\Routing\RoutingRuleMatcherInterface:
         class: perf\Vc\Routing\RoutingRuleMatcher

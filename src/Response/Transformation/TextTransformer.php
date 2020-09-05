@@ -2,6 +2,8 @@
 
 namespace perf\Vc\Response\Transformation;
 
+use perf\Vc\Header\Header;
+
 class TextTransformer implements TransformerInterface
 {
     public const CHARSET = 'charset';
@@ -30,7 +32,7 @@ class TextTransformer implements TransformerInterface
 
         $charset = $parameters[self::CHARSET];
 
-        $headers[] = "Content-Type: text/plain; charset={$charset}";
+        $headers[] = new Header('Content-Type', "text/plain; charset={$charset}");
 
         return $headers;
     }

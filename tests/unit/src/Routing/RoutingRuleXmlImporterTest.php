@@ -52,8 +52,7 @@ class RoutingRuleXmlImporterTest extends TestCase
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(0, $result);
+        $this->assertCount(0, $result->getAll());
     }
 
     public function testImportWithoutAction()
@@ -68,8 +67,7 @@ XML;
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(0, $result);
+        $this->assertCount(0, $result->getAll());
     }
 
     /**
@@ -89,8 +87,7 @@ XML;
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(0, $result);
+        $this->assertCount(0, $result->getAll());
     }
 
     /**
@@ -112,9 +109,7 @@ XML;
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(1, $result);
-        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertCount(1, $result->getAll());
     }
 
     /**
@@ -136,9 +131,7 @@ XML;
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(1, $result);
-        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertCount(1, $result->getAll());
     }
 
     /**
@@ -160,9 +153,7 @@ XML;
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(1, $result);
-        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertCount(1, $result->getAll());
     }
 
     /**
@@ -184,9 +175,7 @@ XML;
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(1, $result);
-        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertCount(1, $result->getAll());
     }
 
     /**
@@ -208,9 +197,7 @@ XML;
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(1, $result);
-        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertCount(1, $result->getAll());
     }
 
     /**
@@ -233,8 +220,6 @@ XML;
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(2, $result);
-        $this->assertContainsOnly('perf\\Vc\\Routing\\RoutingRule', $result);
+        $this->assertCount(2, $result->getAll());
     }
 }

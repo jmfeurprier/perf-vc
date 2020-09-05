@@ -12,9 +12,9 @@ interface RoutingRuleImporterInterface
      *
      * @param SourceInterface $source Routing source.
      *
-     * @return RoutingRuleInterface[]
+     * @return RoutingRuleCollection
      *
      * @throws VcException
      */
-    public function import(SourceInterface $source): array;
+    public function import(SourceInterface $source): RoutingRuleCollection;
 }

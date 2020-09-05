@@ -37,7 +37,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     /**
      * {@inheritDoc}
      */
-    public function import(SourceInterface $source): array
+    public function import(SourceInterface $source): RoutingRuleCollection
     {
         $this->rules = [];
 
@@ -47,7 +47,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
             $this->importModuleRules($sxeModule);
         }
 
-        return $this->rules;
+        return new RoutingRuleCollection($this->rules);
     }
 
     /**
@@ -126,7 +126,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
         $methods = [];
 
         if ('' !== $methodsString) {
-            foreach (preg_split('|\s+|', $methodsString, -1, \PREG_SPLIT_NO_EMPTY) as $methodString) {
+            foreach (preg_split('|\s+|', $methodsString, -1, PREG_SPLIT_NO_EMPTY) as $methodString) {
                 // @todo Force case.
                 $method = $methodString;
 

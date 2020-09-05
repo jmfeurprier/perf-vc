@@ -6,51 +6,51 @@ use perf\Vc\Controller\ControllerInterface;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Request\Request;
 use perf\Vc\Request\RequestInterface;
+use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Response\ResponseSenderInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class VcRunnerTest extends TestCase
 {
-    private VcRunner $runner;
+    /**
+     * @var FrontControllerInterface|MockObject
+     */
+    private $frontController;
 
-    private ContainerInterface $container;
+    /**
+     * @var RequestInterface|MockObject
+     */
+    private $request;
+
+    /**
+     * @var ResponseSenderInterface|MockObject
+     */
+    private $responseSender;
+
+    private VcRunner $runner;
 
     protected function setUp(): void
     {
-        $this->runner = new VcRunner();
+        $this->frontController = $this->createMock(FrontControllerInterface::class);
+        $this->request         = $this->createMock(RequestInterface::class);
+        $this->responseSender  = $this->createMock(ResponseSenderInterface::class);
 
-        $this->container = new Container();
-    }
-
-    public function testRunWithEmptyContainer()
-    {
-        $this->expectException(VcException::class);
-
-        $this->runner->run($this->container);
-    }
-
-    public function testRunWithRequiredContainerParameters()
-    {
-        $request = new Request('GET', 'http', 'localhost', 80, '/test-path/123', [], [], [], []);
-
-        $controller = $this->createMock(ControllerInterface::class);
-
-        $responseSender = $this->createMock(ResponseSenderInterface::class);
-        $responseSender->expects($this->once())->method('send');
-
-        $this->container->setParameter(VcRunner::CONTAINER_PARAMETER_VIEW_FILES_BASE_PATH, '');
-        $this->container->setParameter(VcRunner::CONTAINER_PARAMETER_CONTROLLER_NAMESPACE, 'TestNamespace');
-        $this->container->setParameter(
-            VcRunner::CONTAINER_PARAMETER_ROUTING_RULES_FILE_PATH,
-            __DIR__ . '/../fixtures/routes.yml'
+        $this->runner = new VcRunner(
+            $this->frontController,
+            $this->request,
+            $this->responseSender
         );
+    }
 
-        $this->container->set(RequestInterface::class, $request);
-        $this->container->set('TestNamespace\\TestModule\\TestActionController', $controller);
-        $this->container->set(ResponseSenderInterface::class, $responseSender);
+    public function testRun()
+    {
+        $response = $this->createMock(ResponseInterface::class);
 
-        $this->runner->run($this->container);
+        $this->frontController->expects($this->once())->method('run')->with($this->request)->willReturn($response);
+
+        $this->responseSender->expects($this->once())->method('send')->with($response);
+
+        $this->runner->run();
     }
 }

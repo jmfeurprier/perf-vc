@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Controller;
 
+use DomainException;
 use Exception;
 use perf\Vc\Exception\ForwardException;
 use perf\Vc\Exception\RedirectException;
@@ -80,7 +81,7 @@ abstract class ControllerBase implements ControllerInterface
      *
      * @return mixed
      *
-     * @throws \DomainException
+     * @throws DomainException
      */
     protected function getArgument(string $name)
     {
@@ -98,8 +99,8 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @param string         $module
-     * @param string         $action
+     * @param string $module
+     * @param string $action
      * @param {string:mixed} $arguments
      *
      * @return void

@@ -37,6 +37,8 @@ interface ResponseBuilderInterface
 
     public function vars(): KeyValueCollection;
 
+    public function addTransformation(string $transformerClass, array $parameters = []): self;
+
     /**
      * @param RouteInterface $route
      * @param array          $vars

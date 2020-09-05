@@ -35,11 +35,11 @@ class Request implements RequestInterface
     }
 
     /**
-     * @param string         $method    HTTP method.
-     * @param string         $path      Request path.
-     * @param string         $transport
-     * @param string         $host
-     * @param int            $port
+     * @param string $method HTTP method.
+     * @param string $path   Request path.
+     * @param string $transport
+     * @param string $host
+     * @param int    $port
      * @param {string:mixed} $query     GET channel content.
      * @param {string:mixed} $post      POST channel content.
      * @param {string:mixed} $cookies   Cookies channel content.

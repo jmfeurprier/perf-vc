@@ -35,7 +35,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     /**
      * {@inheritDoc}
      */
-    public function import(SourceInterface $source): array
+    public function import(SourceInterface $source): RoutingRuleCollection
     {
         $this->rules = [];
 
@@ -43,7 +43,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
 
         $this->parseModules($content);
 
-        return $this->rules;
+        return new RoutingRuleCollection($this->rules);
     }
 
     /**

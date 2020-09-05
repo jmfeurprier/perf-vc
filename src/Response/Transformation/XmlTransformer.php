@@ -2,6 +2,8 @@
 
 namespace perf\Vc\Response\Transformation;
 
+use perf\Vc\Header\Header;
+
 class XmlTransformer implements TransformerInterface
 {
     public const CHARSET = 'charset';
@@ -30,7 +32,7 @@ class XmlTransformer implements TransformerInterface
 
         $charset = $parameters[self::CHARSET];
 
-        $headers[] = "Content-Type: application/xml; charset={$charset}";
+        $headers[] = new Header('Content-Type', "application/xml; charset={$charset}");
 
         return $headers;
     }

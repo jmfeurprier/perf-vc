@@ -45,8 +45,7 @@ YAML
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(0, $result);
+        $this->assertCount(0, $result->getAll());
     }
 
     public function testImportWithoutAction()
@@ -59,8 +58,7 @@ YAML
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(0, $result);
+        $this->assertCount(0, $result->getAll());
     }
 
     public function testImportWithoutRule()
@@ -73,8 +71,7 @@ YAML
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(0, $result);
+        $this->assertCount(0, $result->getAll());
     }
 
     public function testImportWithPathRule()
@@ -89,9 +86,7 @@ YAML
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(1, $result);
-        $this->assertContainsOnly(RoutingRuleInterface::class, $result);
+        $this->assertCount(1, $result->getAll());
     }
 
     public function testImportWithParameter()
@@ -109,9 +104,7 @@ YAML
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(1, $result);
-        $this->assertContainsOnly(RoutingRuleInterface::class, $result);
+        $this->assertCount(1, $result->getAll());
     }
 
     public function testImportWithHttpMethods()
@@ -129,9 +122,7 @@ YAML
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(1, $result);
-        $this->assertContainsOnly(RoutingRuleInterface::class, $result);
+        $this->assertCount(1, $result->getAll());
     }
 
     public function testImportWithMultipleRules()
@@ -153,9 +144,7 @@ YAML;
 
         $result = $this->importer->import($this->source);
 
-        $this->assertIsArray($result);
-        $this->assertCount(2, $result);
-        $this->assertContainsOnly(RoutingRuleInterface::class, $result);
+        $this->assertCount(2, $result->getAll());
     }
 
     private function givenYaml($yaml): void
