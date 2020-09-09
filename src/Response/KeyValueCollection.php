@@ -3,6 +3,7 @@
 namespace perf\Vc\Response;
 
 use DomainException;
+use perf\Vc\Exception\VcException;
 
 class KeyValueCollection
 {
@@ -31,13 +32,13 @@ class KeyValueCollection
             return $this->vars[$key];
         }
 
-        throw new DomainException();
+        throw new VcException();
     }
 
-    public function tryGet(string $key, $defaultValue)
+    public function tryGet(string $key, $defaultValue = null)
     {
         if ($this->has($key)) {
-            return $this->get($key);
+            return $this->vars[$key];
         }
 
         return $defaultValue;
@@ -56,17 +57,17 @@ class KeyValueCollection
         return array_key_exists($key, $this->vars);
     }
 
-    public function getAll()
+    public function getAll(): array
     {
         return $this->vars;
     }
 
-    public function unset(string $key): void
+    public function remove(string $key): void
     {
         unset($this->vars[$key]);
     }
 
-    public function clearAll(): void
+    public function removeAll(): void
     {
         $this->vars = [];
     }

@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Response\Transformation;
 
+use perf\Vc\Header\HeaderCollection;
 use PHPUnit\Framework\TestCase;
 
 class JsonTransformerTest extends TestCase
@@ -27,10 +28,10 @@ class JsonTransformerTest extends TestCase
 
     public function testHeadersAreAddedWithDefaultCharset()
     {
-        $headers = [];
+        $headers = new HeaderCollection();
 
         $result = $this->transformer->transformHeaders($headers, [], []);
 
-        $this->assertCount(1, $result);
+        $this->assertCount(1, $result->getAll());
     }
 }

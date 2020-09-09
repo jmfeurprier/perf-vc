@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Response\Transformation;
 
+use perf\Vc\Header\HeaderCollection;
 use PHPUnit\Framework\TestCase;
 
 class HtmlTransformerTest extends TestCase
@@ -24,10 +25,10 @@ class HtmlTransformerTest extends TestCase
 
     public function testHeadersAreAddedWithDefaultCharset()
     {
-        $headers = [];
+        $headers = new HeaderCollection();
 
         $result = $this->transformer->transformHeaders($headers, [], []);
 
-        $this->assertCount(1, $result);
+        $this->assertCount(1, $result->getAll());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Response\Transformation;
 
+use perf\Vc\Exception\TransformerNotFoundException;
 use perf\Vc\Exception\VcException;
 
 class TransformerRepository implements TransformerRepositoryInterface
@@ -46,6 +47,6 @@ class TransformerRepository implements TransformerRepositoryInterface
             return $this->transformers[$class];
         }
 
-        throw new VcException('Transformer not found.');
+        throw new TransformerNotFoundException($class);
     }
 }

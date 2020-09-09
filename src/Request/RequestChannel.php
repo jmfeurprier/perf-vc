@@ -6,25 +6,11 @@ use perf\Vc\Exception\RequestChannelKeyNotFoundException;
 
 class RequestChannel
 {
-    /**
-     * @var {string:mixed}
-     */
     private array $values;
 
-    /**
-     * @param {string:mixed} $values
-     */
     public function __construct(array $values)
     {
         $this->values = $values;
-    }
-
-    /**
-     * @return {string:mixed}
-     */
-    public function getAll(): array
-    {
-        return $this->values;
     }
 
     /**
@@ -55,11 +41,19 @@ class RequestChannel
             return $this->values[$key];
         }
 
-        throw new RequestChannelKeyNotFoundException("Request channel key '{$key}' not set.");
+        throw new RequestChannelKeyNotFoundException($key);
     }
 
     public function has(string $key): bool
     {
         return array_key_exists($key, $this->values);
+    }
+
+    /**
+     * @return {string:mixed}
+     */
+    public function getAll(): array
+    {
+        return $this->values;
     }
 }

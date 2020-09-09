@@ -4,13 +4,15 @@ namespace perf\Vc\Request;
 
 interface RequestInterface
 {
+    public const METHOD_CONNECT = 'CONNECT';
+    public const METHOD_DELETE  = 'DELETE';
     public const METHOD_GET     = 'GET';
     public const METHOD_HEAD    = 'HEAD';
+    public const METHOD_OPTIONS = 'OPTIONS';
     public const METHOD_PATCH   = 'PATCH';
     public const METHOD_POST    = 'POST';
     public const METHOD_PUT     = 'PUT';
-    public const METHOD_DELETE  = 'DELETE';
-    public const METHOD_OPTIONS = 'OPTIONS';
+    public const METHOD_TRACE   = 'TRACE';
 
     public const TRANSPORT_HTTP  = 'http';
     public const TRANSPORT_HTTPS = 'https';
@@ -29,7 +31,7 @@ interface RequestInterface
 
     public function getHost(): string;
 
-    public function getPort(): string;
+    public function getPort(): int;
 
     public function getPath(): string;
 

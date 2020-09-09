@@ -2,6 +2,9 @@
 
 namespace perf\Vc\Redirection;
 
+use perf\HttpStatus\Exception\HttpProtocolNotFoundException;
+use perf\HttpStatus\Exception\HttpStatusNotFoundException;
+use perf\HttpStatus\HttpStatusInterface;
 use perf\HttpStatus\HttpStatusRepository;
 use perf\HttpStatus\HttpStatusRepositoryInterface;
 use perf\Vc\Header\Header;
@@ -29,7 +32,7 @@ class RedirectionHeadersGenerator implements RedirectionHeadersGeneratorInterfac
     {
         // @todo Validate URL.
 
-        $httpStatus = $this->getHttpStatusRepository()->get($httpStatusCode, $httpVersion);
+        $httpStatus = $this->getHttpStatus($httpStatusCode, $httpVersion);
 
         return [
             new Header($httpStatus->toHeader()),
@@ -38,10 +41,15 @@ class RedirectionHeadersGenerator implements RedirectionHeadersGeneratorInterfac
     }
 
     /**
-     * @return HttpStatusRepositoryInterface
+     * @param int    $httpStatusCode
+     * @param string $httpVersion
+     *
+     * @return HttpStatusInterface
+     * @throws HttpProtocolNotFoundException
+     * @throws HttpStatusNotFoundException
      */
-    private function getHttpStatusRepository(): HttpStatusRepositoryInterface
+    private function getHttpStatus(int $httpStatusCode, string $httpVersion)
     {
-        return $this->httpStatusRepository;
+        return $this->httpStatusRepository->get($httpStatusCode, $httpVersion);
     }
 }

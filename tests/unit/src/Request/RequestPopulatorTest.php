@@ -25,6 +25,8 @@ class RequestPopulatorTest extends TestCase
             [
                 'REQUEST_METHOD' => 'OPTIONS',
                 'REQUEST_URI'    => '/',
+                'SERVER_NAME'    => 'localhost',
+                'SERVER_PORT'    => 80,
             ]
         );
 
@@ -38,11 +40,45 @@ class RequestPopulatorTest extends TestCase
         $this->givenServerValues(
             [
                 'REQUEST_URI' => '/',
+                'SERVER_NAME' => 'localhost',
+                'SERVER_PORT' => 80,
             ]
         );
 
         $this->expectException(VcException::class);
         $this->expectExceptionMessage('Failed to retrieve HTTP method.');
+
+        $this->whenPopulate();
+    }
+
+    public function testPopulateWithoutServerRequestHostWillThrowException()
+    {
+        $this->givenServerValues(
+            [
+                'REQUEST_METHOD' => 'OPTIONS',
+                'REQUEST_URI'    => '/',
+                'SERVER_PORT'    => 80,
+            ]
+        );
+
+        $this->expectException(VcException::class);
+        $this->expectExceptionMessage('Failed to retrieve HTTP host.');
+
+        $this->whenPopulate();
+    }
+
+    public function testPopulateWithoutServerRequestPortWillThrowException()
+    {
+        $this->givenServerValues(
+            [
+                'REQUEST_METHOD' => 'OPTIONS',
+                'REQUEST_URI'    => '/',
+                'SERVER_NAME'    => 'localhost',
+            ]
+        );
+
+        $this->expectException(VcException::class);
+        $this->expectExceptionMessage('Failed to retrieve HTTP port.');
 
         $this->whenPopulate();
     }
@@ -54,6 +90,8 @@ class RequestPopulatorTest extends TestCase
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI'    => '/',
                 'HTTPS'          => 'on',
+                'SERVER_NAME'    => 'localhost',
+                'SERVER_PORT'    => 443,
             ]
         );
 
@@ -68,6 +106,8 @@ class RequestPopulatorTest extends TestCase
             [
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI'    => '/',
+                'SERVER_NAME'    => 'localhost',
+                'SERVER_PORT'    => 80,
             ]
         );
 
@@ -82,6 +122,8 @@ class RequestPopulatorTest extends TestCase
             [
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI'    => '/foo/bar.txt',
+                'SERVER_NAME'    => 'localhost',
+                'SERVER_PORT'    => 80,
             ]
         );
 
@@ -97,6 +139,8 @@ class RequestPopulatorTest extends TestCase
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI'    => '/foo/bar.txt',
                 'REDIRECT_URL'   => '/baz/qux.txt',
+                'SERVER_NAME'    => 'localhost',
+                'SERVER_PORT'    => 80,
             ]
         );
 
@@ -110,6 +154,8 @@ class RequestPopulatorTest extends TestCase
         $this->givenServerValues(
             [
                 'REQUEST_METHOD' => 'GET',
+                'SERVER_NAME'    => 'localhost',
+                'SERVER_PORT'    => 80,
             ]
         );
 
@@ -125,6 +171,8 @@ class RequestPopulatorTest extends TestCase
             [
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI'    => ':1',
+                'SERVER_NAME'    => 'localhost',
+                'SERVER_PORT'    => 80,
             ]
         );
 
@@ -144,6 +192,8 @@ class RequestPopulatorTest extends TestCase
             [
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI'    => '/',
+                'SERVER_NAME'    => 'localhost',
+                'SERVER_PORT'    => 80,
             ]
         );
         $this->givenGetValues($getValues);
@@ -163,6 +213,8 @@ class RequestPopulatorTest extends TestCase
             [
                 'REQUEST_METHOD' => 'POST',
                 'REQUEST_URI'    => '/',
+                'SERVER_NAME'    => 'localhost',
+                'SERVER_PORT'    => 80,
             ]
         );
         $this->givenPostValues($postValues);
@@ -183,6 +235,8 @@ class RequestPopulatorTest extends TestCase
             [
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI'    => '/',
+                'SERVER_NAME'    => 'localhost',
+                'SERVER_PORT'    => 80,
             ]
         );
         $this->givenCookieValues($cookieValues);
@@ -197,6 +251,8 @@ class RequestPopulatorTest extends TestCase
         $serverValues = [
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI'    => '/',
+            'SERVER_NAME'    => 'localhost',
+            'SERVER_PORT'    => 80,
         ];
 
         $this->givenServerValues($serverValues);

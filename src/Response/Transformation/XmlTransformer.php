@@ -3,6 +3,7 @@
 namespace perf\Vc\Response\Transformation;
 
 use perf\Vc\Header\Header;
+use perf\Vc\Header\HeaderCollection;
 
 class XmlTransformer implements TransformerInterface
 {
@@ -23,7 +24,7 @@ class XmlTransformer implements TransformerInterface
     /**
      * {@inheritDoc}
      */
-    public function transformHeaders(array $headers, array $vars, array $parameters): array
+    public function transformHeaders(HeaderCollection $headers, array $vars, array $parameters): HeaderCollection
     {
         $parameters = array_replace(
             self::PARAMETERS_DEFAULT,
@@ -32,7 +33,7 @@ class XmlTransformer implements TransformerInterface
 
         $charset = $parameters[self::CHARSET];
 
-        $headers[] = new Header('Content-Type', "application/xml; charset={$charset}");
+        $headers->replace(new Header('Content-Type', "application/xml; charset={$charset}"));
 
         return $headers;
     }

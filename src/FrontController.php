@@ -43,13 +43,7 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     * Runs the front controller.
-     *
-     * @param RequestInterface $request
-     *
-     * @return ResponseInterface
-     *
-     * @throws Exception
+     * {@inheritDoc}
      */
     public function run(RequestInterface $request): ResponseInterface
     {
@@ -73,6 +67,7 @@ class FrontController implements FrontControllerInterface
      *
      * @throws RouteNotFoundException
      * @throws VcException
+     * @throws Exception
      */
     protected function onRouteNotFound(): ResponseInterface
     {
@@ -89,6 +84,7 @@ class FrontController implements FrontControllerInterface
      * @return ResponseInterface
      *
      * @throws VcException
+     * @throws Exception
      */
     protected function onFailure(Exception $exception): ResponseInterface
     {
@@ -109,6 +105,7 @@ class FrontController implements FrontControllerInterface
      * @return ResponseInterface
      *
      * @throws VcException
+     * @throws Exception
      */
     protected function forward(RouteInterface $route): ResponseInterface
     {

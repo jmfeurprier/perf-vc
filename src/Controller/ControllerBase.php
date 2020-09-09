@@ -2,10 +2,11 @@
 
 namespace perf\Vc\Controller;
 
-use DomainException;
 use Exception;
 use perf\Vc\Exception\ForwardException;
 use perf\Vc\Exception\RedirectException;
+use perf\Vc\Exception\RouteArgumentNotFoundException;
+use perf\Vc\Exception\VcException;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilder;
 use perf\Vc\Response\ResponseBuilderInterface;
@@ -34,6 +35,10 @@ abstract class ControllerBase implements ControllerInterface
             $this->executeHookPre();
             $this->execute();
             $this->executeHookPost();
+        } catch (RedirectException $e) {
+            throw $e;
+        } catch (ForwardException $e) {
+            throw $e;
         } catch (Exception $e) {
             return $this->onExecutionException($e);
         }
@@ -41,12 +46,36 @@ abstract class ControllerBase implements ControllerInterface
         return $this->responseBuilder->build($route);
     }
 
+    /**
+     * @return void
+     *
+     * @throws RedirectException
+     * @throws ForwardException
+     * @throws VcException
+     * @throws Exception
+     */
     protected function executeHookPre(): void
     {
     }
 
+    /**
+     * @return void
+     *
+     * @throws RedirectException
+     * @throws ForwardException
+     * @throws VcException
+     * @throws Exception
+     */
     abstract protected function execute(): void;
 
+    /**
+     * @return void
+     *
+     * @throws RedirectException
+     * @throws ForwardException
+     * @throws VcException
+     * @throws Exception
+     */
     protected function executeHookPost(): void
     {
     }
@@ -56,6 +85,9 @@ abstract class ControllerBase implements ControllerInterface
      *
      * @return ResponseInterface
      *
+     * @throws RedirectException
+     * @throws ForwardException
+     * @throws VcException
      * @throws Exception
      */
     protected function onExecutionException(Exception $e): ResponseInterface
@@ -81,7 +113,7 @@ abstract class ControllerBase implements ControllerInterface
      *
      * @return mixed
      *
-     * @throws DomainException
+     * @throws RouteArgumentNotFoundException
      */
     protected function getArgument(string $name)
     {

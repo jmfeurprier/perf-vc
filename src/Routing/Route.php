@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace perf\Vc\Routing;
 
 use perf\Vc\Controller\ControllerAddress;
-use perf\Vc\Exception\VcException;
+use perf\Vc\Exception\RouteArgumentNotFoundException;
 
 class Route implements RouteInterface
 {
@@ -58,7 +58,7 @@ class Route implements RouteInterface
             return $this->arguments[$name];
         }
 
-        throw new VcException("Route argument with name '{$name}' does not exist.");
+        throw new RouteArgumentNotFoundException($name);
     }
 
     public function hasArgument(string $name): bool

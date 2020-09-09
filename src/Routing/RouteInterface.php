@@ -3,6 +3,7 @@
 namespace perf\Vc\Routing;
 
 use perf\Vc\Controller\ControllerAddress;
+use perf\Vc\Exception\RouteArgumentNotFoundException;
 use perf\Vc\Exception\VcException;
 
 interface RouteInterface
@@ -21,7 +22,7 @@ interface RouteInterface
      *
      * @return mixed
      *
-     * @throws VcException
+     * @throws RouteArgumentNotFoundException
      */
     public function getArgument(string $name);
 

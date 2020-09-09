@@ -8,6 +8,7 @@ use perf\Source\SourceInterface;
 use perf\Source\StringSource;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
+use perf\Vc\Header\HeaderCollection;
 use perf\Vc\Response\Transformation\Transformation;
 use perf\Vc\Response\Transformation\TransformerRepositoryInterface;
 use perf\Vc\Routing\RouteInterface;
@@ -26,10 +27,7 @@ class ResponseBuilder implements ResponseBuilderInterface
 
     private ?int $httpStatusCode;
 
-    /**
-     * @var Header[]
-     */
-    private array $headers = [];
+    private HeaderCollection $headers;
 
     /**
      * @var string|SourceInterface
@@ -54,6 +52,7 @@ class ResponseBuilder implements ResponseBuilderInterface
         $this->templateLocator       = $templateLocator;
         $this->templateRenderer      = $templateRenderer;
         $this->transformerRepository = $transformerRepository;
+        $this->headers               = new HeaderCollection();
         $this->vars                  = new KeyValueCollection($vars);
     }
 
@@ -66,16 +65,21 @@ class ResponseBuilder implements ResponseBuilderInterface
 
     public function addHeader(string $header, string $value)
     {
-        $this->headers[] = new Header($header, $value);
+        $this->headers->add(new Header($header, $value));
 
         return $this;
     }
 
     public function addRawHeader(string $header): self
     {
-        $this->headers[] = new Header($header);
+        $this->headers->add(new Header($header));
 
         return $this;
+    }
+
+    public function headers(): HeaderCollection
+    {
+        return $this->headers;
     }
 
     /**
@@ -160,7 +164,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      */
     private function buildHeaders(): array
     {
-        $headers = $this->headers;
+        $headers = clone $this->headers;
 
         foreach ($this->transformations as $transformation) {
             $headers = $transformation->getTransformer()
@@ -171,6 +175,8 @@ class ResponseBuilder implements ResponseBuilderInterface
                 )
             ;
         }
+
+        $headers = $headers->getAll();
 
         if (!empty($this->httpStatusCode)) {
             try {

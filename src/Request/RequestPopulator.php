@@ -84,14 +84,20 @@ class RequestPopulator implements RequestPopulatorInterface
 
     private function getHost(): string
     {
-        // @todo
-        return 'localhost';
+        if (array_key_exists('SERVER_NAME', $this->server)) {
+            return $this->server['SERVER_NAME'];
+        }
+
+        throw new VcException('Failed to retrieve HTTP host.');
     }
 
     private function getPort(): int
     {
-        // @todo
-        return 80;
+        if (array_key_exists('SERVER_PORT', $this->server)) {
+            return $this->server['SERVER_PORT'];
+        }
+
+        throw new VcException('Failed to retrieve HTTP port.');
     }
 
     /**

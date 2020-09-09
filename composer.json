@@ -4,17 +4,17 @@
 	"license"     : "MIT",
 	"description" : "Simple View-Controller stack",
 	"require"     : {
-		"php"              : ">=7.4",
-        "ext-json"         : "*",
-      	"ext-simplexml"    : "*",
-		"perf/http-status" : "^3.0",
-		"perf/source"      : "^2.0",
-		"perf/caching"     : "^3.1",
-		"perf/timing"      : "^2.0",
-		"twig/twig"        : "^3.0",
-		"symfony/dependency-injection": "^5.0",
-		"symfony/yaml": "^5.0",
-		"symfony/expression-language": "^5.1"
+		"php"                          : ">=7.4",
+        "ext-json"                     : "*",
+      	"ext-simplexml"                : "*",
+		"perf/http-status"             : "^3.0",
+		"perf/source"                  : "^2.0",
+		"perf/caching"                 : "^3.1",
+		"perf/timing"                  : "^2.0",
+		"twig/twig"                    : "^3.0",
+		"symfony/dependency-injection" : "^5.0",
+		"symfony/expression-language"  : "^5.1",
+		"symfony/yaml"                 : "^5.0"
     },
 	"require-dev": {
 		"ext-xdebug"                : "*",
@@ -27,5 +27,8 @@
 		"psr-4" : {
 			"perf\\Vc\\" : "src/"
 		}
+	},
+	"config": {
+		"sort-packages": true
 	}
 }
