@@ -102,16 +102,23 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
 
     private function parseRule(SimpleXMLElement $sxeRule): void
     {
+        $pathTemplate        = $this->parsePathTemplate($sxeRule);
         $httpMethods         = $this->parseHttpMethods($sxeRule);
         $argumentDefinitions = $this->parseArgumentDefinitions($sxeRule);
-        $pathPattern         = $this->parsePath($sxeRule, $argumentDefinitions);
+        $pathPattern         = $this->parsePathPattern($pathTemplate, $argumentDefinitions);
 
         $this->rules[] = new RoutingRule(
             $this->address,
+            $pathTemplate,
             $httpMethods,
             $pathPattern,
             $argumentDefinitions
         );
+    }
+
+    private function parsePathTemplate(SimpleXMLElement $sxeRule): string
+    {
+        return (string) $sxeRule['path'];
     }
 
     /**
@@ -186,15 +193,13 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param SimpleXMLElement     $sxeRule
+     * @param string               $pathTemplate
      * @param ArgumentDefinition[] $argumentDefinitions
      *
      * @return string
      */
-    private function parsePath(SimpleXMLElement $sxeRule, array $argumentDefinitions): string
+    private function parsePathPattern(string $pathTemplate, array $argumentDefinitions): string
     {
-        $path = (string) $sxeRule['path'];
-
-        return $this->pathPatternParser->parse($path, $argumentDefinitions);
+        return $this->pathPatternParser->parse($pathTemplate, $argumentDefinitions);
     }
 }

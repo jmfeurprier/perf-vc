@@ -5,9 +5,9 @@ namespace perf\Vc\Redirection;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseInterface;
 
-interface RedirectorInterface
+interface RedirectionResponseGeneratorInterface
 {
-    public function redirect(
+    public function generate(
         RequestInterface $request,
         string $url,
         int $httpStatusCode,

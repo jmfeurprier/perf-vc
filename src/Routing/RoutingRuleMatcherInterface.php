@@ -9,5 +9,5 @@ interface RoutingRuleMatcherInterface
     public function tryMatch(
         RequestInterface $request,
         RoutingRuleInterface $routingRule
-    ): ?RouteInterface;
+    ): RoutingRuleMatchingOutcomeInterface;
 }

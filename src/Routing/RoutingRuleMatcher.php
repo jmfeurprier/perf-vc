@@ -16,18 +16,18 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
     public function tryMatch(
         RequestInterface $request,
         RoutingRuleInterface $routingRule
-    ): ?RouteInterface {
+    ): RoutingRuleMatchingOutcomeInterface {
         $this->init($request, $routingRule);
 
         if (!$this->isExpectedHttpMethod()) {
-            return null;
+            return new RoutingRuleNotMatched();
         }
 
         if (!$this->isExpectedPath()) {
-            return null;
+            return new RoutingRuleNotMatched();
         }
 
-        return $this->buildRoute();
+        return new RoutingRuleMatched($this->getRouteArguments());
     }
 
     private function init(RequestInterface $request, RoutingRuleInterface $routingRule): void
@@ -78,15 +78,7 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
         );
     }
 
-    private function buildRoute(): RouteInterface
-    {
-        return new Route(
-            $this->routingRule->getAddress(),
-            $this->getArguments()
-        );
-    }
-
-    private function getArguments(): array
+    private function getRouteArguments(): array
     {
         foreach (array_keys($this->matches) as $key) {
             if (is_int($key)) {

@@ -122,21 +122,22 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param string $path
+     * @param string $pathTemplate
      * @param array  $actionRule
      *
      * @return RoutingRule
      *
      * @throws VcException
      */
-    private function parseRule(string $path, array $actionRule): RoutingRule
+    private function parseRule(string $pathTemplate, array $actionRule): RoutingRule
     {
         $httpMethods         = $this->parseHttpMethods($actionRule);
         $argumentDefinitions = $this->parseArgumentDefinitions($actionRule);
-        $pathPattern         = $this->parsePathPattern($path, $argumentDefinitions);
+        $pathPattern         = $this->parsePathPattern($pathTemplate, $argumentDefinitions);
 
         return new RoutingRule(
             $this->address,
+            $pathTemplate,
             $httpMethods,
             $pathPattern,
             $argumentDefinitions
@@ -222,13 +223,13 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param string               $path
+     * @param string               $pathTemplate
      * @param ArgumentDefinition[] $argumentDefinitions
      *
      * @return string
      */
-    private function parsePathPattern(string $path, array $argumentDefinitions): string
+    private function parsePathPattern(string $pathTemplate, array $argumentDefinitions): string
     {
-        return $this->pathPatternParser->parse($path, $argumentDefinitions);
+        return $this->pathPatternParser->parse($pathTemplate, $argumentDefinitions);
     }
 }

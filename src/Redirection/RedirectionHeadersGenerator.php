@@ -7,6 +7,7 @@ use perf\HttpStatus\Exception\HttpStatusNotFoundException;
 use perf\HttpStatus\HttpStatusInterface;
 use perf\HttpStatus\HttpStatusRepository;
 use perf\HttpStatus\HttpStatusRepositoryInterface;
+use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 
 class RedirectionHeadersGenerator implements RedirectionHeadersGeneratorInterface
@@ -45,11 +46,17 @@ class RedirectionHeadersGenerator implements RedirectionHeadersGeneratorInterfac
      * @param string $httpVersion
      *
      * @return HttpStatusInterface
-     * @throws HttpProtocolNotFoundException
-     * @throws HttpStatusNotFoundException
+     *
+     * @throws VcException
      */
-    private function getHttpStatus(int $httpStatusCode, string $httpVersion)
+    private function getHttpStatus(int $httpStatusCode, string $httpVersion): HttpStatusInterface
     {
-        return $this->httpStatusRepository->get($httpStatusCode, $httpVersion);
+        try {
+            return $this->httpStatusRepository->get($httpStatusCode, $httpVersion);
+        } catch (HttpProtocolNotFoundException $e) {
+            throw new VcException('HTTP protocol not found.', 0, $e);
+        } catch (HttpStatusNotFoundException $e) {
+            throw new VcException('HTTP status not found.', 0, $e);
+        }
     }
 }

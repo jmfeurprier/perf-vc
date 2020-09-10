@@ -5,7 +5,7 @@ namespace perf\Vc;
 use perf\Vc\Controller\ControllerFactoryInterface;
 use perf\Vc\Controller\ControllerInterface;
 use perf\Vc\Exception\RouteNotFoundException;
-use perf\Vc\Redirection\RedirectorInterface;
+use perf\Vc\Redirection\RedirectionResponseGeneratorInterface;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Response\ResponseInterface;
@@ -21,7 +21,7 @@ class FrontControllerTest extends TestCase
 
     private ResponseBuilderFactoryInterface $responseBuilderFactory;
 
-    private RedirectorInterface $redirector;
+    private RedirectionResponseGeneratorInterface $redirectionResponseGenerator;
 
     private FrontController $frontController;
 
@@ -29,16 +29,16 @@ class FrontControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->router                 = $this->createMock(RouterInterface::class);
-        $this->controllerFactory      = $this->createMock(ControllerFactoryInterface::class);
-        $this->responseBuilderFactory = $this->createMock(ResponseBuilderFactoryInterface::class);
-        $this->redirector             = $this->createMock(RedirectorInterface::class);
+        $this->router                       = $this->createMock(RouterInterface::class);
+        $this->controllerFactory            = $this->createMock(ControllerFactoryInterface::class);
+        $this->responseBuilderFactory       = $this->createMock(ResponseBuilderFactoryInterface::class);
+        $this->redirectionResponseGenerator = $this->createMock(RedirectionResponseGeneratorInterface::class);
 
         $this->frontController = new FrontController(
             $this->router,
             $this->controllerFactory,
             $this->responseBuilderFactory,
-            $this->redirector
+            $this->redirectionResponseGenerator
         );
 
         $this->request = $this->createMock(RequestInterface::class);
@@ -55,7 +55,7 @@ class FrontControllerTest extends TestCase
     {
         $route = $this->createMock(RouteInterface::class);
 
-        $this->router->expects($this->once())->method('tryGetRoute')->willReturn($route);
+        $this->router->expects($this->once())->method('tryGetByRequest')->willReturn($route);
 
         $response = $this->createMock(ResponseInterface::class);
 

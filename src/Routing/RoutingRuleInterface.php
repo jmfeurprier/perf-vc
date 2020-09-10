@@ -8,6 +8,8 @@ interface RoutingRuleInterface
 {
     public function getAddress(): ControllerAddress;
 
+    public function getPathTemplate(): string;
+
     /**
      * @return string[]
      */

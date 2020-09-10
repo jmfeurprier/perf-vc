@@ -2,6 +2,8 @@
 
 namespace perf\Vc\Redirection;
 
+use perf\HttpStatus\Exception\HttpProtocolNotFoundException;
+use perf\HttpStatus\Exception\HttpStatusNotFoundException;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 

@@ -20,11 +20,6 @@ interface ResponseBuilderInterface
      */
     public function setContent($content): self;
 
-    /**
-     * @param {string:mixed} $vars
-     *
-     * @return ResponseBuilder
-     */
     public function setVars(array $vars): self;
 
     /**

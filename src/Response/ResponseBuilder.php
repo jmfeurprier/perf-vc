@@ -94,11 +94,6 @@ class ResponseBuilder implements ResponseBuilderInterface
         return $this;
     }
 
-    /**
-     * @param {string:mixed} $vars
-     *
-     * @return ResponseBuilder
-     */
     public function setVars(array $vars): self
     {
         $this->vars->setMany($vars);

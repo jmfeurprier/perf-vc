@@ -23,7 +23,7 @@ class RoutingRuleMatcherTest extends TestCase
 
     private RoutingRule $routingRule;
 
-    private $result;
+    private RoutingRuleMatchingOutcomeInterface $result;
 
     protected function setUp(): void
     {
@@ -36,7 +36,7 @@ class RoutingRuleMatcherTest extends TestCase
     public function testTryMatchWithUnspecifiedMethodWillReturnExpected()
     {
         $this->givenRequest('GET', '/foo/bar');
-        $this->givenRoutingRule([], '#^/foo/bar$#', []);
+        $this->givenRoutingRule('foo/bar', [], '#^/foo/bar$#', []);
 
         $this->whenTryMatch();
 
@@ -46,7 +46,7 @@ class RoutingRuleMatcherTest extends TestCase
     public function testTryMatchWithDifferentMethodWillReturnNull()
     {
         $this->givenRequest('GET', '/foo/bar');
-        $this->givenRoutingRule(['POST'], '#^/foo/bar$#', []);
+        $this->givenRoutingRule('foo/bar', ['POST'], '#^/foo/bar$#', []);
 
         $this->whenTryMatch();
 
@@ -56,7 +56,7 @@ class RoutingRuleMatcherTest extends TestCase
     public function testTryMatchWithSameMethodWillReturnExpected()
     {
         $this->givenRequest('GET', '/foo/bar');
-        $this->givenRoutingRule(['GET'], '#^/foo/bar$#', []);
+        $this->givenRoutingRule('foo/bar', ['GET'], '#^/foo/bar$#', []);
 
         $this->whenTryMatch();
 
@@ -66,7 +66,7 @@ class RoutingRuleMatcherTest extends TestCase
     public function testTryMatchWithDifferenPathWillReturnNull()
     {
         $this->givenRequest('GET', '/foo/bar');
-        $this->givenRoutingRule([], '#^/baz/qux#', []);
+        $this->givenRoutingRule('foo/bar', [], '#^/baz/qux#', []);
 
         $this->whenTryMatch();
 
@@ -79,9 +79,19 @@ class RoutingRuleMatcherTest extends TestCase
         $this->request->expects($this->any())->method('getPath')->willReturn($path);
     }
 
-    private function givenRoutingRule(array $methods, string $pathPattern, array $argumentDefinitions): void
-    {
-        $this->routingRule = new RoutingRule($this->address, $methods, $pathPattern, $argumentDefinitions);
+    private function givenRoutingRule(
+        string $pathTemplate,
+        array $methods,
+        string $pathPattern,
+        array $argumentDefinitions
+    ): void {
+        $this->routingRule = new RoutingRule(
+            $this->address,
+            $pathTemplate,
+            $methods,
+            $pathPattern,
+            $argumentDefinitions
+        );
     }
 
     private function whenTryMatch(): void
@@ -91,12 +101,11 @@ class RoutingRuleMatcherTest extends TestCase
 
     private function thenMatch(): void
     {
-        $this->assertInstanceOf(RouteInterface::class, $this->result);
-        $this->assertSame($this->address, $this->result->getAddress());
+        $this->assertTrue($this->result->isMatched());
     }
 
     private function thenNoMatch(): void
     {
-        $this->assertNull($this->result);
+        $this->assertFalse($this->result->isMatched());
     }
 }

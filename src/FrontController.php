@@ -3,6 +3,7 @@
 namespace perf\Vc;
 
 use Exception;
+use perf\Vc\Controller\ControllerAddress;
 use perf\Vc\Controller\ControllerFactoryInterface;
 use perf\Vc\Controller\ControllerInterface;
 use perf\Vc\Exception\ControllerClassNotFoundException;
@@ -11,7 +12,7 @@ use perf\Vc\Exception\InvalidControllerException;
 use perf\Vc\Exception\RedirectException;
 use perf\Vc\Exception\RouteNotFoundException;
 use perf\Vc\Exception\VcException;
-use perf\Vc\Redirection\RedirectorInterface;
+use perf\Vc\Redirection\RedirectionResponseGeneratorInterface;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Response\ResponseInterface;
@@ -26,7 +27,7 @@ class FrontController implements FrontControllerInterface
 
     private ResponseBuilderFactoryInterface $responseBuilderFactory;
 
-    private RedirectorInterface $redirector;
+    private RedirectionResponseGeneratorInterface $redirectionResponseGenerator;
 
     private RequestInterface $request;
 
@@ -34,12 +35,12 @@ class FrontController implements FrontControllerInterface
         RouterInterface $router,
         ControllerFactoryInterface $controllerFactory,
         ResponseBuilderFactoryInterface $responseBuilderFactory,
-        RedirectorInterface $redirector
+        RedirectionResponseGeneratorInterface $redirectionResponseGenerator
     ) {
-        $this->router                 = $router;
-        $this->controllerFactory      = $controllerFactory;
-        $this->responseBuilderFactory = $responseBuilderFactory;
-        $this->redirector             = $redirector;
+        $this->router                       = $router;
+        $this->controllerFactory            = $controllerFactory;
+        $this->responseBuilderFactory       = $responseBuilderFactory;
+        $this->redirectionResponseGenerator = $redirectionResponseGenerator;
     }
 
     /**
@@ -49,14 +50,14 @@ class FrontController implements FrontControllerInterface
     {
         $this->request = $request;
 
-        $route = $this->router->tryGetRoute($this->request);
+        $route = $this->router->tryGetByRequest($this->request);
 
         if (!$route) {
             return $this->onRouteNotFound();
         }
 
         try {
-            return $this->forward($route);
+            return $this->runController($route);
         } catch (Exception $exception) {
             return $this->onFailure($exception);
         }
@@ -71,7 +72,7 @@ class FrontController implements FrontControllerInterface
      */
     protected function onRouteNotFound(): ResponseInterface
     {
-        throw new RouteNotFoundException('Route not found.');
+        throw new RouteNotFoundException();
     }
 
     /**
@@ -98,28 +99,53 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     * Forwards execution to a controller.
-     *
-     * @param RouteInterface $route Route.
+     * @param RouteInterface $route
      *
      * @return ResponseInterface
      *
      * @throws VcException
      * @throws Exception
      */
-    protected function forward(RouteInterface $route): ResponseInterface
+    private function runController(RouteInterface $route): ResponseInterface
     {
-        $this->route     = $route;
         $controller      = $this->getController($route);
         $responseBuilder = $this->responseBuilderFactory->make();
 
         try {
             return $controller->run($this->request, $route, $responseBuilder);
         } catch (ForwardException $exception) {
-            return $this->forward($exception->getRoute());
+            return $this->forward($exception->getModule(), $exception->getAction(), $exception->getArguments());
         } catch (RedirectException $exception) {
             return $this->redirectToUrl($exception->getUrl(), $exception->getHttpStatusCode());
         }
+    }
+
+    /**
+     * @param string $module
+     * @param string $action
+     * @param array  $arguments
+     *
+     * @return ResponseInterface
+     *
+     * @throws RouteNotFoundException
+     * @throws VcException
+     * @throws Exception
+     */
+    protected function forward(string $module, string $action, array $arguments = []): ResponseInterface
+    {
+        $route = $this->router->tryGetByAddress(
+            new ControllerAddress(
+                $module,
+                $action
+            ),
+            $arguments
+        );
+
+        if (null === $route) {
+            return $this->onRouteNotFound();
+        }
+
+        return $this->runController($route);
     }
 
     /**
@@ -135,9 +161,12 @@ class FrontController implements FrontControllerInterface
         return $this->controllerFactory->make($route);
     }
 
-    private function redirectToUrl(string $url, int $httpStatusCode, string $httpVersion = null): ResponseInterface
-    {
-        return $this->redirector->redirect(
+    private function redirectToUrl(
+        string $url,
+        int $httpStatusCode,
+        string $httpVersion = null
+    ): ResponseInterface {
+        return $this->redirectionResponseGenerator->generate(
             $this->request,
             $url,
             $httpStatusCode,

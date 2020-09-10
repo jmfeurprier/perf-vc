@@ -12,7 +12,7 @@ class InvalidControllerException extends VcException
 
     public function __construct(string $controllerClass, RouteInterface $route)
     {
-        $message = "Controller not valid for {$this->route->getAddress()} " .
+        $message = "Controller not valid for {$route->getAddress()} " .
             "(class {$controllerClass} must implement ControllerInterface).";
 
         parent::__construct($message);

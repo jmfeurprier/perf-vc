@@ -2,28 +2,42 @@
 
 namespace perf\Vc\Exception;
 
-use perf\Vc\Routing\RouteInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ForwardExceptionTest extends TestCase
 {
-    /**
-     * @var RouteInterface|MockObject
-     */
-    private $route;
-
-    private ForwardException $exception;
-
-    protected function setUp(): void
+    public function testGetModule()
     {
-        $this->route = $this->createMock(RouteInterface::class);
+        $module    = 'foo';
+        $action    = 'bar';
+        $arguments = [];
 
-        $this->exception = new ForwardException($this->route);
+        $exception = new ForwardException($module, $action, $arguments);
+
+        $this->assertSame($module, $exception->getModule());
     }
 
-    public function testGetRoute()
+    public function testGetAction()
     {
-        $this->assertSame($this->route, $this->exception->getRoute());
+        $module    = 'foo';
+        $action    = 'bar';
+        $arguments = [];
+
+        $exception = new ForwardException($module, $action, $arguments);
+
+        $this->assertSame($action, $exception->getAction());
+    }
+
+    public function testGetArguments()
+    {
+        $module    = 'foo';
+        $action    = 'bar';
+        $arguments = [
+            'baz' => 'qux',
+        ];
+
+        $exception = new ForwardException($module, $action, $arguments);
+
+        $this->assertSame($arguments, $exception->getArguments());
     }
 }

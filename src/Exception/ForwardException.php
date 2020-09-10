@@ -2,21 +2,35 @@
 
 namespace perf\Vc\Exception;
 
-use perf\Vc\Routing\RouteInterface;
-
 class ForwardException extends VcException
 {
-    private RouteInterface $route;
+    private string $module;
 
-    public function __construct(RouteInterface $route)
+    private string $action;
+
+    private array $arguments;
+
+    public function __construct(string $module, string $action, array $arguments)
     {
         parent::__construct();
 
-        $this->route = $route;
+        $this->module    = $module;
+        $this->action    = $action;
+        $this->arguments = $arguments;
     }
 
-    public function getRoute(): RouteInterface
+    public function getModule(): string
     {
-        return $this->route;
+        return $this->module;
+    }
+
+    public function getAction(): string
+    {
+        return $this->action;
+    }
+
+    public function getArguments(): array
+    {
+        return $this->arguments;
     }
 }

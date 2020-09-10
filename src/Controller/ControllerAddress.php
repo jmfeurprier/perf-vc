@@ -26,6 +26,11 @@ class ControllerAddress
         return $this->action;
     }
 
+    public function equals(ControllerAddress $other): bool
+    {
+        return (($other->getModule() === $this->module) && ($other->getAction() === $this->action));
+    }
+
     public function __toString(): string
     {
         return $this->module . self::DELIMITER . $this->action;

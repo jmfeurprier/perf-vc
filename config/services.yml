@@ -37,8 +37,8 @@ services:
     perf\Vc\Redirection\RedirectionHeadersGeneratorInterface:
         class: perf\Vc\Redirection\RedirectionHeadersGenerator
 
-    perf\Vc\Redirection\RedirectorInterface:
-        class: perf\Vc\Redirection\Redirector
+    perf\Vc\Redirection\RedirectionResponseGeneratorInterface:
+        class: perf\Vc\Redirection\RedirectionResponseGenerator
 
     perf\Vc\Request\RequestInterface:
         factory: ['@perf\Vc\Request\RequestPopulatorInterface', populate]
@@ -51,6 +51,9 @@ services:
 
     perf\Vc\Response\ResponseSenderInterface:
         class: perf\Vc\Response\ResponseSender
+
+    perf\Vc\Routing\RouteBuilderInterface:
+        class: perf\Vc\Routing\RouteBuilder
 
     perf\Vc\Routing\RouterInterface:
         class: perf\Vc\Routing\Router

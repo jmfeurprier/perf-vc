@@ -8,6 +8,8 @@ class RoutingRule implements RoutingRuleInterface
 {
     private ControllerAddress $address;
 
+    private string $pathTemplate;
+
     /**
      * Expected HTTP methods (empty to accept any method).
      *
@@ -24,17 +26,20 @@ class RoutingRule implements RoutingRuleInterface
 
     /**
      * @param ControllerAddress    $address
+     * @param string               $pathTemplate
      * @param string[]             $httpMethods
      * @param string               $pathPattern
      * @param ArgumentDefinition[] $argumentDefinitions
      */
     public function __construct(
         ControllerAddress $address,
+        string $pathTemplate,
         array $httpMethods,
         string $pathPattern,
         array $argumentDefinitions
     ) {
         $this->address             = $address;
+        $this->pathTemplate        = $pathTemplate;
         $this->httpMethods         = $httpMethods; // @xxx
         $this->pathPattern         = $pathPattern;
         $this->argumentDefinitions = $argumentDefinitions; // @xxx
@@ -43,6 +48,11 @@ class RoutingRule implements RoutingRuleInterface
     public function getAddress(): ControllerAddress
     {
         return $this->address;
+    }
+
+    public function getPathTemplate(): string
+    {
+        return $this->pathTemplate;
     }
 
     /**

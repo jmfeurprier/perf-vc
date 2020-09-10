@@ -8,7 +8,7 @@ class PathPatternParser
 {
     private const ARGUMENT_FORMAT_DEFAULT = '[^/]+';
 
-    private string $pattern;
+    private string $pathTemplate;
 
     /**
      * @var ArgumentDefinition[]|{string:ArgumentDefinition}
@@ -20,16 +20,16 @@ class PathPatternParser
     /**
      * Attempts to parse provided path pattern.
      *
-     * @param string               $path
+     * @param string               $pathTemplate
      * @param ArgumentDefinition[] $argumentDefinitions
      *
      * @return string
      *
      * @throws VcException
      */
-    public function parse(string $path, array $argumentDefinitions): string
+    public function parse(string $pathTemplate, array $argumentDefinitions): string
     {
-        $this->init($path, $argumentDefinitions);
+        $this->init($pathTemplate, $argumentDefinitions);
 
         foreach ($this->getTokens() as $offset => $token) {
             $this->processToken($token, $offset);
@@ -39,18 +39,18 @@ class PathPatternParser
     }
 
     /**
-     * @param string               $pattern
+     * @param string               $pathTemplate
      * @param ArgumentDefinition[] $argumentDefinitions
      *
      * @return void
      *
      * @throws VcException
      */
-    private function init(string $pattern, array $argumentDefinitions): void
+    private function init(string $pathTemplate, array $argumentDefinitions): void
     {
-        $this->pattern                   = $pattern;
+        $this->pathTemplate              = $pathTemplate;
         $this->argumentDefinitionsByName = $this->indexArgumentDefinitionsByName($argumentDefinitions);
-        $this->regex                     = $this->pattern;
+        $this->regex                     = $this->pathTemplate;
     }
 
     private function indexArgumentDefinitionsByName(array $argumentDefinitions): array
@@ -81,7 +81,7 @@ class PathPatternParser
     {
         $matches = [];
 
-        if (false === preg_match_all('|({[^}]+})|', $this->pattern, $matches, PREG_OFFSET_CAPTURE)) {
+        if (false === preg_match_all('|({[^}]+})|', $this->pathTemplate, $matches, PREG_OFFSET_CAPTURE)) {
             throw new VcException("Failed to parse routing rule argument pattern.");
         }
 

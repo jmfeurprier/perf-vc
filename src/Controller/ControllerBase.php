@@ -11,7 +11,6 @@ use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilder;
 use perf\Vc\Response\ResponseBuilderInterface;
 use perf\Vc\Response\ResponseInterface;
-use perf\Vc\Routing\Route;
 use perf\Vc\Routing\RouteInterface;
 
 abstract class ControllerBase implements ControllerInterface
@@ -106,9 +105,6 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     *
-     * Helper method.
-     *
      * @param string $name
      *
      * @return mixed
@@ -125,15 +121,10 @@ abstract class ControllerBase implements ControllerInterface
         return $this->route;
     }
 
-    protected function getResponseBuilder(): ResponseBuilderInterface
-    {
-        return $this->responseBuilder;
-    }
-
     /**
      * @param string $module
      * @param string $action
-     * @param {string:mixed} $arguments
+     * @param array  $arguments
      *
      * @return void
      *
@@ -141,16 +132,10 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function forward(string $module, string $action, array $arguments = []): void
     {
-        $address = new ControllerAddress($module, $action);
-        $route   = new Route($address, $arguments);
-
-        throw new ForwardException($route);
+        throw new ForwardException($module, $action, $arguments);
     }
 
     /**
-     *
-     * Helper method.
-     *
      * @param string $url
      * @param int    $httpStatusCode
      *
@@ -163,11 +148,28 @@ abstract class ControllerBase implements ControllerInterface
         throw new RedirectException($url, $httpStatusCode);
     }
 
+    protected function setHttpStatusCode(int $code): void
+    {
+        $this->responseBuilder->setHttpStatusCode($code);
+    }
+
+    /**
+     * @param array $vars
+     *
+     * @return void
+     *
+     * @throws VcException
+     */
     protected function render(array $vars = []): void
     {
         $this->responseBuilder->renderTemplate(
             $this->route,
             $vars
         );
+    }
+
+    protected function getResponseBuilder(): ResponseBuilderInterface
+    {
+        return $this->responseBuilder;
     }
 }

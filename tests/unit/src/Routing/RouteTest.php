@@ -22,7 +22,7 @@ class RouteTest extends TestCase
 
     public function testGetAddress()
     {
-        $route = $this->buildRoute();
+        $route = $this->buildRoute('foo');
 
         $result = $route->getAddress();
 
@@ -31,7 +31,7 @@ class RouteTest extends TestCase
 
     public function testGetArgumentsWithoutArguments()
     {
-        $route = $this->buildRoute();
+        $route = $this->buildRoute('foo');
 
         $result = $route->getArguments();
 
@@ -40,9 +40,9 @@ class RouteTest extends TestCase
 
     public function testHasArgumentsWithNonExistingArgumentWillReturnFalse()
     {
-        $route = $this->buildRoute();
+        $route = $this->buildRoute('foo');
 
-        $result = $route->hasArgument('foo');
+        $result = $route->hasArgument('bar');
 
         $this->assertFalse($result);
     }
@@ -50,19 +50,19 @@ class RouteTest extends TestCase
     public function testHasArgumentsWithExistingArgumentWillReturnTrue()
     {
         $arguments = [
-            'foo' => 'bar',
+            'bar' => 'baz',
         ];
 
-        $route = $this->buildRoute($arguments);
+        $route = $this->buildRoute('foo', $arguments);
 
-        $result = $route->hasArgument('foo');
+        $result = $route->hasArgument('bar');
 
         $this->assertTrue($result);
     }
 
     public function testGetArgumentsWithNonExistingArgumentWillThrowException()
     {
-        $route = $this->buildRoute();
+        $route = $this->buildRoute('foo');
 
         $this->expectException(VcException::class);
 
@@ -72,14 +72,14 @@ class RouteTest extends TestCase
     public function testGetArgumentsWithExistingArgumentWillReturnExpected()
     {
         $arguments = [
-            'foo' => 'bar',
+            'bar' => 'baz',
         ];
 
-        $route = $this->buildRoute($arguments);
+        $route = $this->buildRoute('foo', $arguments);
 
-        $result = $route->getArgument('foo');
+        $result = $route->getArgument('bar');
 
-        $this->assertSame('bar', $result);
+        $this->assertSame('baz', $result);
     }
 
     public function testWithInvalidArgumentKeyWillThrowException()
@@ -93,8 +93,8 @@ class RouteTest extends TestCase
         $this->buildRoute($arguments);
     }
 
-    private function buildRoute(array $arguments = []): Route
+    private function buildRoute(string $path, array $arguments = []): Route
     {
-        return new Route($this->address, $arguments);
+        return new Route($this->address, $path, $arguments);
     }
 }

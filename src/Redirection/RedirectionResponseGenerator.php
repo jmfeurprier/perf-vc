@@ -3,13 +3,14 @@
 namespace perf\Vc\Redirection;
 
 use perf\Source\NullSource;
+use perf\Vc\Exception\RequestChannelKeyNotFoundException;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\Response;
 use perf\Vc\Response\ResponseInterface;
 
-class Redirector implements RedirectorInterface
+class RedirectionResponseGenerator implements RedirectionResponseGeneratorInterface
 {
     private RedirectionHeadersGeneratorInterface $redirectionHeadersGenerator;
 
@@ -28,13 +29,22 @@ class Redirector implements RedirectorInterface
         );
     }
 
-    public function __construct(
-        RedirectionHeadersGeneratorInterface $redirectionHeadersGenerator
-    ) {
+    public function __construct(RedirectionHeadersGeneratorInterface $redirectionHeadersGenerator)
+    {
         $this->redirectionHeadersGenerator = $redirectionHeadersGenerator;
     }
 
-    public function redirect(
+    /**
+     * @param RequestInterface $request
+     * @param string           $url
+     * @param int              $httpStatusCode
+     * @param null|string      $httpVersion
+     *
+     * @return ResponseInterface
+     *
+     * @throws VcException
+     */
+    public function generate(
         RequestInterface $request,
         string $url,
         int $httpStatusCode,
@@ -63,29 +73,32 @@ class Redirector implements RedirectorInterface
     /**
      * @return Header[]
      *
+     * @throws RequestChannelKeyNotFoundException
      * @throws VcException
      */
-    public function getHeaders(): array
+    private function getHeaders(): array
     {
-        return $this->redirectionHeadersGenerator
-            ->generate(
-                $this->url,
-                $this->httpStatusCode,
-                $this->getHttpVersion()
-            );
+        return $this->redirectionHeadersGenerator->generate(
+            $this->url,
+            $this->httpStatusCode,
+            $this->getHttpVersion()
+        );
     }
 
+    /**
+     * @return string
+     *
+     * @throws RequestChannelKeyNotFoundException
+     */
     private function getHttpVersion(): string
     {
         if (null !== $this->httpVersion) {
             return $this->httpVersion;
         }
 
-        $httpVersion = substr(
+        return substr(
             $this->request->getServer()->get('SERVER_PROTOCOL'),
             5
         );
-
-        return $httpVersion;
     }
 }

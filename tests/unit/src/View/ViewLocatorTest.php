@@ -11,17 +11,18 @@ class ViewLocatorTest extends TestCase
 {
     public function testLocate()
     {
-        $module   = 'Foo';
-        $action   = 'Bar';
-        $extension = 'baz';
+        $module    = 'Foo';
+        $action    = 'Bar';
+        $path      = 'baz';
+        $extension = 'qux';
 
         $address = new ControllerAddress($module, $action);
-        $route   = new Route($address);
+        $route   = new Route($address, $path);
 
         $locator = new ViewLocator($extension);
 
         $result = $locator->locate($route);
 
-        $this->assertSame('Foo/Bar.baz', $result);
+        $this->assertSame('Foo/Bar.qux', $result);
     }
 }

@@ -14,6 +14,11 @@ class RouterTest extends TestCase
     private $routingRuleMatcher;
 
     /**
+     * @var RouteBuilderInterface|MockObject
+     */
+    private $routeBuilder;
+
+    /**
      * @var RequestInterface|MockObject
      */
     private $request;
@@ -33,13 +38,14 @@ class RouterTest extends TestCase
     protected function setUp(): void
     {
         $this->routingRuleMatcher = $this->createMock(RoutingRuleMatcherInterface::class);
+        $this->routeBuilder       = $this->createMock(RouteBuilderInterface::class);
 
         $this->request = $this->createMock(RequestInterface::class);
     }
 
     public function testTryGetRouteWithoutRule()
     {
-        $this->whenTryGetRoute();
+        $this->whenTryGetByRequest();
 
         $this->thenNoMatch();
     }
@@ -50,7 +56,7 @@ class RouterTest extends TestCase
 
         $this->givenMatchingRoutingRule($route);
 
-        $this->whenTryGetRoute();
+        $this->whenTryGetByRequest();
 
         $this->thenMatched($route);
     }
@@ -59,7 +65,7 @@ class RouterTest extends TestCase
     {
         $this->givenNotMatchingRoutingRule();
 
-        $this->whenTryGetRoute();
+        $this->whenTryGetByRequest();
 
         $this->thenNoMatch();
     }
@@ -73,7 +79,7 @@ class RouterTest extends TestCase
         $this->givenMatchingRoutingRule($routePrimary);
         $this->givenMatchingRoutingRule($routeSecondary);
 
-        $this->whenTryGetRoute();
+        $this->whenTryGetByRequest();
 
         $this->thenMatched($routePrimary);
     }
@@ -90,15 +96,23 @@ class RouterTest extends TestCase
         $this->routes[]       = null;
     }
 
-    private function whenTryGetRoute(): void
+    private function whenTryGetByRequest(): void
     {
         $map = [];
 
         foreach ($this->routingRules as $key => $routingRule) {
+            $route = $this->routes[$key];
+
+            if (null === $route) {
+                $outcome = new RoutingRuleNotMatched();
+            } else {
+                $outcome = new RoutingRuleMatched([]);
+            }
+
             $map[] = [
                 $this->request,
                 $routingRule,
-                $this->routes[$key]
+                $outcome,
             ];
         }
 
@@ -108,12 +122,29 @@ class RouterTest extends TestCase
             ->willReturnMap($map)
         ;
 
+        $map = [];
+
+        foreach ($this->routingRules as $key => $routingRule) {
+            $map[] = [
+                $routingRule,
+                [],
+                $this->routes[$key],
+            ];
+        }
+
+        $this->routeBuilder
+            ->expects($this->any())
+            ->method('build')
+            ->willReturnMap($map)
+        ;
+
         $router = new Router(
             $this->routingRuleMatcher,
+            $this->routeBuilder,
             new RoutingRuleCollection($this->routingRules)
         );
 
-        $this->result = $router->tryGetRoute($this->request);
+        $this->result = $router->tryGetByRequest($this->request);
     }
 
     private function thenMatched(RouteInterface $route): void

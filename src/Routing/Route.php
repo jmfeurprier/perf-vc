@@ -11,20 +11,17 @@ class Route implements RouteInterface
 {
     private ControllerAddress $address;
 
-    /**
-     * Route arguments (from request).
-     *
-     * @var {string:mixed}
-     */
+    private string $path;
+
     private array $arguments = [];
 
-    /**
-     * @param ControllerAddress $address
-     * @param {string:mixed}    $arguments
-     */
-    public function __construct(ControllerAddress $address, array $arguments = [])
-    {
+    public function __construct(
+        ControllerAddress $address,
+        string $path,
+        array $arguments = []
+    ) {
         $this->address = $address;
+        $this->path    = $path;
 
         foreach ($arguments as $key => $value) {
             $this->addArgument($key, $value);
@@ -39,6 +36,11 @@ class Route implements RouteInterface
     public function getAddress(): ControllerAddress
     {
         return $this->address;
+    }
+
+    public function getPath(): string
+    {
+        return $this->path;
     }
 
     /**
