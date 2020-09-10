@@ -54,7 +54,7 @@ class Router implements RouterInterface
     public function tryGetByAddress(ControllerAddress $address, array $arguments): ?RouteInterface
     {
         foreach ($this->routingRules->getAll() as $routingRule) {
-            if ($routingRule->getAddress()->equals($address) === $address) {
+            if ($routingRule->getAddress()->equals($address)) {
                 return $this->buildRoute($routingRule, $arguments);
             }
         }
