@@ -9,7 +9,7 @@ class VcConfiguration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('perf.vc');
+        $treeBuilder = new TreeBuilder('perf_vc');
 
         $treeBuilder->getRootNode()
             ->children()

@@ -12,8 +12,6 @@ services:
 
     perf\Vc\Controller\ControllerFactoryInterface:
         class: perf\Vc\Controller\ControllerFactory
-        arguments:
-            $controllersNamespace: '%perf.vc.controllers_namespace%'
 
     perf\Vc\FrontControllerInterface:
         class: perf\Vc\FrontController
@@ -41,14 +39,6 @@ services:
 
     perf\Vc\Routing\RouterInterface:
         class: perf\Vc\Routing\Router
-        arguments:
-            $routingRules: '@=service("perf\\Vc\\Routing\\RoutingRuleImporterInterface").import(service("perf.vc.routing_rules_source"))'
-
-    perf.vc.routing_rules_source:
-        class: perf\Source\SourceInterface
-        factory: [perf\Source\LocalFileSource, create]
-        arguments:
-            - '%perf.vc.routing_rules_file_path%'
 
     perf\Vc\Routing\RoutingRuleImporterInterface:
         class: perf\Vc\Routing\YamlRoutingRuleImporter
@@ -61,13 +51,9 @@ services:
 
     perf\Vc\View\ViewLocatorInterface:
         class: perf\Vc\View\ViewLocator
-        arguments:
-            $viewFilesExtension: '%perf.vc.view_files_extension%'
 
     perf\Vc\View\ViewRendererInterface:
         class: perf\Vc\View\TwigViewRenderer
-        arguments:
-            $viewFilesBasePath: '%perf.vc.view_files_base_path%'
 
     perf\Vc\VcRunner:
         public: true
