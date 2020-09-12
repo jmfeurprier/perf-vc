@@ -15,8 +15,6 @@ class ControllerFactory implements ControllerFactoryInterface
 
     private ContainerInterface $container;
 
-    private RouteInterface $route;
-
     public function __construct(
         ControllerClassResolverInterface $controllerClassResolver,
         string $controllersNamespace,
@@ -32,9 +30,7 @@ class ControllerFactory implements ControllerFactoryInterface
      */
     public function make(RouteInterface $route): ControllerInterface
     {
-        $this->route = $route;
-
-        $controllerClass = $this->getControllerClass();
+        $controllerClass = $this->controllerClassResolver->resolve($route, $this->controllersNamespace);
 
         if (!$this->container->has($controllerClass)) {
             throw new ControllerClassNotFoundException($controllerClass, $route);
@@ -47,10 +43,5 @@ class ControllerFactory implements ControllerFactoryInterface
         }
 
         return $controller;
-    }
-
-    private function getControllerClass(): string
-    {
-        return $this->controllerClassResolver->resolve($this->route, $this->controllersNamespace);
     }
 }

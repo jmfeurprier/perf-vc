@@ -21,9 +21,6 @@ class XmlTransformer implements TransformerInterface
         return $content;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function transformHeaders(HeaderCollection $headers, array $vars, array $parameters): HeaderCollection
     {
         $parameters = array_replace(

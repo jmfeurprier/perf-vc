@@ -3,7 +3,6 @@
 namespace perf\Vc\Response\Transformation;
 
 use perf\Vc\Exception\TransformerNotFoundException;
-use perf\Vc\Exception\VcException;
 
 class TransformerRepository implements TransformerRepositoryInterface
 {

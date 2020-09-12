@@ -35,14 +35,7 @@ class RedirectionResponseGenerator implements RedirectionResponseGeneratorInterf
     }
 
     /**
-     * @param RequestInterface $request
-     * @param string           $url
-     * @param int              $httpStatusCode
-     * @param null|string      $httpVersion
-     *
-     * @return ResponseInterface
-     *
-     * @throws VcException
+     * {@inheritDoc}
      */
     public function generate(
         RequestInterface $request,

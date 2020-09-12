@@ -2,10 +2,16 @@
 
 namespace perf\Vc\Response;
 
+use perf\Source\Exception\SourceException;
+use perf\Vc\Exception\VcException;
+
 class ResponseSender implements ResponseSenderInterface
 {
     private ResponseInterface $response;
 
+    /**
+     * {@inheritDoc}
+     */
     public function send(ResponseInterface $response): void
     {
         $this->response = $response;
@@ -21,8 +27,17 @@ class ResponseSender implements ResponseSenderInterface
         }
     }
 
-    public function sendContent(): void
+    /**
+     * @return void
+     *
+     * @throws VcException
+     */
+    private function sendContent(): void
     {
-        $this->response->getContent()->send();
+        try {
+            $this->response->getContent()->send();
+        } catch (SourceException $e) {
+            throw new VcException('Failed sending response content.', 0, $e);
+        }
     }
 }

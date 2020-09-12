@@ -13,11 +13,10 @@ class ViewLocatorTest extends TestCase
     {
         $module    = 'Foo';
         $action    = 'Bar';
-        $path      = 'baz';
         $extension = 'qux';
 
         $address = new ControllerAddress($module, $action);
-        $route   = new Route($address, $path);
+        $route   = new Route($address);
 
         $locator = new ViewLocator($extension);
 

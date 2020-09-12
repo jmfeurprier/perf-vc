@@ -16,6 +16,7 @@ use perf\Vc\Redirection\RedirectionResponseGeneratorInterface;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Response\ResponseInterface;
+use perf\Vc\Routing\Route;
 use perf\Vc\Routing\RouteInterface;
 use perf\Vc\Routing\RouterInterface;
 
@@ -127,23 +128,18 @@ class FrontController implements FrontControllerInterface
      *
      * @return ResponseInterface
      *
-     * @throws RouteNotFoundException
      * @throws VcException
      * @throws Exception
      */
     protected function forward(string $module, string $action, array $arguments = []): ResponseInterface
     {
-        $route = $this->router->tryGetByAddress(
+        $route = new Route(
             new ControllerAddress(
                 $module,
                 $action
             ),
             $arguments
         );
-
-        if (null === $route) {
-            return $this->onRouteNotFound();
-        }
 
         return $this->runController($route);
     }

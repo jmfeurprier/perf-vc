@@ -9,13 +9,6 @@ interface RouteInterface
 {
     public function getAddress(): ControllerAddress;
 
-    public function getPath(): string;
-
-    /**
-     * Returns the arguments as key-value pairs.
-     *
-     * @return {string:mixed}
-     */
     public function getArguments(): array;
 
     /**
@@ -28,4 +21,8 @@ interface RouteInterface
     public function getArgument(string $name);
 
     public function hasArgument(string $name): bool;
+
+    public function hasPath(): bool;
+
+    public function getPath(): ?string;
 }

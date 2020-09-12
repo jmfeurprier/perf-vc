@@ -1,24 +1,8 @@
-parameters:
-
-    perf.vc.controllers_namespace:   ~
-    perf.vc.view_files_base_path:    ~
-    perf.vc.view_files_extension:    'twig'
-    perf.vc.routing_rules_file_path: ~
-
 services:
 
     _defaults:
         autowire: true
         public:   false
-
-    perf\Caching\Storage\CachingStorageInterface:
-        class: perf\Caching\Storage\VolatileCachingStorage
-
-    perf\HttpStatus\HttpStatusRepositoryInterface:
-        factory: [perf\HttpStatus\HttpStatusRepository, createDefault]
-
-    perf\Timing\ClockInterface:
-        class: perf\Timing\Clock
 
     perf\Vc\:
         resource: '../src/*'
@@ -41,7 +25,7 @@ services:
         class: perf\Vc\Redirection\RedirectionResponseGenerator
 
     perf\Vc\Request\RequestInterface:
-        factory: ['@perf\Vc\Request\RequestPopulatorInterface', populate]
+        factory: ['@perf\Vc\Request\RequestPopulatorInterface', 'populate']
 
     perf\Vc\Request\RequestPopulatorInterface:
         factory: [perf\Vc\Request\RequestPopulator, createDefault]
@@ -52,8 +36,8 @@ services:
     perf\Vc\Response\ResponseSenderInterface:
         class: perf\Vc\Response\ResponseSender
 
-    perf\Vc\Routing\RouteBuilderInterface:
-        class: perf\Vc\Routing\RouteBuilder
+    perf\Vc\Routing\RouteGeneratorInterface:
+        class: perf\Vc\Routing\RouteGenerator
 
     perf\Vc\Routing\RouterInterface:
         class: perf\Vc\Routing\Router
@@ -87,6 +71,17 @@ services:
 
     perf\Vc\VcRunner:
         public: true
+
+    # External dependencies
+
+    perf\Caching\Storage\CachingStorageInterface:
+        class: perf\Caching\Storage\VolatileCachingStorage
+
+    perf\HttpStatus\HttpStatusRepositoryInterface:
+        factory: [perf\HttpStatus\HttpStatusRepository, createDefault]
+
+    perf\Timing\ClockInterface:
+        class: perf\Timing\Clock
 
     Twig\Cache\CacheInterface:
         class: perf\Vc\View\TwigCache

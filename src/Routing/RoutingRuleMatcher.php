@@ -13,6 +13,9 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
 
     private array $matches;
 
+    /**
+     * {@inheritDoc}
+     */
     public function tryMatch(
         RequestInterface $request,
         RoutingRuleInterface $routingRule

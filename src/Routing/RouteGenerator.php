@@ -4,20 +4,20 @@ namespace perf\Vc\Routing;
 
 use perf\Vc\Controller\ControllerAddress;
 
-class RouteBuilder implements RouteBuilderInterface
+class RouteGenerator implements RouteGeneratorInterface
 {
     private RoutingRuleInterface $routingRule;
 
     private array $arguments;
 
-    public function build(RoutingRuleInterface $routingRule, array $arguments): RouteInterface
+    public function generate(RoutingRuleInterface $routingRule, array $arguments): RouteInterface
     {
         $this->init($routingRule, $arguments);
 
         return new Route(
             $this->getAddress(),
-            $this->getPath(),
-            $this->arguments
+            $this->arguments,
+            $this->getPath()
         );
     }
 

@@ -11,21 +11,22 @@ class Route implements RouteInterface
 {
     private ControllerAddress $address;
 
-    private string $path;
-
     private array $arguments = [];
+
+    private ?string $path;
 
     public function __construct(
         ControllerAddress $address,
-        string $path,
-        array $arguments = []
+        array $arguments = [],
+        string $path = null
     ) {
         $this->address = $address;
-        $this->path    = $path;
 
         foreach ($arguments as $key => $value) {
             $this->addArgument($key, $value);
         }
+
+        $this->path = $path;
     }
 
     private function addArgument(string $key, $value): void
@@ -38,14 +39,6 @@ class Route implements RouteInterface
         return $this->address;
     }
 
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getArguments(): array
     {
         return $this->arguments;
@@ -66,5 +59,15 @@ class Route implements RouteInterface
     public function hasArgument(string $name): bool
     {
         return array_key_exists($name, $this->arguments);
+    }
+
+    public function hasPath(): bool
+    {
+        return (null !== $this->path);
+    }
+
+    public function getPath(): ?string
+    {
+        return $this->path;
     }
 }

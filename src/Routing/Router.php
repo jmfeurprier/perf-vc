@@ -11,24 +11,24 @@ class Router implements RouterInterface
 
     private RoutingRuleCollection $routingRules;
 
-    private RouteBuilderInterface $routeBuilder;
+    private RouteGeneratorInterface $routeGenerator;
 
     public static function createDefault(RoutingRuleCollection $routingRules): self
     {
         return new self(
             new RoutingRuleMatcher(),
-            new RouteBuilder(),
+            new RouteGenerator(),
             $routingRules
         );
     }
 
     public function __construct(
         RoutingRuleMatcherInterface $routingRuleMatcher,
-        RouteBuilderInterface $routeBuilder,
+        RouteGeneratorInterface $routeGenerator,
         RoutingRuleCollection $routingRules
     ) {
         $this->routingRuleMatcher = $routingRuleMatcher;
-        $this->routeBuilder       = $routeBuilder;
+        $this->routeGenerator     = $routeGenerator;
         $this->routingRules       = $routingRules;
     }
 
@@ -64,6 +64,6 @@ class Router implements RouterInterface
 
     private function buildRoute(RoutingRuleInterface $routingRule, array $arguments): RouteInterface
     {
-        return $this->routeBuilder->build($routingRule, $arguments);
+        return $this->routeGenerator->generate($routingRule, $arguments);
     }
 }

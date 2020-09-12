@@ -14,9 +14,9 @@ class RouterTest extends TestCase
     private $routingRuleMatcher;
 
     /**
-     * @var RouteBuilderInterface|MockObject
+     * @var RouteGeneratorInterface|MockObject
      */
-    private $routeBuilder;
+    private $routeGenerator;
 
     /**
      * @var RequestInterface|MockObject
@@ -38,7 +38,7 @@ class RouterTest extends TestCase
     protected function setUp(): void
     {
         $this->routingRuleMatcher = $this->createMock(RoutingRuleMatcherInterface::class);
-        $this->routeBuilder       = $this->createMock(RouteBuilderInterface::class);
+        $this->routeGenerator     = $this->createMock(RouteGeneratorInterface::class);
 
         $this->request = $this->createMock(RequestInterface::class);
     }
@@ -132,15 +132,15 @@ class RouterTest extends TestCase
             ];
         }
 
-        $this->routeBuilder
+        $this->routeGenerator
             ->expects($this->any())
-            ->method('build')
+            ->method('generate')
             ->willReturnMap($map)
         ;
 
         $router = new Router(
             $this->routingRuleMatcher,
-            $this->routeBuilder,
+            $this->routeGenerator,
             new RoutingRuleCollection($this->routingRules)
         );
 

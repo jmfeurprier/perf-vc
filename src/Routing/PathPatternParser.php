@@ -53,6 +53,13 @@ class PathPatternParser
         $this->regex                     = $this->pathTemplate;
     }
 
+    /**
+     * @param array $argumentDefinitions
+     *
+     * @return array
+     *
+     * @throws VcException
+     */
     private function indexArgumentDefinitionsByName(array $argumentDefinitions): array
     {
         $argumentDefinitionByName = [];

@@ -5,9 +5,9 @@ namespace perf\Vc\Routing;
 use perf\Vc\Controller\ControllerAddress;
 use PHPUnit\Framework\TestCase;
 
-class RouteBuilderTest extends TestCase
+class RouteGeneratorTest extends TestCase
 {
-    private RouteBuilder $routeBuilder;
+    private RouteGenerator $routeGenerator;
 
     private string $module = '';
 
@@ -21,14 +21,14 @@ class RouteBuilderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->routeBuilder = new RouteBuilder();
+        $this->routeGenerator = new RouteGenerator();
     }
 
     public function testBuildReturnsExpectedAddress()
     {
         $this->givenAddress('Module', 'Action');
 
-        $this->whenBuild();
+        $this->whenGenerate();
 
         $this->assertSame('Module', $this->result->getAddress()->getModule());
         $this->assertSame('Action', $this->result->getAddress()->getAction());
@@ -39,7 +39,7 @@ class RouteBuilderTest extends TestCase
         $this->givenArgument('foo', 'bar');
         $this->givenPathTemplate('baz/{foo}/qux');
 
-        $this->whenBuild();
+        $this->whenGenerate();
 
         $this->assertSame('baz/bar/qux', $this->result->getPath());
     }
@@ -48,7 +48,7 @@ class RouteBuilderTest extends TestCase
     {
         $this->givenArgument('foo', 'bar');
 
-        $this->whenBuild();
+        $this->whenGenerate();
 
         $this->assertSame($this->arguments, $this->result->getArguments());
     }
@@ -69,7 +69,7 @@ class RouteBuilderTest extends TestCase
         $this->arguments[$var] = $value;
     }
 
-    private function whenBuild()
+    private function whenGenerate()
     {
         $routingRule = new RoutingRule(
             new ControllerAddress(
@@ -82,6 +82,6 @@ class RouteBuilderTest extends TestCase
             []
         );
 
-        $this->result = $this->routeBuilder->build($routingRule, $this->arguments);
+        $this->result = $this->routeGenerator->generate($routingRule, $this->arguments);
     }
 }

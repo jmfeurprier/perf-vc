@@ -24,8 +24,7 @@ class ControllerClassResolverTest extends TestCase
             new ControllerAddress(
                 $module,
                 $action
-            ),
-            ''
+            )
         );
 
         $result = $this->controllerClassResolver->resolve($route, $namespace);

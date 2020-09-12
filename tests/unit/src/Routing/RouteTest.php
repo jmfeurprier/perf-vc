@@ -90,11 +90,11 @@ class RouteTest extends TestCase
 
         $this->expectException(TypeError::class);
 
-        $this->buildRoute($arguments);
+        $this->buildRoute('', $arguments);
     }
 
     private function buildRoute(string $path, array $arguments = []): Route
     {
-        return new Route($this->address, $path, $arguments);
+        return new Route($this->address, $arguments, $path);
     }
 }

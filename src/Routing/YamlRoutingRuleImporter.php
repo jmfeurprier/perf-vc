@@ -82,6 +82,13 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
         return $content;
     }
 
+    /**
+     * @param array $content
+     *
+     * @return void
+     *
+     * @throws VcException
+     */
     private function parseModules(array $content): void
     {
         foreach ($content as $module => $actions) {
@@ -97,13 +104,21 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
         }
     }
 
-    private function parseActions(string $module, array $actions)
+    /**
+     * @param string $module
+     * @param array  $actions
+     *
+     * @return void
+     *
+     * @throws VcException
+     */
+    private function parseActions(string $module, array $actions): void
     {
         foreach ($actions as $action => $actionRules) {
             $this->address = new ControllerAddress($module, $action);
 
             if (empty($actionRules)) {
-                return [];
+                return;
             }
 
             if (!is_array($actionRules)) {
@@ -114,7 +129,12 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
         }
     }
 
-    private function parseAction($actionRules)
+    /**
+     * @param $actionRules
+     *
+     * @throws VcException
+     */
+    private function parseAction(array $actionRules): void
     {
         foreach ($actionRules as $path => $actionRule) {
             $this->rules[] = $this->parseRule($path, $actionRule);
@@ -154,8 +174,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
         $methods = [];
 
         foreach ($rule['methods'] ?? [] as $method) {
-            // @todo Validate.
-            $methods[] = $method;
+            $methods[] = strtoupper($method);
         }
 
         return $methods;
@@ -196,6 +215,13 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
         );
     }
 
+    /**
+     * @param array $argument
+     *
+     * @return string
+     *
+     * @throws VcException
+     */
     private function parseArgumentFormat(array $argument): string
     {
         $format = '';
@@ -217,6 +243,11 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
         return $format;
     }
 
+    /**
+     * @param array $argument
+     *
+     * @return null|mixed
+     */
     private function parseArgumentDefaultValue(array $argument)
     {
         return $argument['default'] ?? null;
@@ -227,6 +258,8 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      * @param ArgumentDefinition[] $argumentDefinitions
      *
      * @return string
+     *
+     * @throws VcException
      */
     private function parsePathPattern(string $pathTemplate, array $argumentDefinitions): string
     {
