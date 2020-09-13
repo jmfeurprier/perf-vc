@@ -1,6 +1,6 @@
 <?php
 
-namespace perf\Vc;
+namespace perf\Vc\DependencyInjection;
 
 use perf\Source\LocalFileSource;
 use perf\Source\SourceInterface;
@@ -8,7 +8,6 @@ use perf\Vc\Controller\ControllerFactory;
 use perf\Vc\Controller\ControllerFactoryInterface;
 use perf\Vc\Routing\Router;
 use perf\Vc\Routing\RouterInterface;
-use perf\Vc\Routing\RoutingRuleImporterInterface;
 use perf\Vc\View\TwigViewRenderer;
 use perf\Vc\View\ViewLocator;
 use perf\Vc\View\ViewLocatorInterface;
@@ -18,7 +17,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\ExpressionLanguage\Expression;
 
 class VcExtension implements ExtensionInterface
@@ -52,6 +53,19 @@ class VcExtension implements ExtensionInterface
         $definition = $containerBuilder->getDefinition(ViewRendererInterface::class);
         if ($definition->getClass() === TwigViewRenderer::class) {
             $definition->setArgument('$viewFilesBasePath', $config['view_files_base_path']);
+
+            if (!empty($config['twig_extensions'])) {
+                $services = [];
+
+                foreach ($config['twig_extensions'] as $extensionClass) {
+                    $services[] = new Reference($extensionClass);
+                }
+
+                $definition->setArgument(
+                    '$extensions',
+                    $services
+                );
+            }
         }
 
         $definition = new Definition(SourceInterface::class);
@@ -68,7 +82,9 @@ class VcExtension implements ExtensionInterface
         if ($definition->getClass() === Router::class) {
             $definition->setArgument(
                 '$routingRules',
-                new Expression('service("perf\\\\Vc\\\\Routing\\\\RoutingRuleImporterInterface").import(service("perf_vc.routing_rules_source"))')
+                new Expression(
+                    'service("perf\\\\Vc\\\\Routing\\\\RoutingRuleImporterInterface").import(service("perf_vc.routing_rules_source"))'
+                )
             );
         }
     }

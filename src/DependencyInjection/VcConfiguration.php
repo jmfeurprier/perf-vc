@@ -1,6 +1,6 @@
 <?php
 
-namespace perf\Vc;
+namespace perf\Vc\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -32,6 +32,13 @@ class VcConfiguration implements ConfigurationInterface
                     ->info('File extension of view (template) files.')
                     ->defaultValue('twig')
                     ->cannotBeEmpty()
+                ->end()
+                ->arrayNode('twig_extensions')
+                    ->info('List of Twig extension classes/services to load.')
+                    #->children()
+                   ->scalarPrototype()
+                    ->end()
+                    #->end()
                 ->end()
             ->end()
         ;
