@@ -17,7 +17,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -35,7 +34,7 @@ class VcExtension implements ExtensionInterface
 
         $loader = new YamlFileLoader(
             $containerBuilder,
-            new FileLocator(__DIR__ . '/../config')
+            new FileLocator(__DIR__ . '/../../config')
         );
 
         $loader->load('services.yml');
