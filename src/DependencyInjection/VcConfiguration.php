@@ -13,11 +13,6 @@ class VcConfiguration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->arrayNode('view_vars')
-                    ->info('List of variables to inject in every view / template.')
-                    ->variablePrototype()
-                    ->end()
-                ->end()
                 ->scalarNode('controllers_namespace')
                     ->info('Namespace of controller classes.')
                     ->isRequired()
@@ -42,6 +37,11 @@ class VcConfiguration implements ConfigurationInterface
                     ->info('File extension of view (template) files.')
                     ->defaultValue('twig')
                     ->cannotBeEmpty()
+                ->end()
+                ->arrayNode('view_vars')
+                    ->info('List of variables to inject in every view / template.')
+                    ->variablePrototype()
+                    ->end()
                 ->end()
             ->end()
         ;

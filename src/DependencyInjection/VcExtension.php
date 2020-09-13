@@ -23,61 +23,87 @@ use Symfony\Component\ExpressionLanguage\Expression;
 
 class VcExtension implements ExtensionInterface
 {
+    private array $config;
+
+    private ContainerBuilder $containerBuilder;
+
     /**
      * {@inheritDoc}
      */
     public function load(array $configs, ContainerBuilder $containerBuilder)
     {
-        $configuration = new VcConfiguration();
-        $processor     = new Processor();
-        $config        = $processor->processConfiguration($configuration, $configs);
+        $this->init($configs, $containerBuilder);
 
         $loader = new YamlFileLoader(
-            $containerBuilder,
+            $this->containerBuilder,
             new FileLocator(__DIR__ . '/../../config')
         );
 
         $loader->load('services.yml');
 
-        $definition = $containerBuilder->getDefinition(ControllerFactoryInterface::class);
+        $this->configureControllerFactory();
+        $this->configureViewLocator();
+        $this->configureTwigViewRenderer();
+        $this->configureRouter();
+    }
+
+    private function init(array $configs, ContainerBuilder $containerBuilder)
+    {
+        $configuration          = new VcConfiguration();
+        $processor              = new Processor();
+        $this->config           = $processor->processConfiguration($configuration, $configs);
+        $this->containerBuilder = $containerBuilder;
+    }
+
+    private function configureControllerFactory(): void
+    {
+        $definition = $this->containerBuilder->getDefinition(ControllerFactoryInterface::class);
+
         if ($definition->getClass() === ControllerFactory::class) {
-            $definition->setArgument('$controllersNamespace', $config['controllers_namespace']);
+            $definition->setArgument('$controllersNamespace', $this->config['controllers_namespace']);
         }
+    }
 
-        $definition = $containerBuilder->getDefinition(ViewLocatorInterface::class);
+    private function configureViewLocator(): void
+    {
+        $definition = $this->containerBuilder->getDefinition(ViewLocatorInterface::class);
+
         if ($definition->getClass() === ViewLocator::class) {
-            $definition->setArgument('$viewFilesExtension', $config['view_files_extension']);
+            $definition->setArgument('$viewFilesExtension', $this->config['view_files_extension']);
         }
+    }
 
-        $definition = $containerBuilder->getDefinition(ViewRendererInterface::class);
+    private function configureTwigViewRenderer(): void
+    {
+        $definition = $this->containerBuilder->getDefinition(ViewRendererInterface::class);
+
         if ($definition->getClass() === TwigViewRenderer::class) {
-            $definition->setArgument('$viewFilesBasePath', $config['view_files_base_path']);
+            $definition->setArgument('$viewFilesBasePath', $this->config['view_files_base_path']);
 
-            if (!empty($config['twig_extensions'])) {
+            if (!empty($this->config['twig_extensions'])) {
                 $services = [];
 
-                foreach ($config['twig_extensions'] as $extensionClass) {
-                    $services[] = new Reference($extensionClass);
+                foreach ($this->config['twig_extensions'] as $extensionServiceId) {
+                    $services[] = new Reference($extensionServiceId);
                 }
 
-                $definition->setArgument(
-                    '$extensions',
-                    $services
-                );
+                $definition->setArgument('$extensions', $services);
             }
         }
+    }
 
+    private function configureRouter(): void
+    {
         $definition = new Definition(SourceInterface::class);
         $definition
             ->setFactory([LocalFileSource::class, 'create'])
-            ->setArgument('$path', $config['routing_rules_file_path'])
+            ->setArgument('$path', $this->config['routing_rules_file_path'])
         ;
-        $containerBuilder->setDefinition(
-            'perf_vc.routing_rules_source',
-            $definition
-        );
 
-        $definition = $containerBuilder->getDefinition(RouterInterface::class);
+        $this->containerBuilder->setDefinition('perf_vc.routing_rules_source', $definition);
+
+        $definition = $this->containerBuilder->getDefinition(RouterInterface::class);
+
         if ($definition->getClass() === Router::class) {
             $definition->setArgument(
                 '$routingRules',
