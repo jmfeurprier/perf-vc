@@ -35,10 +35,8 @@ class VcConfiguration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('twig_extensions')
                     ->info('List of Twig extension classes/services to load.')
-                    #->children()
-                   ->scalarPrototype()
+                    ->scalarPrototype()
                     ->end()
-                    #->end()
                 ->end()
             ->end()
         ;
