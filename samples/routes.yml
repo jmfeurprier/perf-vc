@@ -26,7 +26,7 @@ Hello:
             methods:
                 - 'GET'
                 - 'POST'
-        'hello-world/{firstName}/{lastName}/reversed':
+        'hello-world/{lastName}/{firstName}/reverse':
             parameters:
                 firstName:
                     format: '[^/]+'

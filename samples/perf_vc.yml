@@ -2,10 +2,10 @@ perf_vc:
 
     controllers_namespace:   'App\Controller'
     routing_rules_file_path: '%path.root%config/routes.yml'
-    view_files_base_path:    '%path.root%templates'
     twig_extensions:
         - 'App\View\Extension\DateTimeExtension'
         - 'App\View\Extension\HtmlExtension'
+    view_files_base_path:    '%path.root%templates'
     view_vars:
         siteTitle:          '%site_title%'
         metaAuthor:         '%meta.author%'
