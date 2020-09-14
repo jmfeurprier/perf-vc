@@ -6,6 +6,8 @@ use perf\Source\LocalFileSource;
 use perf\Source\SourceInterface;
 use perf\Vc\Controller\ControllerFactory;
 use perf\Vc\Controller\ControllerFactoryInterface;
+use perf\Vc\Response\ResponseBuilderFactory;
+use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Routing\Router;
 use perf\Vc\Routing\RouterInterface;
 use perf\Vc\View\TwigViewRenderer;
@@ -45,6 +47,7 @@ class VcExtension implements ExtensionInterface
         $this->configureViewLocator();
         $this->configureTwigViewRenderer();
         $this->configureRouter();
+        $this->configureResponseBuilderFactory();
     }
 
     private function init(array $configs, ContainerBuilder $containerBuilder)
@@ -111,6 +114,15 @@ class VcExtension implements ExtensionInterface
                     'service("perf\\\\Vc\\\\Routing\\\\RoutingRuleImporterInterface").import(service("perf_vc.routing_rules_source"))'
                 )
             );
+        }
+    }
+
+    private function configureResponseBuilderFactory(): void
+    {
+        $definition = $this->containerBuilder->getDefinition(ResponseBuilderFactoryInterface::class);
+
+        if ($definition->getClass() === ResponseBuilderFactory::class) {
+            $definition->setArgument('$vars', $this->config['view_vars']);
         }
     }
 
