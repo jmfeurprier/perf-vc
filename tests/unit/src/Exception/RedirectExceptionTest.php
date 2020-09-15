@@ -2,27 +2,44 @@
 
 namespace perf\Vc\Exception;
 
+use perf\Vc\Redirection\PathRedirection;
+use perf\Vc\Redirection\RedirectionInterface;
+use perf\Vc\Redirection\RouteRedirection;
+use perf\Vc\Redirection\UrlRedirection;
 use PHPUnit\Framework\TestCase;
 
 class RedirectExceptionTest extends TestCase
 {
-    public function testGetUrl()
+    public function testCreateFromRoute()
     {
-        $this->url            = 'http://foo.bar/baz';
-        $this->httpStatusCode = 123;
+        $exception = RedirectException::createFromRoute('Module', 'Action', ['foo' => 'bar'], 302);
 
-        $this->exception = new RedirectException($this->url, $this->httpStatusCode);
-
-        $this->assertSame($this->url, $this->exception->getUrl());
+        $this->assertInstanceOf(RouteRedirection::class, $exception->getRedirection());
+        $this->assertSame(302, $exception->getRedirection()->getHttpStatusCode());
     }
 
-    public function testGetHttpStatusCode()
+    public function testCreateFromPath()
     {
-        $this->url            = 'http://foo.bar/baz';
-        $this->httpStatusCode = 123;
+        $exception = RedirectException::createFromPath('foo/bar', 302);
 
-        $this->exception = new RedirectException($this->url, $this->httpStatusCode);
+        $this->assertInstanceOf(PathRedirection::class, $exception->getRedirection());
+        $this->assertSame(302, $exception->getRedirection()->getHttpStatusCode());
+    }
 
-        $this->assertSame($this->httpStatusCode, $this->exception->getHttpStatusCode());
+    public function testCreateFromUrl()
+    {
+        $exception = RedirectException::createFromUrl('https://foo.bar/baz?qux=123', 302);
+
+        $this->assertInstanceOf(UrlRedirection::class, $exception->getRedirection());
+        $this->assertSame(302, $exception->getRedirection()->getHttpStatusCode());
+    }
+
+    public function testGetRedirection()
+    {
+        $redirection = $this->createMock(RedirectionInterface::class);
+
+        $exception = new RedirectException($redirection);
+
+        $this->assertSame($redirection, $exception->getRedirection());
     }
 }

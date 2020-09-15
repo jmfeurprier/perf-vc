@@ -34,6 +34,15 @@ services:
     perf\Vc\Response\ResponseSenderInterface:
         class: perf\Vc\Response\ResponseSender
 
+    perf\Vc\Response\Transformation\TransformerRepositoryInterface:
+        class: perf\Vc\Response\Transformation\TransformerRepository
+        arguments:
+            $transformers:
+                - perf\Vc\Response\Transformation\Transformation\HtmlTransformer
+                - perf\Vc\Response\Transformation\Transformation\JsonTransformer
+                - perf\Vc\Response\Transformation\Transformation\TextTransformer
+                - perf\Vc\Response\Transformation\Transformation\XmlTransformer
+
     perf\Vc\Routing\RouteGeneratorInterface:
         class: perf\Vc\Routing\RouteGenerator
 
@@ -45,9 +54,6 @@ services:
 
     perf\Vc\Routing\RoutingRuleMatcherInterface:
         class: perf\Vc\Routing\RoutingRuleMatcher
-
-    perf\Vc\Response\Transformation\TransformerRepositoryInterface:
-        factory: [perf\Vc\Response\Transformation\TransformerRepository, createDefault]
 
     perf\Vc\View\ViewLocatorInterface:
         class: perf\Vc\View\ViewLocator

@@ -3,28 +3,59 @@
 namespace perf\Vc\Exception;
 
 use Exception;
+use perf\Vc\Controller\ControllerAddress;
+use perf\Vc\Redirection\PathRedirection;
+use perf\Vc\Redirection\RedirectionInterface;
+use perf\Vc\Redirection\RouteRedirection;
+use perf\Vc\Redirection\UrlRedirection;
 
 class RedirectException extends Exception
 {
-    private string $url;
+    private RedirectionInterface $redirection;
 
-    private int $httpStatusCode;
+    public static function createFromRoute(string $module, string $action, array $arguments, int $httpStatusCode): self
+    {
+        return new self(
+            new RouteRedirection(
+                new ControllerAddress(
+                    $module,
+                    $action
+                ),
+                $arguments,
+                $httpStatusCode
+            )
+        );
+    }
 
-    public function __construct(string $url, int $httpStatusCode)
+    public static function createFromPath(string $path, int $httpStatusCode): self
+    {
+        return new self(
+            new PathRedirection(
+                $path,
+                $httpStatusCode
+            )
+        );
+    }
+
+    public static function createFromUrl(string $url, int $httpStatusCode): self
+    {
+        return new self(
+            new UrlRedirection(
+                $url,
+                $httpStatusCode
+            )
+        );
+    }
+
+    public function __construct(RedirectionInterface $redirection)
     {
         parent::__construct();
 
-        $this->url            = $url;
-        $this->httpStatusCode = $httpStatusCode;
+        $this->redirection = $redirection;
     }
 
-    public function getUrl(): string
+    public function getRedirection(): RedirectionInterface
     {
-        return $this->url;
-    }
-
-    public function getHttpStatusCode(): int
-    {
-        return $this->httpStatusCode;
+        return $this->redirection;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace perf\Vc\Request;
 
-use perf\Vc\Exception\VcException;
-
 class Request implements RequestInterface
 {
     private string $method;
@@ -24,27 +22,6 @@ class Request implements RequestInterface
 
     private RequestChannel $server;
 
-    /**
-     * @return RequestInterface
-     *
-     * @throws VcException
-     */
-    public static function createDefault(): RequestInterface
-    {
-        return RequestPopulator::createDefault()->populate();
-    }
-
-    /**
-     * @param string         $method
-     * @param string         $transport
-     * @param string         $host
-     * @param int            $port
-     * @param string         $path
-     * @param {string:mixed} $query     GET channel content.
-     * @param {string:mixed} $post      POST channel content.
-     * @param {string:mixed} $cookies   Cookies channel content.
-     * @param {string:mixed} $server    Server channel content.
-     */
     public function __construct(
         string $method,
         string $transport,

@@ -8,7 +8,6 @@ use perf\Vc\Exception\RedirectException;
 use perf\Vc\Exception\RouteArgumentNotFoundException;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Request\RequestInterface;
-use perf\Vc\Response\ResponseBuilder;
 use perf\Vc\Response\ResponseBuilderInterface;
 use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Routing\RouteInterface;
@@ -24,7 +23,7 @@ abstract class ControllerBase implements ControllerInterface
     public function run(
         RequestInterface $request,
         RouteInterface $route,
-        ResponseBuilder $responseBuilder
+        ResponseBuilderInterface $responseBuilder
     ): ResponseInterface {
         $this->request         = $request;
         $this->route           = $route;
@@ -136,6 +135,38 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
+     * @param string $module
+     * @param string $action
+     * @param array  $arguments
+     * @param int    $httpStatusCode
+     *
+     * @return void
+     *
+     * @throws RedirectException Always thrown.
+     */
+    protected function redirectToRoute(
+        string $module,
+        string $action,
+        array $arguments,
+        int $httpStatusCode
+    ): void {
+        throw RedirectException::createFromRoute($module, $action, $arguments, $httpStatusCode);
+    }
+
+    /**
+     * @param string $path
+     * @param int    $httpStatusCode
+     *
+     * @return void
+     *
+     * @throws RedirectException Always thrown.
+     */
+    protected function redirectToPath(string $path, int $httpStatusCode): void
+    {
+        throw RedirectException::createFromPath($path, $httpStatusCode);
+    }
+
+    /**
      * @param string $url
      * @param int    $httpStatusCode
      *
@@ -145,7 +176,7 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function redirectToUrl(string $url, int $httpStatusCode): void
     {
-        throw new RedirectException($url, $httpStatusCode);
+        throw RedirectException::createFromUrl($url, $httpStatusCode);
     }
 
     protected function setHttpStatusCode(int $code): void

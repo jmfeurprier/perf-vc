@@ -12,6 +12,7 @@ use perf\Vc\Exception\InvalidControllerException;
 use perf\Vc\Exception\RedirectException;
 use perf\Vc\Exception\RouteNotFoundException;
 use perf\Vc\Exception\VcException;
+use perf\Vc\Redirection\RedirectionInterface;
 use perf\Vc\Redirection\RedirectionResponseGeneratorInterface;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
@@ -90,12 +91,6 @@ class FrontController implements FrontControllerInterface
      */
     protected function onFailure(Exception $exception): ResponseInterface
     {
-        $message = "{$exception->getFile()}:{$exception->getLine()} "
-            . "{$exception->getMessage()}\n"
-            . "{$exception->getTraceAsString()}";
-
-        error_log($message);
-
         throw new VcException("Controller execution failure. << {$exception->getMessage()}", 0, $exception);
     }
 
@@ -115,9 +110,15 @@ class FrontController implements FrontControllerInterface
         try {
             return $controller->run($this->request, $route, $responseBuilder);
         } catch (ForwardException $exception) {
-            return $this->forward($exception->getModule(), $exception->getAction(), $exception->getArguments());
+            return $this->forward(
+                $exception->getModule(),
+                $exception->getAction(),
+                $exception->getArguments()
+            );
         } catch (RedirectException $exception) {
-            return $this->redirectToUrl($exception->getUrl(), $exception->getHttpStatusCode());
+            return $this->redirect(
+                $exception->getRedirection()
+            );
         }
     }
 
@@ -157,15 +158,22 @@ class FrontController implements FrontControllerInterface
         return $this->controllerFactory->make($route);
     }
 
-    private function redirectToUrl(
-        string $url,
-        int $httpStatusCode,
+    /**
+     * @param RedirectionInterface $redirection
+     * @param null|string          $httpVersion
+     *
+     * @return ResponseInterface
+     *
+     * @throws VcException
+     */
+    private function redirect(
+        RedirectionInterface $redirection,
         string $httpVersion = null
     ): ResponseInterface {
         return $this->redirectionResponseGenerator->generate(
             $this->request,
-            $url,
-            $httpStatusCode,
+            $redirection->getUrl($this->request, $this->router),
+            $redirection->getHttpStatusCode(),
             $httpVersion
         );
     }

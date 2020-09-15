@@ -42,4 +42,37 @@ class ControllerControllerAddressTest extends TestCase
         $this->assertStringContainsString($module, $result);
         $this->assertStringContainsString($action, $result);
     }
+
+    public function testEquality()
+    {
+        $addressPrimary   = new ControllerAddress('Foo', 'Bar');
+        $addressSecondary = new ControllerAddress('Foo', 'Bar');
+
+        $this->assertTrue($addressPrimary->equals($addressSecondary));
+        $this->assertTrue($addressSecondary->equals($addressPrimary));
+    }
+
+    public static function dataProviderInequalities(): array
+    {
+        return [
+            ['Foo', 'Bar', 'Foo', 'Baz'],
+            ['Foo', 'Bar', 'Baz', 'Bar'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderInequalities
+     */
+    public function testInequality(
+        string $modulePrimary,
+        string $actionPrimary,
+        string $moduleSecondary,
+        string $actionSecondary
+    ) {
+        $addressPrimary   = new ControllerAddress($modulePrimary, $actionPrimary);
+        $addressSecondary = new ControllerAddress($moduleSecondary, $actionSecondary);
+
+        $this->assertFalse($addressPrimary->equals($addressSecondary));
+        $this->assertFalse($addressSecondary->equals($addressPrimary));
+    }
 }

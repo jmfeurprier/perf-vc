@@ -1,10 +1,8 @@
 <?php
 
-namespace perf\Vc\Response;
+namespace perf\Vc\Request;
 
 use perf\Vc\Exception\VcException;
-use perf\Vc\Request\RequestInterface;
-use perf\Vc\Request\RequestPopulator;
 use PHPUnit\Framework\TestCase;
 
 class RequestPopulatorTest extends TestCase
@@ -51,6 +49,22 @@ class RequestPopulatorTest extends TestCase
         $this->whenPopulate();
     }
 
+    public function testPopulateWillRetrieveHost()
+    {
+        $this->givenServerValues(
+            [
+                'REQUEST_METHOD' => 'OPTIONS',
+                'REQUEST_URI'    => '/',
+                'SERVER_NAME'    => 'foo.bar',
+                'SERVER_PORT'    => 80,
+            ]
+        );
+
+        $this->whenPopulate();
+
+        $this->assertSame('foo.bar', $this->result->getHost());
+    }
+
     public function testPopulateWithoutServerRequestHostWillThrowException()
     {
         $this->givenServerValues(
@@ -65,6 +79,22 @@ class RequestPopulatorTest extends TestCase
         $this->expectExceptionMessage('Failed to retrieve HTTP host.');
 
         $this->whenPopulate();
+    }
+
+    public function testPopulateWillRetrievePort()
+    {
+        $this->givenServerValues(
+            [
+                'REQUEST_METHOD' => 'OPTIONS',
+                'REQUEST_URI'    => '/',
+                'SERVER_NAME'    => 'foo.bar',
+                'SERVER_PORT'    => 123,
+            ]
+        );
+
+        $this->whenPopulate();
+
+        $this->assertSame(123, $this->result->getPort());
     }
 
     public function testPopulateWithoutServerRequestPortWillThrowException()

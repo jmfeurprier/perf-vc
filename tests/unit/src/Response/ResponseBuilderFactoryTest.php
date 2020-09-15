@@ -39,15 +39,6 @@ class ResponseBuilderFactoryTest extends TestCase
         $this->transformerRepository = $this->createMock(TransformerRepositoryInterface::class);
     }
 
-    public function testCreateDefault()
-    {
-        $viewsBasePath = '';
-
-        $result = ResponseBuilderFactory::createDefault($viewsBasePath);
-
-        $this->assertInstanceOf(ResponseBuilderFactory::class, $result);
-    }
-
     public function testMake()
     {
         $factory = new ResponseBuilderFactory(

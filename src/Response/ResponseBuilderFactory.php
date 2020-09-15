@@ -2,15 +2,8 @@
 
 namespace perf\Vc\Response;
 
-use perf\Caching\Storage\VolatileCachingStorage;
-use perf\HttpStatus\HttpStatusRepository;
 use perf\HttpStatus\HttpStatusRepositoryInterface;
-use perf\Timing\Clock;
-use perf\Vc\Response\Transformation\TransformerRepository;
 use perf\Vc\Response\Transformation\TransformerRepositoryInterface;
-use perf\Vc\View\TwigCache;
-use perf\Vc\View\TwigViewRenderer;
-use perf\Vc\View\ViewLocator;
 use perf\Vc\View\ViewLocatorInterface;
 use perf\Vc\View\ViewRendererInterface;
 
@@ -25,22 +18,6 @@ class ResponseBuilderFactory implements ResponseBuilderFactoryInterface
     private TransformerRepositoryInterface $transformerRepository;
 
     private array $vars;
-
-    public static function createDefault(string $viewsBasePath): self
-    {
-        return new self(
-            HttpStatusRepository::createDefault(),
-            new ViewLocator('twig'),
-            new TwigViewRenderer(
-                $viewsBasePath,
-                new TwigCache(
-                    new VolatileCachingStorage(),
-                    new Clock()
-                )
-            ),
-            TransformerRepository::createDefault()
-        );
-    }
 
     public function __construct(
         HttpStatusRepositoryInterface $httpStatusRepository,

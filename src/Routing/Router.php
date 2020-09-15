@@ -13,15 +13,6 @@ class Router implements RouterInterface
 
     private RouteGeneratorInterface $routeGenerator;
 
-    public static function createDefault(RoutingRuleCollection $routingRules): self
-    {
-        return new self(
-            new RoutingRuleMatcher(),
-            new RouteGenerator(),
-            $routingRules
-        );
-    }
-
     public function __construct(
         RoutingRuleMatcherInterface $routingRuleMatcher,
         RouteGeneratorInterface $routeGenerator,

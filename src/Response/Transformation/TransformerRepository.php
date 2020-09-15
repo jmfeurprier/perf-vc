@@ -11,18 +11,6 @@ class TransformerRepository implements TransformerRepositoryInterface
      */
     private array $transformers = [];
 
-    public static function createDefault(): self
-    {
-        return new self(
-            [
-                new HtmlTransformer(),
-                new JsonTransformer(),
-                new TextTransformer(),
-                new XmlTransformer(),
-            ]
-        );
-    }
-
     /**
      * @param TransformerInterface[] $transformers
      */
