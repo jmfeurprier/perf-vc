@@ -38,10 +38,10 @@ services:
         class: perf\Vc\Response\Transformation\TransformerRepository
         arguments:
             $transformers:
-                - perf\Vc\Response\Transformation\Transformation\HtmlTransformer
-                - perf\Vc\Response\Transformation\Transformation\JsonTransformer
-                - perf\Vc\Response\Transformation\Transformation\TextTransformer
-                - perf\Vc\Response\Transformation\Transformation\XmlTransformer
+                - '@perf\Vc\Response\Transformation\HtmlTransformer'
+                - '@perf\Vc\Response\Transformation\JsonTransformer'
+                - '@perf\Vc\Response\Transformation\TextTransformer'
+                - '@perf\Vc\Response\Transformation\XmlTransformer'
 
     perf\Vc\Routing\RouteGeneratorInterface:
         class: perf\Vc\Routing\RouteGenerator
