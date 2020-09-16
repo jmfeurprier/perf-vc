@@ -4,8 +4,8 @@ namespace perf\Vc;
 
 use Exception;
 use perf\Vc\Controller\ControllerAddress;
-use perf\Vc\Controller\ControllerFactoryInterface;
 use perf\Vc\Controller\ControllerInterface;
+use perf\Vc\Controller\ControllerRepositoryInterface;
 use perf\Vc\Exception\ControllerClassNotFoundException;
 use perf\Vc\Exception\ForwardException;
 use perf\Vc\Exception\InvalidControllerException;
@@ -25,7 +25,7 @@ class FrontController implements FrontControllerInterface
 {
     private RouterInterface $router;
 
-    private ControllerFactoryInterface $controllerFactory;
+    private ControllerRepositoryInterface $controllerRepository;
 
     private ResponseBuilderFactoryInterface $responseBuilderFactory;
 
@@ -35,12 +35,12 @@ class FrontController implements FrontControllerInterface
 
     public function __construct(
         RouterInterface $router,
-        ControllerFactoryInterface $controllerFactory,
+        ControllerRepositoryInterface $controllerRepository,
         ResponseBuilderFactoryInterface $responseBuilderFactory,
         RedirectionResponseGeneratorInterface $redirectionResponseGenerator
     ) {
         $this->router                       = $router;
-        $this->controllerFactory            = $controllerFactory;
+        $this->controllerRepository         = $controllerRepository;
         $this->responseBuilderFactory       = $responseBuilderFactory;
         $this->redirectionResponseGenerator = $redirectionResponseGenerator;
     }
@@ -155,7 +155,7 @@ class FrontController implements FrontControllerInterface
      */
     private function getController(RouteInterface $route): ControllerInterface
     {
-        return $this->controllerFactory->make($route);
+        return $this->controllerRepository->make($route);
     }
 
     /**

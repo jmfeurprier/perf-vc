@@ -2,8 +2,8 @@
 
 namespace perf\Vc;
 
-use perf\Vc\Controller\ControllerFactoryInterface;
 use perf\Vc\Controller\ControllerInterface;
+use perf\Vc\Controller\ControllerRepositoryInterface;
 use perf\Vc\Exception\ForwardException;
 use perf\Vc\Exception\RedirectException;
 use perf\Vc\Exception\RouteNotFoundException;
@@ -21,7 +21,7 @@ class FrontControllerTest extends TestCase
 {
     private RouterInterface $router;
 
-    private ControllerFactoryInterface $controllerFactory;
+    private ControllerRepositoryInterface $controllerRepository;
 
     private ResponseBuilderFactoryInterface $responseBuilderFactory;
 
@@ -34,13 +34,13 @@ class FrontControllerTest extends TestCase
     protected function setUp(): void
     {
         $this->router                       = $this->createMock(RouterInterface::class);
-        $this->controllerFactory            = $this->createMock(ControllerFactoryInterface::class);
+        $this->controllerRepository         = $this->createMock(ControllerRepositoryInterface::class);
         $this->responseBuilderFactory       = $this->createMock(ResponseBuilderFactoryInterface::class);
         $this->redirectionResponseGenerator = $this->createMock(RedirectionResponseGeneratorInterface::class);
 
         $this->frontController = new FrontController(
             $this->router,
-            $this->controllerFactory,
+            $this->controllerRepository,
             $this->responseBuilderFactory,
             $this->redirectionResponseGenerator
         );
@@ -66,7 +66,7 @@ class FrontControllerTest extends TestCase
         $controller = $this->createMock(ControllerInterface::class);
         $controller->expects($this->once())->method('run')->willReturn($response);
 
-        $this->controllerFactory->expects($this->once())->method('make')->willReturn($controller);
+        $this->controllerRepository->expects($this->once())->method('make')->willReturn($controller);
 
         $this->frontController->run($this->request);
     }
@@ -82,7 +82,7 @@ class FrontControllerTest extends TestCase
         $controller = $this->createMock(ControllerInterface::class);
         $controller->expects($this->once())->method('run')->willThrowException($exception);
 
-        $this->controllerFactory->expects($this->once())->method('make')->willReturn($controller);
+        $this->controllerRepository->expects($this->once())->method('make')->willReturn($controller);
 
         $this->expectException(VcException::class);
 
@@ -105,9 +105,12 @@ class FrontControllerTest extends TestCase
         $controllerSecondary = $this->createMock(ControllerInterface::class);
         $controllerSecondary->expects($this->once())->method('run')->willReturn($response);
 
-        $this->controllerFactory->method('make')->willReturnOnConsecutiveCalls(
-            $controllerPrimary, $controllerSecondary
-        )
+        $this->controllerRepository
+            ->method('make')
+            ->willReturnOnConsecutiveCalls(
+                $controllerPrimary,
+                $controllerSecondary
+            )
         ;
 
         $result = $this->frontController->run($this->request);
@@ -127,7 +130,7 @@ class FrontControllerTest extends TestCase
         $controller = $this->createMock(ControllerInterface::class);
         $controller->expects($this->once())->method('run')->willThrowException($redirectException);
 
-        $this->controllerFactory->method('make')->willReturn($controller);
+        $this->controllerRepository->method('make')->willReturn($controller);
 
         $response = $this->createMock(ResponseInterface::class);
         $this->redirectionResponseGenerator->method('generate')->willReturn($response);

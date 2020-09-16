@@ -57,7 +57,7 @@ class ControllerBaseTest extends TestCase
         $spy = $this->getMockBuilder(\stdClass::class)->addMethods(['call'])->getMock();
         $spy->expects($this->exactly(3))->method('call')->withConsecutive([1], [2], [3]);
 
-        $this->controller = new class($spy) extends ControllerBase {
+        $this->controller = new class ($spy) extends ControllerBase {
             private $spy;
 
             public function __construct($spy)

@@ -10,8 +10,8 @@ services:
     perf\Vc\Controller\ControllerClassResolverInterface:
         class: perf\Vc\Controller\ControllerClassResolver
 
-    perf\Vc\Controller\ControllerFactoryInterface:
-        class: perf\Vc\Controller\ControllerFactory
+    perf\Vc\Controller\ControllerRepositoryInterface:
+        class: perf\Vc\Controller\ControllerRepository
 
     perf\Vc\FrontControllerInterface:
         class: perf\Vc\FrontController

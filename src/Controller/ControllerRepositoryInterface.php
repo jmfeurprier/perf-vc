@@ -6,7 +6,7 @@ use perf\Vc\Exception\ControllerClassNotFoundException;
 use perf\Vc\Exception\InvalidControllerException;
 use perf\Vc\Routing\RouteInterface;
 
-interface ControllerFactoryInterface
+interface ControllerRepositoryInterface
 {
     /**
      * @param RouteInterface $route

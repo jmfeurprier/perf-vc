@@ -4,7 +4,7 @@ namespace perf\Vc\DependencyInjection;
 
 use perf\Source\LocalFileSource;
 use perf\Source\SourceInterface;
-use perf\Vc\Controller\ControllerFactoryInterface;
+use perf\Vc\Controller\ControllerRepositoryInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Routing\RouterInterface;
 use perf\Vc\View\ViewLocatorInterface;
@@ -32,7 +32,7 @@ class VcExtension implements ExtensionInterface
         $this->init($configs, $containerBuilder);
 
         $this->loadServiceDefinitions();
-        $this->configureControllerFactory();
+        $this->configureControllerRepository();
         $this->configureViewLocator();
         $this->configureTwigViewRenderer();
         $this->configureRouter();
@@ -57,10 +57,10 @@ class VcExtension implements ExtensionInterface
         $this->containerBuilder = $containerBuilder;
     }
 
-    private function configureControllerFactory(): void
+    private function configureControllerRepository(): void
     {
         $this->setDefinitionArgument(
-            ControllerFactoryInterface::class,
+            ControllerRepositoryInterface::class,
             '$controllersNamespace',
             $this->config['controllers_namespace']
         );
@@ -113,7 +113,8 @@ class VcExtension implements ExtensionInterface
             RouterInterface::class,
             '$routingRules',
             new Expression(
-                'service("perf\\\\Vc\\\\Routing\\\\RoutingRuleImporterInterface").import(service("perf_vc.routing_rules_source"))'
+                'service("perf\\\\Vc\\\\Routing\\\\RoutingRuleImporterInterface")' .
+                '.import(service("perf_vc.routing_rules_source"))'
             )
         );
     }

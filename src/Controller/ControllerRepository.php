@@ -7,7 +7,7 @@ use perf\Vc\Exception\InvalidControllerException;
 use perf\Vc\Routing\RouteInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ControllerFactory implements ControllerFactoryInterface
+class ControllerRepository implements ControllerRepositoryInterface
 {
     private ControllerClassResolverInterface $controllerClassResolver;
 

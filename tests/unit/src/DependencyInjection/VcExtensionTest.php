@@ -24,7 +24,7 @@ class VcExtensionTest extends TestCase
                 'controllers_namespace'   => 'Foo',
                 'routing_rules_file_path' => 'routes.yml',
                 'view_files_base_path'    => '.',
-                'twig_extensions'    => [
+                'twig_extensions'         => [
                     'Foo',
                 ],
             ],

@@ -9,7 +9,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
-class ControllerFactoryTest extends TestCase
+class ControllerRepositoryTest extends TestCase
 {
     /**
      * @var ControllerClassResolverInterface|MockObject
@@ -29,7 +29,7 @@ class ControllerFactoryTest extends TestCase
     {
         $namespace = 'Foo';
 
-        $controllerFactory = new ControllerFactory(
+        $controllerRepository = new ControllerRepository(
             $this->controllerClassResolver,
             $namespace,
             $this->container
@@ -48,7 +48,7 @@ class ControllerFactoryTest extends TestCase
             ->willReturn($controllerClass)
         ;
 
-        $result = $controllerFactory->make($route);
+        $result = $controllerRepository->make($route);
 
         $this->assertSame($controller, $result);
     }
@@ -57,7 +57,7 @@ class ControllerFactoryTest extends TestCase
     {
         $namespace = 'Foo';
 
-        $controllerFactory = new ControllerFactory(
+        $controllerRepository = new ControllerRepository(
             $this->controllerClassResolver,
             $namespace,
             $this->container
@@ -75,14 +75,14 @@ class ControllerFactoryTest extends TestCase
 
         $this->expectException(ControllerClassNotFoundException::class);
 
-        $controllerFactory->make($route);
+        $controllerRepository->make($route);
     }
 
     public function testMakeWithInvalidControllerWillThrowException()
     {
         $namespace = 'Foo';
 
-        $controllerFactory = new ControllerFactory(
+        $controllerRepository = new ControllerRepository(
             $this->controllerClassResolver,
             $namespace,
             $this->container
@@ -103,6 +103,6 @@ class ControllerFactoryTest extends TestCase
 
         $this->expectException(InvalidControllerException::class);
 
-        $controllerFactory->make($route);
+        $controllerRepository->make($route);
     }
 }
