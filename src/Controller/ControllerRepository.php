@@ -28,7 +28,7 @@ class ControllerRepository implements ControllerRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function make(RouteInterface $route): ControllerInterface
+    public function getByRoute(RouteInterface $route): ControllerInterface
     {
         $controllerClass = $this->controllerClassResolver->resolve($route, $this->controllersNamespace);
 

@@ -16,5 +16,5 @@ interface ControllerRepositoryInterface
      * @throws ControllerClassNotFoundException
      * @throws InvalidControllerException
      */
-    public function make(RouteInterface $route): ControllerInterface;
+    public function getByRoute(RouteInterface $route): ControllerInterface;
 }

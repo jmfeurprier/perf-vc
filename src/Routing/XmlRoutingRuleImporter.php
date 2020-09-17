@@ -5,7 +5,7 @@ namespace perf\Vc\Routing;
 use perf\Source\Exception\SourceException;
 use perf\Source\SourceInterface;
 use perf\Vc\Controller\ControllerAddress;
-use perf\Vc\Exception\VcException;
+use perf\Vc\Exception\RoutingRuleImportException;
 use SimpleXMLElement;
 
 class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
@@ -55,14 +55,14 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
      * @return SimpleXMLElement
      *
      * @throws SourceException
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function getRootNode(SourceInterface $source): SimpleXMLElement
     {
         $sxeRootNode = simplexml_load_string($source->getContent());
 
         if (false === $sxeRootNode) {
-            throw new VcException("Failed to load XML routing source.");
+            throw new RoutingRuleImportException("Failed to load XML routing source.");
         }
 
         return $sxeRootNode;
@@ -73,7 +73,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return void
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function importModuleRules(SimpleXMLElement $sxeModule): void
     {
@@ -89,7 +89,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return void
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function importActionRules(SimpleXMLElement $sxeAction): void
     {
@@ -107,7 +107,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return void
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parseRule(SimpleXMLElement $sxeRule): void
     {
@@ -157,7 +157,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return ArgumentDefinition[]
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parseArgumentDefinitions(SimpleXMLElement $sxeRule): array
     {
@@ -175,7 +175,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return ArgumentDefinition
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parseArgumentDefinition(SimpleXMLElement $sxeArgument): ArgumentDefinition
     {
@@ -184,7 +184,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
         $defaultValue = (string) $sxeArgument['default'];
 
         if ('' === $name) {
-            throw new VcException("Missing name for routing rule argument ({$this->address}).");
+            throw new RoutingRuleImportException("Missing name for routing rule argument ({$this->address}).");
         }
 
         if ('' === $format) {
@@ -208,7 +208,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return string
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parsePathPattern(string $pathTemplate, array $argumentDefinitions): string
     {

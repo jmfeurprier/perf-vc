@@ -155,7 +155,7 @@ class FrontController implements FrontControllerInterface
      */
     private function getController(RouteInterface $route): ControllerInterface
     {
-        return $this->controllerRepository->make($route);
+        return $this->controllerRepository->getByRoute($route);
     }
 
     /**

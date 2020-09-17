@@ -66,7 +66,7 @@ class FrontControllerTest extends TestCase
         $controller = $this->createMock(ControllerInterface::class);
         $controller->expects($this->once())->method('run')->willReturn($response);
 
-        $this->controllerRepository->expects($this->once())->method('make')->willReturn($controller);
+        $this->controllerRepository->expects($this->once())->method('getByRoute')->willReturn($controller);
 
         $this->frontController->run($this->request);
     }
@@ -82,7 +82,7 @@ class FrontControllerTest extends TestCase
         $controller = $this->createMock(ControllerInterface::class);
         $controller->expects($this->once())->method('run')->willThrowException($exception);
 
-        $this->controllerRepository->expects($this->once())->method('make')->willReturn($controller);
+        $this->controllerRepository->expects($this->once())->method('getByRoute')->willReturn($controller);
 
         $this->expectException(VcException::class);
 
@@ -106,7 +106,7 @@ class FrontControllerTest extends TestCase
         $controllerSecondary->expects($this->once())->method('run')->willReturn($response);
 
         $this->controllerRepository
-            ->method('make')
+            ->method('getByRoute')
             ->willReturnOnConsecutiveCalls(
                 $controllerPrimary,
                 $controllerSecondary
@@ -130,7 +130,7 @@ class FrontControllerTest extends TestCase
         $controller = $this->createMock(ControllerInterface::class);
         $controller->expects($this->once())->method('run')->willThrowException($redirectException);
 
-        $this->controllerRepository->method('make')->willReturn($controller);
+        $this->controllerRepository->method('getByRoute')->willReturn($controller);
 
         $response = $this->createMock(ResponseInterface::class);
         $this->redirectionResponseGenerator->method('generate')->willReturn($response);

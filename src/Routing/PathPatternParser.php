@@ -2,7 +2,7 @@
 
 namespace perf\Vc\Routing;
 
-use perf\Vc\Exception\VcException;
+use perf\Vc\Exception\RoutingRuleImportException;
 
 class PathPatternParser
 {
@@ -25,7 +25,7 @@ class PathPatternParser
      *
      * @return string
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     public function parse(string $pathTemplate, array $argumentDefinitions): string
     {
@@ -44,7 +44,7 @@ class PathPatternParser
      *
      * @return void
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function init(string $pathTemplate, array $argumentDefinitions): void
     {
@@ -58,7 +58,7 @@ class PathPatternParser
      *
      * @return array
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function indexArgumentDefinitionsByName(array $argumentDefinitions): array
     {
@@ -68,7 +68,7 @@ class PathPatternParser
             $name = $argumentDefinition->getName();
 
             if (array_key_exists($name, $argumentDefinitionByName)) {
-                throw new VcException(
+                throw new RoutingRuleImportException(
                     "More than one definition provided for routing rule argument with name '{$name}'."
                 );
             }
@@ -82,14 +82,14 @@ class PathPatternParser
     /**
      * @return array
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function getTokens(): array
     {
         $matches = [];
 
         if (false === preg_match_all('|({[^}]+})|', $this->pathTemplate, $matches, PREG_OFFSET_CAPTURE)) {
-            throw new VcException("Failed to parse routing rule argument pattern.");
+            throw new RoutingRuleImportException("Failed to parse routing rule argument pattern.");
         }
 
         $tokens = [];

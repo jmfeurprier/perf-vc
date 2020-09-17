@@ -5,7 +5,7 @@ namespace perf\Vc\Routing;
 use perf\Source\Exception\SourceException;
 use perf\Source\SourceInterface;
 use perf\Vc\Controller\ControllerAddress;
-use perf\Vc\Exception\VcException;
+use perf\Vc\Exception\RoutingRuleImportException;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -51,20 +51,20 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return array
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function getYamlFileContent(SourceInterface $source): array
     {
         try {
             $content = Yaml::parse($source->getContent());
         } catch (SourceException $e) {
-            throw new VcException(
+            throw new RoutingRuleImportException(
                 "Failed retrieving YAML routing source content: '{$e->getMessage()}'.",
                 0,
                 $e
             );
         } catch (ParseException $e) {
-            throw new VcException(
+            throw new RoutingRuleImportException(
                 "Failed parsing YAML routing source content: '{$e->getMessage()}'.",
                 0,
                 $e
@@ -76,7 +76,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
         }
 
         if (!is_array($content)) {
-            throw new VcException();
+            throw new RoutingRuleImportException();
         }
 
         return $content;
@@ -87,7 +87,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return void
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parseModules(array $content): void
     {
@@ -97,7 +97,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
             }
 
             if (!is_array($actions)) {
-                throw new VcException();
+                throw new RoutingRuleImportException();
             }
 
             $this->parseActions($module, $actions);
@@ -110,7 +110,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return void
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parseActions(string $module, array $actions): void
     {
@@ -122,7 +122,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
             }
 
             if (!is_array($actionRules)) {
-                throw new VcException();
+                throw new RoutingRuleImportException();
             }
 
             $this->parseAction($actionRules);
@@ -132,7 +132,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     /**
      * @param $actionRules
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parseAction(array $actionRules): void
     {
@@ -147,7 +147,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return RoutingRule
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parseRule(string $pathTemplate, array $actionRule): RoutingRule
     {
@@ -185,7 +185,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return ArgumentDefinition[]
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parseArgumentDefinitions(array $rule): array
     {
@@ -204,7 +204,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return ArgumentDefinition
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parseArgumentDefinition(string $name, array $argument): ArgumentDefinition
     {
@@ -220,7 +220,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return string
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parseArgumentFormat(array $argument): string
     {
@@ -230,7 +230,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
             $format = $argument['format'];
 
             if (!is_string($format)) {
-                throw new VcException();
+                throw new RoutingRuleImportException();
             }
 
             $format = trim($format);
@@ -259,7 +259,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @return string
      *
-     * @throws VcException
+     * @throws RoutingRuleImportException
      */
     private function parsePathPattern(string $pathTemplate, array $argumentDefinitions): string
     {

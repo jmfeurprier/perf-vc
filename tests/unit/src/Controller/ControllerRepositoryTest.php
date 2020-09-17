@@ -25,7 +25,7 @@ class ControllerRepositoryTest extends TestCase
         $this->container = new Container();
     }
 
-    public function testMakeWithExistingController()
+    public function testGetByRouteWithExistingController()
     {
         $namespace = 'Foo';
 
@@ -48,12 +48,12 @@ class ControllerRepositoryTest extends TestCase
             ->willReturn($controllerClass)
         ;
 
-        $result = $controllerRepository->make($route);
+        $result = $controllerRepository->getByRoute($route);
 
         $this->assertSame($controller, $result);
     }
 
-    public function testMakeWithMissingControllerWillThrowException()
+    public function testGetByRouteWithMissingControllerWillThrowException()
     {
         $namespace = 'Foo';
 
@@ -75,10 +75,10 @@ class ControllerRepositoryTest extends TestCase
 
         $this->expectException(ControllerClassNotFoundException::class);
 
-        $controllerRepository->make($route);
+        $controllerRepository->getByRoute($route);
     }
 
-    public function testMakeWithInvalidControllerWillThrowException()
+    public function testGetByRouteWithInvalidControllerWillThrowException()
     {
         $namespace = 'Foo';
 
@@ -103,6 +103,6 @@ class ControllerRepositoryTest extends TestCase
 
         $this->expectException(InvalidControllerException::class);
 
-        $controllerRepository->make($route);
+        $controllerRepository->getByRoute($route);
     }
 }
