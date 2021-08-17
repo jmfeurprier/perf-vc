@@ -52,6 +52,17 @@ class FrontController implements FrontControllerInterface
     {
         $this->request = $request;
 
+        return $this->doRun();
+    }
+
+    /**
+     * @return ResponseInterface
+     *
+     * @throws VcException
+     * @throws Exception
+     */
+    protected function doRun(): ResponseInterface
+    {
         $route = $this->router->tryGetByRequest($this->request);
 
         if (!$route) {
@@ -176,5 +187,10 @@ class FrontController implements FrontControllerInterface
             $redirection->getHttpStatusCode(),
             $httpVersion
         );
+    }
+
+    protected function getRequest(): RequestInterface
+    {
+        return $this->request;
     }
 }
