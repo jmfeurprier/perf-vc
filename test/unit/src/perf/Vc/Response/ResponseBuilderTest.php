@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Response;
 
+use perf\HttpStatus\HttpStatusRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class ResponseBuilderTest extends TestCase
@@ -10,7 +11,7 @@ class ResponseBuilderTest extends TestCase
     {
         $this->route = $this->createMock('perf\\Vc\\Routing\\Route');
 
-        $this->httpStatusRepository = $this->createMock('perf\\Http\\Status\\HttpStatusRepository');
+        $this->httpStatusRepository = $this->createMock(HttpStatusRepositoryInterface::class);
     }
 
     public function testConstructorWithoutDriverWillThrowException()

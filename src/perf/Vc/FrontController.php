@@ -7,10 +7,9 @@ use perf\Vc\Redirection\RedirectionHeadersGenerator;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Request\RequestPopulator;
 use perf\Vc\Response\Response;
-use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
+use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Routing\Route;
-use perf\Vc\Routing\Router;
 use perf\Vc\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -99,6 +98,7 @@ class FrontController implements FrontControllerInterface
      * Runs the front controller automatically and conveniently.
      *
      * @param RequestInterface $request
+     *
      * @return void
      * @throws \Exception
      */
@@ -115,6 +115,7 @@ class FrontController implements FrontControllerInterface
      * Runs the front controller.
      *
      * @param RequestInterface $request
+     *
      * @return ResponseInterface
      * @throws \Exception
      */
@@ -154,14 +155,15 @@ class FrontController implements FrontControllerInterface
      * Override this method to forward to a dedicated error-processing controller.
      *
      * @param \Exception $exception Exception which was thrown.
+     *
      * @return ResponseInterface
      * @throws \Exception
      */
     protected function onFailure(\Exception $exception)
     {
         $message = "{$exception->getFile()}:{$exception->getLine()} "
-                 . "{$exception->getMessage()}\n"
-                 . "{$exception->getTraceAsString()}";
+            . "{$exception->getMessage()}\n"
+            . "{$exception->getTraceAsString()}";
 
         error_log($message);
 
@@ -172,6 +174,7 @@ class FrontController implements FrontControllerInterface
      * Forwards execution to a controller.
      *
      * @param Route $route Route.
+     *
      * @return ResponseInterface
      */
     protected function forward(Route $route)
@@ -209,6 +212,7 @@ class FrontController implements FrontControllerInterface
      * Default implementation.
      *
      * @param ControllerInterface $controller
+     *
      * @return void
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -221,12 +225,13 @@ class FrontController implements FrontControllerInterface
      * Redirects execution to given URL.
      *
      * @param string $url Redirect URL.
-     * @param int $httpStatusCode
+     * @param int    $httpStatusCode
+     *
      * @return ResponseInterface
      */
     private function redirectToUrl($url, $httpStatusCode)
     {
-        $headers = array();
+        $headers = [];
 
         foreach ($this->redirectionHeadersGenerator->generate($url, $httpStatusCode) as $header) {
             $headers[$header] = null;

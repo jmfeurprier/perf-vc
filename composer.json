@@ -5,7 +5,7 @@
 	"description" : "Simple View-Controller stack",
 	"require"     : {
 		"php"                          : ">=7.4",
-		"perf/http-status"             : "^1.0.2",
+		"perf/http-status"             : "^3.1",
 		"perf/source"                  : "^1.0.2",
 		"symfony/dependency-injection" : "^5.3"
 	},

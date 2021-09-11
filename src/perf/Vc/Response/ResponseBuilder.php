@@ -2,9 +2,7 @@
 
 namespace perf\Vc\Response;
 
-use perf\Http\Status\HttpStatusRepository;
-use perf\Source\Source;
-use perf\Source\StringSource;
+use perf\HttpStatus\HttpStatusRepositoryInterface;
 use perf\Vc\Routing\Route;
 
 /**
@@ -19,12 +17,12 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      * @var {string:ResponseDriver}
      */
-    private $drivers = array();
+    private $drivers = [];
 
     /**
      *
      *
-     * @var HttpStatusRepository
+     * @var HttpStatusRepositoryInterface
      */
     private $httpStatusRepository;
 
@@ -47,7 +45,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      * @var {string:mixed}
      */
-    private $headers = array();
+    private $headers = [];
 
     /**
      *
@@ -61,22 +59,22 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      * @var {string:mixed}
      */
-    private $vars = array();
+    private $vars = [];
 
     /**
      *
      *
      * @var {string:mixed}
      */
-    private $settings = array();
+    private $settings = [];
 
     /**
      * Constructor.
      *
-     * @param ResponseDriver[]     $drivers
-     * @param HttpStatusRepository $httpStatusRepository
+     * @param ResponseDriver[]              $drivers
+     * @param HttpStatusRepositoryInterface $httpStatusRepository
      */
-    public function __construct(array $drivers, HttpStatusRepository $httpStatusRepository)
+    public function __construct(array $drivers, HttpStatusRepositoryInterface $httpStatusRepository)
     {
         if (empty($drivers)) {
             throw new \InvalidArgumentException('No driver provided.');
@@ -94,6 +92,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      *
      * @param ResponseDriver $driver
+     *
      * @return void
      */
     private function addDriver(ResponseDriver $driver)
@@ -105,6 +104,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      *
      * @param string $type
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function setType($type)
@@ -122,6 +122,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      *
      * @param int $code
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function setHttpStatusCode($code)
@@ -136,6 +137,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      * @param string $header
      * @param string $value
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function addHeader($header, $value)
@@ -149,6 +151,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      * Adds a raw HTTP header.
      *
      * @param string $header
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function addRawHeader($header)
@@ -162,6 +165,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      *
      * @param mixed $content
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function setContent($content)
@@ -176,6 +180,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      * @param string $key
      * @param mixed  $value
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function setVar($key, $value)
@@ -189,6 +194,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      *
      * @param {string:mixed} $vars
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function setVars(array $vars)
@@ -202,6 +208,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      *
      * @param {string:mixed} $vars
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function addVars(array $vars)
@@ -215,6 +222,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      *
      * @param string $key
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function unsetVar($key)
@@ -229,6 +237,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      * @param string $key
      * @param mixed  $value
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function setSetting($key, $value)
@@ -242,6 +251,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      *
      * @param {string:mixed} $settings
+     *
      * @return ResponseBuilderInterface Fluent return.
      */
     public function setSettings(array $settings)
@@ -255,6 +265,7 @@ class ResponseBuilder implements ResponseBuilderInterface
      *
      *
      * @param Route $route
+     *
      * @return ResponseInterface
      */
     public function build(Route $route)

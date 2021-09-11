@@ -61,5 +61,5 @@ abstract class PluginBase implements PluginInterface
      *
      * @return {string:string}
      */
-    protected abstract function getOperationsMapping();
+    abstract protected function getOperationsMapping();
 }

@@ -5,13 +5,8 @@ namespace perf\Vc;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseInterface;
 
-/**
- *
- *
- */
 interface FrontControllerInterface
 {
-
     /**
      * Runs the front controller.
      *
