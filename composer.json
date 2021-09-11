@@ -7,7 +7,7 @@
 		"php"                          : ">=7.4",
 		"perf/http-status"             : "^1.0.2",
 		"perf/source"                  : "^1.0.2",
-		"symfony/dependency-injection" : "^2.7.0"
+		"symfony/dependency-injection" : "^5.3"
 	},
 	"require-dev": {
 		"ext-xdebug"                   : "*",
