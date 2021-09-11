@@ -2,10 +2,12 @@
 
 namespace perf\Vc;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  */
-class ControllerControllerAddressTest extends \PHPUnit_Framework_TestCase
+class ControllerControllerAddressTest extends TestCase
 {
 
     /**
@@ -50,7 +52,7 @@ class ControllerControllerAddressTest extends \PHPUnit_Framework_TestCase
 
         $result = (string) $address;
 
-        $this->assertContains($module, $result);
-        $this->assertContains($action, $result);
+        $this->assertStringContainsString($module, $result);
+        $this->assertStringContainsString($action, $result);
     }
 }

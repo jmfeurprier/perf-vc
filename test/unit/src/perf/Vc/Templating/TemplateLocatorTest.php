@@ -4,20 +4,15 @@ namespace perf\Vc\Templating;
 
 use perf\Vc\ControllerAddress;
 use perf\Vc\Routing\Route;
+use PHPUnit\Framework\TestCase;
 
-/**
- *
- */
-class TemplateLocatorTest extends \PHPUnit_Framework_TestCase
+class TemplateLocatorTest extends TestCase
 {
-
-    /**
-     *
-     * @expectedException \InvalidArgumentException
-     */
     public function testWithInvalidBasePathTypeWillThrowException()
     {
-        $basePath = array('/root');
+        $basePath = ['/root'];
+
+        $this->expectException('InvalidArgumentException');
 
         new TemplateLocator($basePath);
     }
@@ -32,7 +27,7 @@ class TemplateLocatorTest extends \PHPUnit_Framework_TestCase
         $action   = 'Bar';
 
         $address = new ControllerAddress($module, $action);
-        $route = new Route($address);
+        $route   = new Route($address);
 
         $locator = new TemplateLocator($basePath);
 

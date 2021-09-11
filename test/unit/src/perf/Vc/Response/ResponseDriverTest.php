@@ -2,15 +2,10 @@
 
 namespace perf\Vc\Response;
 
-/**
- *
- */
-class ResponseDriverTest extends \PHPUnit_Framework_TestCase
-{
+use PHPUnit\Framework\TestCase;
 
-    /**
-     *
-     */
+class ResponseDriverTest extends TestCase
+{
     public function testGetType()
     {
         $type = 'foo';
@@ -24,42 +19,36 @@ class ResponseDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($type, $result);
     }
 
-    /**
-     *
-     */
     public function testGenerateHeaders()
     {
-        $type    = 'foo';
-        $headers = array(
+        $type     = 'foo';
+        $headers  = [
             'bar' => 'baz',
-        );
-        $settings = array(
+        ];
+        $settings = [
             'qux' => 'abc',
-        );
+        ];
 
         $driver = new ResponseDriver($type);
 
         $result = $driver->generateHeaders($headers, $settings);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertCount(1, $result);
     }
 
-    /**
-     *
-     */
     public function testGenerateContentWithoutContentTransformer()
     {
-        $type    = 'foo';
-        $content = 'bar';
-        $vars    = array(
+        $type     = 'foo';
+        $content  = 'bar';
+        $vars     = [
             'baz' => 'qux',
-        );
-        $settings = array(
+        ];
+        $settings = [
             'abc' => 'def',
-        );
+        ];
 
-        $route = $this->getMockBuilder('perf\\Vc\\Routing\\Route')->disableOriginalConstructor()->getMock();
+        $route = $this->createMock('perf\\Vc\\Routing\\Route');
 
         $driver = new ResponseDriver($type);
 

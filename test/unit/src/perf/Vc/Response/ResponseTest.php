@@ -2,21 +2,16 @@
 
 namespace perf\Vc\Response;
 
-/**
- *
- */
-class ResponseTest extends \PHPUnit_Framework_TestCase
-{
+use PHPUnit\Framework\TestCase;
 
-    /**
-     *
-     */
+class ResponseTest extends TestCase
+{
     public function testGetContent()
     {
-        $headers = array();
+        $headers = [];
         $content = 'foo';
 
-        $contentSource = $this->getMock('perf\\Source\\Source');
+        $contentSource = $this->createMock('perf\\Source\\Source');
         $contentSource->expects($this->atLeastOnce())->method('getContent')->willReturn($content);
 
         $response = new Response($headers, $contentSource);
@@ -24,14 +19,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($content, $response->getContent());
     }
 
-    /**
-     *
-     */
     public function testGetHeadersWithoutHeaders()
     {
-        $headers = array();
+        $headers = [];
 
-        $contentSource = $this->getMock('perf\\Source\\Source');
+        $contentSource = $this->createMock('perf\\Source\\Source');
 
         $response = new Response($headers, $contentSource);
 

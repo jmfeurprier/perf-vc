@@ -2,25 +2,17 @@
 
 namespace perf\Vc;
 
-/**
- *
- */
-class ForwardExceptionTest extends \PHPUnit_Framework_TestCase
-{
+use PHPUnit\Framework\TestCase;
 
-    /**
-     *
-     */
-    protected function setUp()
+class ForwardExceptionTest extends TestCase
+{
+    protected function setUp(): void
     {
-        $this->route = $this->getMockBuilder('perf\\Vc\\Routing\\Route')->disableOriginalConstructor()->getMock();
+        $this->route = $this->createMock('perf\\Vc\\Routing\\Route');
 
         $this->exception = new ForwardException($this->route);
     }
 
-    /**
-     *
-     */
     public function testGetRoute()
     {
         $this->assertSame($this->route, $this->exception->getRoute());

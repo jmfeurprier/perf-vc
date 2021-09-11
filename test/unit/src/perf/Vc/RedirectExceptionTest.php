@@ -2,22 +2,10 @@
 
 namespace perf\Vc;
 
-/**
- *
- */
-class RedirectExceptionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class RedirectExceptionTest extends TestCase
 {
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     *
-     */
     public function testGetUrl()
     {
         $this->url            = 'http://foo.bar/baz';
@@ -28,9 +16,6 @@ class RedirectExceptionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->url, $this->exception->getUrl());
     }
 
-    /**
-     *
-     */
     public function testGetHttpStatusCode()
     {
         $this->url            = 'http://foo.bar/baz';

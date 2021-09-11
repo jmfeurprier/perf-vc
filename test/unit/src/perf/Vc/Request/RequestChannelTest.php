@@ -2,65 +2,52 @@
 
 namespace perf\Vc\Request;
 
-/**
- *
- */
-class RequestChannelTest extends \PHPUnit_Framework_TestCase
-{
+use perf\Vc\RequestChannelKeyNotFoundException;
+use PHPUnit\Framework\TestCase;
 
-    /**
-     *
-     */
-    public function testGetAll()
+class RequestChannelTest extends TestCase
+{
+    public function testGetAll(): void
     {
-        $values = array(
+        $values = [
             'foo' => 'bar',
-            'baz' => array(
+            'baz' => [
                 123,
-            ),
-        );
+            ],
+        ];
 
         $channel = new RequestChannel($values);
 
         $this->assertSame($values, $channel->getAll());
     }
 
-    /**
-     *
-     */
     public function testTryGetWithDefinedKey()
     {
         $key    = 'foo';
         $value  = 'bar';
-        $values = array(
+        $values = [
             $key => $value,
-        );
+        ];
 
         $channel = new RequestChannel($values);
 
         $this->assertSame($value, $channel->tryGet($key));
     }
 
-    /**
-     *
-     */
     public function testTryGetWithUndefinedKey()
     {
         $key    = 'foo';
-        $values = array();
+        $values = [];
 
         $channel = new RequestChannel($values);
 
         $this->assertNull($channel->tryGet($key));
     }
 
-    /**
-     *
-     */
     public function testTryGetWithUndefinedKeyAndDefaultValue()
     {
         $key          = 'foo';
-        $values       = array();
+        $values       = [];
         $defaultValue = 'bar';
 
         $channel = new RequestChannel($values);
@@ -68,58 +55,46 @@ class RequestChannelTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($defaultValue, $channel->tryGet($key, $defaultValue));
     }
 
-    /**
-     *
-     */
     public function testGetWithDefinedKey()
     {
         $key    = 'foo';
         $value  = 'bar';
-        $values = array(
+        $values = [
             $key => $value,
-        );
+        ];
 
         $channel = new RequestChannel($values);
 
         $this->assertSame($value, $channel->get($key));
     }
 
-    /**
-     *
-     * @expectedException \perf\Vc\RequestChannelKeyNotFoundException
-     */
     public function testGetWithUndefinedKey()
     {
         $key    = 'foo';
-        $values = array();
+        $values = [];
 
         $channel = new RequestChannel($values);
 
+        $this->expectException(RequestChannelKeyNotFoundException::class);
         $channel->get($key);
     }
 
-    /**
-     *
-     */
     public function testHasWithDefinedKey()
     {
         $key    = 'foo';
-        $values = array(
+        $values = [
             $key => null,
-        );
+        ];
 
         $channel = new RequestChannel($values);
 
         $this->assertTrue($channel->has($key));
     }
 
-    /**
-     *
-     */
     public function testHasWithUndefinedKeyAndDefaultValue()
     {
         $key    = 'foo';
-        $values = array();
+        $values = [];
 
         $channel = new RequestChannel($values);
 

@@ -2,20 +2,15 @@
 
 namespace perf\Vc\Routing;
 
-/**
- *
- */
-class RoutingRuleTest extends \PHPUnit_Framework_TestCase
-{
+use PHPUnit\Framework\TestCase;
 
-    /**
-     *
-     */
+class RoutingRuleTest extends TestCase
+{
     public function testTryMatchWithUnspecifiedMethodWillReturnExpected()
     {
-        $address = $this->getMockBuilder('perf\\Vc\\ControllerAddress')->disableOriginalConstructor()->getMock();
+        $address = $this->createMock('perf\\Vc\\ControllerAddress');
 
-        $request = $this->getMockBuilder('perf\\Vc\\Request\\Request')->disableOriginalConstructor()->getMock();
+        $request = $this->createMock('perf\\Vc\\Request\\Request');
         $request->expects($this->any())->method('getMethod')->willReturn('GET');
         $request->expects($this->any())->method('getPath')->willReturn('/foo/bar');
 
@@ -32,14 +27,11 @@ class RoutingRuleTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $result->getArguments());
     }
 
-    /**
-     *
-     */
     public function testTryMatchWithDifferentMethodWillReturnNull()
     {
-        $address = $this->getMockBuilder('perf\\Vc\\ControllerAddress')->disableOriginalConstructor()->getMock();
+        $address = $this->createMock('perf\\Vc\\ControllerAddress');
 
-        $request = $this->getMockBuilder('perf\\Vc\\Request\\Request')->disableOriginalConstructor()->getMock();
+        $request = $this->createMock('perf\\Vc\\Request\\Request');
         $request->expects($this->any())->method('getMethod')->willReturn('GET');
         $request->expects($this->any())->method('getPath')->willReturn('/foo/bar');
 
@@ -54,14 +46,11 @@ class RoutingRuleTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result);
     }
 
-    /**
-     *
-     */
     public function testTryMatchWithSameMethodWillReturnExpected()
     {
-        $address = $this->getMockBuilder('perf\\Vc\\ControllerAddress')->disableOriginalConstructor()->getMock();
+        $address = $this->createMock('perf\\Vc\\ControllerAddress');
 
-        $request = $this->getMockBuilder('perf\\Vc\\Request\\Request')->disableOriginalConstructor()->getMock();
+        $request = $this->createMock('perf\\Vc\\Request\\Request');
         $request->expects($this->any())->method('getMethod')->willReturn('GET');
         $request->expects($this->any())->method('getPath')->willReturn('/foo/bar');
 
@@ -78,18 +67,11 @@ class RoutingRuleTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $result->getArguments());
     }
 
-    /**
-     *
-     */
     public function testTryMatchWithDifferenPathWillReturnNull()
     {
-        $module = 'foo';
-        $action = 'bar';
+        $address = $this->createMock('perf\\Vc\\ControllerAddress');
 
-        //$address = new ControllerAddress($module, $action);
-        $address = $this->getMockBuilder('perf\\Vc\\ControllerAddress')->disableOriginalConstructor()->getMock();
-
-        $request = $this->getMockBuilder('perf\\Vc\\Request\\Request')->disableOriginalConstructor()->getMock();
+        $request = $this->createMock('perf\\Vc\\Request\\Request');
         $request->expects($this->any())->method('getMethod')->willReturn('GET');
         $request->expects($this->any())->method('getPath')->willReturn('/foo/bar');
 

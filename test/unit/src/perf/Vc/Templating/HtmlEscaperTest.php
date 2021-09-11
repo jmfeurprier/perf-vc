@@ -2,10 +2,12 @@
 
 namespace perf\Vc\Templating;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  */
-class HtmlEscaperTest extends \PHPUnit_Framework_TestCase
+class HtmlEscaperTest extends TestCase
 {
 
     /**

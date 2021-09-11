@@ -2,26 +2,18 @@
 
 namespace perf\Vc\Response;
 
-/**
- *
- */
-class ResponseBuilderFactoryTest extends \PHPUnit_Framework_TestCase
-{
+use PHPUnit\Framework\TestCase;
 
-    /**
-     *
-     */
-    protected function setUp()
+class ResponseBuilderFactoryTest extends TestCase
+{
+    protected function setUp(): void
     {
-        $this->httpStatusRepository = $this->getMock('perf\\Http\\Status\\HttpStatusRepository');
+        $this->httpStatusRepository = $this->createMock('perf\\Http\\Status\\HttpStatusRepository');
     }
 
-    /**
-     *
-     */
     public function testCreate()
     {
-        $driver = $this->getMockBuilder('perf\\Vc\\Response\\ResponseDriver')->disableOriginalConstructor()->getMock();
+        $driver = $this->createMock('perf\\Vc\\Response\\ResponseDriver');
 
         $drivers = array(
             $driver,
