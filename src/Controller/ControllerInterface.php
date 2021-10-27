@@ -14,12 +14,6 @@ use perf\Vc\Routing\RouteInterface;
 interface ControllerInterface
 {
     /**
-     * @param RequestInterface         $request
-     * @param RouteInterface           $route
-     * @param ResponseBuilderInterface $responseBuilder
-     *
-     * @return ResponseInterface
-     *
      * @throws ForwardException
      * @throws RedirectException
      * @throws VcException

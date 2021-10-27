@@ -14,9 +14,6 @@ class TwigViewRenderer implements ViewRendererInterface
     private TwigEnvironment $environment;
 
     /**
-     * @param string               $viewFilesBasePath
-     * @param TwigCacheInterface   $cache
-     * @param array                $options
      * @param ExtensionInterface[] $extensions
      */
     public function __construct(
@@ -47,8 +44,10 @@ class TwigViewRenderer implements ViewRendererInterface
     /**
      * {@inheritDoc}
      */
-    public function render(string $viewPath, array $vars): string
-    {
+    public function render(
+        string $viewPath,
+        array $vars
+    ): string {
         try {
             return $this->environment->render($viewPath, $vars);
         } catch (TwigError $e) {

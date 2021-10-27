@@ -12,8 +12,6 @@ interface RouteInterface
     public function getArguments(): array;
 
     /**
-     * @param string $name
-     *
      * @return mixed
      *
      * @throws RouteArgumentNotFoundException

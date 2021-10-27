@@ -84,8 +84,6 @@ class ResponseBuilder implements ResponseBuilderInterface
 
     /**
      * @param string|SourceInterface $content
-     *
-     * @return ResponseBuilder
      */
     public function setContent($content): self
     {
@@ -102,10 +100,7 @@ class ResponseBuilder implements ResponseBuilderInterface
     }
 
     /**
-     * @param string $key
      * @param mixed  $value
-     *
-     * @return ResponseBuilder
      */
     public function setVar(string $key, $value): self
     {
@@ -138,10 +133,6 @@ class ResponseBuilder implements ResponseBuilderInterface
     }
 
     /**
-     * @param RouteInterface $route
-     *
-     * @return ResponseInterface
-     *
      * @throws VcException
      */
     public function build(RouteInterface $route): ResponseInterface
@@ -153,8 +144,6 @@ class ResponseBuilder implements ResponseBuilderInterface
     }
 
     /**
-     * @return array
-     *
      * @throws VcException
      */
     private function buildHeaders(): array
@@ -187,8 +176,6 @@ class ResponseBuilder implements ResponseBuilderInterface
     }
 
     /**
-     * @return SourceInterface
-     *
      * @throws VcException
      */
     private function buildContent(): SourceInterface

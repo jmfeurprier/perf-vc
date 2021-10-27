@@ -28,8 +28,6 @@ class ResponseSender implements ResponseSenderInterface
     }
 
     /**
-     * @return void
-     *
      * @throws VcException
      */
     private function sendContent(): void

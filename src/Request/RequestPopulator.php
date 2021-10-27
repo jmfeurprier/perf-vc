@@ -58,8 +58,6 @@ class RequestPopulator implements RequestPopulatorInterface
     }
 
     /**
-     * @return string
-     *
      * @throws VcException
      */
     private function getMethod(): string
@@ -101,8 +99,6 @@ class RequestPopulator implements RequestPopulatorInterface
     }
 
     /**
-     * @return string
-     *
      * @throws VcException
      */
     private function getPath()

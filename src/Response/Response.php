@@ -15,8 +15,7 @@ class Response implements ResponseInterface
     private SourceInterface $source;
 
     /**
-     * @param Header[]        $headers
-     * @param SourceInterface $source
+     * @param Header[] $headers
      */
     public function __construct(array $headers, SourceInterface $source)
     {

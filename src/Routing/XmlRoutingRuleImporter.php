@@ -50,10 +50,6 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param SourceInterface $source XML routing source.
-     *
-     * @return SimpleXMLElement
-     *
      * @throws SourceException
      * @throws RoutingRuleImportException
      */
@@ -69,10 +65,6 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param SimpleXMLElement $sxeModule
-     *
-     * @return void
-     *
      * @throws RoutingRuleImportException
      */
     private function importModuleRules(SimpleXMLElement $sxeModule): void
@@ -85,10 +77,6 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param SimpleXMLElement $sxeAction
-     *
-     * @return void
-     *
      * @throws RoutingRuleImportException
      */
     private function importActionRules(SimpleXMLElement $sxeAction): void
@@ -103,10 +91,6 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param SimpleXMLElement $sxeRule
-     *
-     * @return void
-     *
      * @throws RoutingRuleImportException
      */
     private function parseRule(SimpleXMLElement $sxeRule): void
@@ -131,8 +115,6 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param SimpleXMLElement $sxeNode
-     *
      * @return string[]
      */
     private function parseHttpMethods(SimpleXMLElement $sxeNode): array
@@ -153,8 +135,6 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param SimpleXMLElement $sxeRule
-     *
      * @return ArgumentDefinition[]
      *
      * @throws RoutingRuleImportException
@@ -171,10 +151,6 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param SimpleXMLElement $sxeArgument
-     *
-     * @return ArgumentDefinition
-     *
      * @throws RoutingRuleImportException
      */
     private function parseArgumentDefinition(SimpleXMLElement $sxeArgument): ArgumentDefinition
@@ -203,10 +179,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param string               $pathTemplate
      * @param ArgumentDefinition[] $argumentDefinitions
-     *
-     * @return string
      *
      * @throws RoutingRuleImportException
      */

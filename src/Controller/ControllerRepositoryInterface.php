@@ -9,10 +9,6 @@ use perf\Vc\Routing\RouteInterface;
 interface ControllerRepositoryInterface
 {
     /**
-     * @param RouteInterface $route
-     *
-     * @return ControllerInterface
-     *
      * @throws ControllerClassNotFoundException
      * @throws InvalidControllerException
      */

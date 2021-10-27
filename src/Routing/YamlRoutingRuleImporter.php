@@ -47,10 +47,6 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param SourceInterface $source
-     *
-     * @return array
-     *
      * @throws RoutingRuleImportException
      */
     private function getYamlFileContent(SourceInterface $source): array
@@ -83,10 +79,6 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array $content
-     *
-     * @return void
-     *
      * @throws RoutingRuleImportException
      */
     private function parseModules(array $content): void
@@ -105,11 +97,6 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param string $module
-     * @param array  $actions
-     *
-     * @return void
-     *
      * @throws RoutingRuleImportException
      */
     private function parseActions(string $module, array $actions): void
@@ -130,8 +117,6 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param $actionRules
-     *
      * @throws RoutingRuleImportException
      */
     private function parseAction(array $actionRules): void
@@ -142,11 +127,6 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param string $pathTemplate
-     * @param array  $actionRule
-     *
-     * @return RoutingRule
-     *
      * @throws RoutingRuleImportException
      */
     private function parseRule(string $pathTemplate, array $actionRule): RoutingRule
@@ -165,8 +145,6 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array $rule
-     *
      * @return string[]
      */
     private function parseHttpMethods(array $rule): array
@@ -181,8 +159,6 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array $rule
-     *
      * @return ArgumentDefinition[]
      *
      * @throws RoutingRuleImportException
@@ -199,11 +175,6 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param string $name
-     * @param array  $argument
-     *
-     * @return ArgumentDefinition
-     *
      * @throws RoutingRuleImportException
      */
     private function parseArgumentDefinition(string $name, array $argument): ArgumentDefinition
@@ -216,10 +187,6 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array $argument
-     *
-     * @return string
-     *
      * @throws RoutingRuleImportException
      */
     private function parseArgumentFormat(array $argument): string
@@ -244,9 +211,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array $argument
-     *
-     * @return null|mixed
+     * @return mixed
      */
     private function parseArgumentDefaultValue(array $argument)
     {
@@ -254,10 +219,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param string               $pathTemplate
      * @param ArgumentDefinition[] $argumentDefinitions
-     *
-     * @return string
      *
      * @throws RoutingRuleImportException
      */

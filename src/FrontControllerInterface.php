@@ -10,10 +10,6 @@ use perf\Vc\Response\ResponseInterface;
 interface FrontControllerInterface
 {
     /**
-     * @param RequestInterface $request
-     *
-     * @return ResponseInterface
-     *
      * @throws VcException
      * @throws Exception
      */

@@ -56,8 +56,6 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     * @return ResponseInterface
-     *
      * @throws VcException
      * @throws Exception
      */
@@ -77,8 +75,6 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     * @return ResponseInterface
-     *
      * @throws RouteNotFoundException
      * @throws VcException
      * @throws Exception
@@ -89,13 +85,8 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     *
      * Default implementation.
      * Override this method to forward to a dedicated error-processing controller.
-     *
-     * @param Exception $exception Exception which was thrown.
-     *
-     * @return ResponseInterface
      *
      * @throws VcException
      * @throws Exception
@@ -106,10 +97,6 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     * @param RouteInterface $route
-     *
-     * @return ResponseInterface
-     *
      * @throws VcException
      * @throws Exception
      */
@@ -134,12 +121,6 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     * @param string $module
-     * @param string $action
-     * @param array  $arguments
-     *
-     * @return ResponseInterface
-     *
      * @throws VcException
      * @throws Exception
      */
@@ -157,10 +138,6 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     * @param RouteInterface $route
-     *
-     * @return ControllerInterface
-     *
      * @throws ControllerClassNotFoundException
      * @throws InvalidControllerException
      */
@@ -170,11 +147,6 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     * @param RedirectionInterface $redirection
-     * @param null|string          $httpVersion
-     *
-     * @return ResponseInterface
-     *
      * @throws VcException
      */
     private function redirect(

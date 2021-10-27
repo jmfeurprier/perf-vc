@@ -9,46 +9,44 @@ interface ResponseBuilderInterface
 {
     public function setHttpStatusCode(int $code): self;
 
-    public function addHeader(string $header, string $value);
+    public function addHeader(
+        string $header,
+        string $value
+    );
 
     public function addRawHeader(string $header): self;
 
     /**
      * @param mixed $content
-     *
-     * @return ResponseBuilder
      */
     public function setContent($content): self;
 
     public function setVars(array $vars): self;
 
     /**
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return ResponseBuilder
+     * @param mixed $value
      */
-    public function setVar(string $key, $value): self;
+    public function setVar(
+        string $key,
+        $value
+    ): self;
 
     public function vars(): KeyValueCollection;
 
-    public function addTransformation(string $transformerClass, array $parameters = []): self;
+    public function addTransformation(
+        string $transformerClass,
+        array $parameters = []
+    ): self;
 
     /**
-     * @param RouteInterface $route
-     * @param array          $vars
-     *
-     * @return void
-     *
      * @throws VcException
      */
-    public function renderTemplate(RouteInterface $route, array $vars = []): void;
+    public function renderTemplate(
+        RouteInterface $route,
+        array $vars = []
+    ): void;
 
     /**
-     * @param RouteInterface $route
-     *
-     * @return ResponseInterface
-     *
      * @throws VcException
      */
     public function build(RouteInterface $route): ResponseInterface;

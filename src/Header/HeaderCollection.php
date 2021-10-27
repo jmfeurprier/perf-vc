@@ -32,8 +32,6 @@ class HeaderCollection
     }
 
     /**
-     * @param string $key
-     *
      * @return Header[]
      */
     public function get(string $key): array
@@ -74,8 +72,6 @@ class HeaderCollection
     }
 
     /**
-     * @param string $key
-     *
      * @return int[]
      */
     private function search(string $key): array

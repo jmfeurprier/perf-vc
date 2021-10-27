@@ -25,10 +25,7 @@ class RoutingRule implements RoutingRuleInterface
     private array $argumentDefinitions = [];
 
     /**
-     * @param ControllerAddress    $address
-     * @param string               $pathTemplate
      * @param string[]             $httpMethods
-     * @param string               $pathPattern
      * @param ArgumentDefinition[] $argumentDefinitions
      */
     public function __construct(

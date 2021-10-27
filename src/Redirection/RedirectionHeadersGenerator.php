@@ -42,11 +42,6 @@ class RedirectionHeadersGenerator implements RedirectionHeadersGeneratorInterfac
     }
 
     /**
-     * @param int    $httpStatusCode
-     * @param string $httpVersion
-     *
-     * @return HttpStatusInterface
-     *
      * @throws VcException
      */
     private function getHttpStatus(int $httpStatusCode, string $httpVersion): HttpStatusInterface

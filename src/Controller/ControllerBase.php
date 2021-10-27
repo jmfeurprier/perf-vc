@@ -45,8 +45,6 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @return void
-     *
      * @throws RedirectException
      * @throws ForwardException
      * @throws VcException
@@ -57,8 +55,6 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @return void
-     *
      * @throws RedirectException
      * @throws ForwardException
      * @throws VcException
@@ -67,8 +63,6 @@ abstract class ControllerBase implements ControllerInterface
     abstract protected function execute(): void;
 
     /**
-     * @return void
-     *
      * @throws RedirectException
      * @throws ForwardException
      * @throws VcException
@@ -79,10 +73,6 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @param Exception $e
-     *
-     * @return ResponseInterface
-     *
      * @throws RedirectException
      * @throws ForwardException
      * @throws VcException
@@ -104,8 +94,6 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @param string $name
-     *
      * @return mixed
      *
      * @throws RouteArgumentNotFoundException
@@ -121,12 +109,6 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @param string $module
-     * @param string $action
-     * @param array  $arguments
-     *
-     * @return void
-     *
      * @throws ForwardException Always thrown.
      */
     protected function forward(string $module, string $action, array $arguments = []): void
@@ -135,13 +117,6 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @param string $module
-     * @param string $action
-     * @param array  $arguments
-     * @param int    $httpStatusCode
-     *
-     * @return void
-     *
      * @throws RedirectException Always thrown.
      */
     protected function redirectToRoute(
@@ -154,11 +129,6 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @param string $path
-     * @param int    $httpStatusCode
-     *
-     * @return void
-     *
      * @throws RedirectException Always thrown.
      */
     protected function redirectToPath(string $path, int $httpStatusCode): void
@@ -167,11 +137,6 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @param string $url
-     * @param int    $httpStatusCode
-     *
-     * @return void
-     *
      * @throws RedirectException Always thrown.
      */
     protected function redirectToUrl(string $url, int $httpStatusCode): void
@@ -185,10 +150,6 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @param array $vars
-     *
-     * @return void
-     *
      * @throws VcException
      */
     protected function render(array $vars = []): void

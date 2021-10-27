@@ -8,11 +8,6 @@ use perf\Vc\Request\RequestInterface;
 interface RoutingRuleMatcherInterface
 {
     /**
-     * @param RequestInterface     $request
-     * @param RoutingRuleInterface $routingRule
-     *
-     * @return RoutingRuleMatchingOutcomeInterface
-     *
      * @throws VcException
      */
     public function tryMatch(

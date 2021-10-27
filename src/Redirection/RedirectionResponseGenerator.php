@@ -79,8 +79,6 @@ class RedirectionResponseGenerator implements RedirectionResponseGeneratorInterf
     }
 
     /**
-     * @return string
-     *
      * @throws RequestChannelKeyNotFoundException
      */
     private function getHttpVersion(): string

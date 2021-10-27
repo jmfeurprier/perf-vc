@@ -14,13 +14,14 @@ class RequestChannel
     }
 
     /**
-     * @param string $key
-     * @param mixed  $defaultValue
+     * @param mixed $defaultValue
      *
      * @return mixed
      */
-    public function tryGet(string $key, $defaultValue = null)
-    {
+    public function tryGet(
+        string $key,
+        $defaultValue = null
+    ) {
         if ($this->has($key)) {
             return $this->values[$key];
         }
@@ -29,8 +30,6 @@ class RequestChannel
     }
 
     /**
-     * @param string $key
-     *
      * @return mixed
      *
      * @throws RequestChannelKeyNotFoundException
@@ -49,9 +48,6 @@ class RequestChannel
         return array_key_exists($key, $this->values);
     }
 
-    /**
-     * @return {string:mixed}
-     */
     public function getAll(): array
     {
         return $this->values;

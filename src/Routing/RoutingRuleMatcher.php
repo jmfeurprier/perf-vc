@@ -51,8 +51,6 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
     }
 
     /**
-     * @return bool
-     *
      * @throws VcException
      */
     private function isExpectedPath(): bool

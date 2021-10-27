@@ -20,10 +20,7 @@ class PathPatternParser
     /**
      * Attempts to parse provided path pattern.
      *
-     * @param string               $pathTemplate
      * @param ArgumentDefinition[] $argumentDefinitions
-     *
-     * @return string
      *
      * @throws RoutingRuleImportException
      */
@@ -39,10 +36,7 @@ class PathPatternParser
     }
 
     /**
-     * @param string               $pathTemplate
      * @param ArgumentDefinition[] $argumentDefinitions
-     *
-     * @return void
      *
      * @throws RoutingRuleImportException
      */
@@ -54,10 +48,6 @@ class PathPatternParser
     }
 
     /**
-     * @param array $argumentDefinitions
-     *
-     * @return array
-     *
      * @throws RoutingRuleImportException
      */
     private function indexArgumentDefinitionsByName(array $argumentDefinitions): array
@@ -80,8 +70,6 @@ class PathPatternParser
     }
 
     /**
-     * @return array
-     *
      * @throws RoutingRuleImportException
      */
     private function getTokens(): array
