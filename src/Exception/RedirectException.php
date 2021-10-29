@@ -13,8 +13,12 @@ class RedirectException extends Exception
 {
     private RedirectionInterface $redirection;
 
-    public static function createFromRoute(string $module, string $action, array $arguments, int $httpStatusCode): self
-    {
+    public static function createFromRoute(
+        string $module,
+        string $action,
+        array $arguments,
+        int $httpStatusCode
+    ): self {
         return new self(
             new RouteRedirection(
                 new ControllerAddress(
@@ -27,8 +31,10 @@ class RedirectException extends Exception
         );
     }
 
-    public static function createFromPath(string $path, int $httpStatusCode): self
-    {
+    public static function createFromPath(
+        string $path,
+        int $httpStatusCode
+    ): self {
         return new self(
             new PathRedirection(
                 $path,
@@ -37,8 +43,10 @@ class RedirectException extends Exception
         );
     }
 
-    public static function createFromUrl(string $url, int $httpStatusCode): self
-    {
+    public static function createFromUrl(
+        string $url,
+        int $httpStatusCode
+    ): self {
         return new self(
             new UrlRedirection(
                 $url,

@@ -10,8 +10,11 @@ class ForwardException extends VcException
 
     private array $arguments;
 
-    public function __construct(string $module, string $action, array $arguments)
-    {
+    public function __construct(
+        string $module,
+        string $action,
+        array $arguments
+    ) {
         parent::__construct();
 
         $this->module    = $module;

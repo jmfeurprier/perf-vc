@@ -8,10 +8,13 @@ class RequestChannelKeyNotFoundException extends VcException
 
     public function __construct(string $key)
     {
-        $message = "Request channel key '{$key}' not set.";
-
-        parent::__construct($message);
+        parent::__construct("Request channel key '{$key}' not set.");
 
         $this->key = $key;
+    }
+
+    public function getKey(): string
+    {
+        return $this->key;
     }
 }

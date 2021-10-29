@@ -8,9 +8,11 @@ class Header
 
     private ?string $value;
 
-    public function __construct(string $key, string $value = null)
-    {
-        $this->key   = $key;
+    public function __construct(
+        string $key,
+        string $value = null
+    ) {
+        $this->key = $key;
         $this->value = $value;
     }
 

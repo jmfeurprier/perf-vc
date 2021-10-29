@@ -10,8 +10,10 @@ class ControllerAddress
 
     private string $action;
 
-    public function __construct(string $module, string $action)
-    {
+    public function __construct(
+        string $module,
+        string $action
+    ) {
         $this->module = $module;
         $this->action = $action;
     }

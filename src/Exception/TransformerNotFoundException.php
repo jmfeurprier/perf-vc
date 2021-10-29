@@ -8,9 +8,7 @@ class TransformerNotFoundException extends VcException
 
     public function __construct(string $class)
     {
-        $message = "Transformer {$class} not found.";
-
-        parent::__construct($message);
+        parent::__construct("Transformer {$class} not found.");
 
         $this->class = $class;
     }

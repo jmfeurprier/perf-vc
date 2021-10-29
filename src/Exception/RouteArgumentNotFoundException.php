@@ -8,9 +8,7 @@ class RouteArgumentNotFoundException extends VcException
 
     public function __construct(string $name)
     {
-        $message = "Route argument with name '{$name}' does not exist.";
-
-        parent::__construct($message);
+        parent::__construct("Route argument with name '{$name}' does not exist.");
 
         $this->name = $name;
     }
