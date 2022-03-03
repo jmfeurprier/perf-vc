@@ -5,7 +5,10 @@ perf_vc:
     twig_extensions:
         - 'App\View\Extension\DateTimeExtension'
         - 'App\View\Extension\HtmlExtension'
+    twig_environment_options:
+        debug: true
     view_files_base_path:    '%path.root%templates'
+    view_files_extension:    'twig'
     view_vars:
         siteTitle:          '%site_title%'
         metaAuthor:         '%meta.author%'

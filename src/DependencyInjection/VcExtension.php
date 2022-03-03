@@ -83,6 +83,14 @@ class VcExtension implements ExtensionInterface
             $this->config['view_files_base_path']
         );
 
+        if (!empty($this->config['twig_environment_options'])) {
+            $this->setDefinitionArgument(
+                ViewRendererInterface::class,
+                '$options',
+                $this->config['twig_environment_options']
+            );
+        }
+
         if (!empty($this->config['twig_extensions'])) {
             $services = [];
 
