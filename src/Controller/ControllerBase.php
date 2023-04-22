@@ -94,11 +94,9 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
-     * @return mixed
-     *
      * @throws RouteArgumentNotFoundException
      */
-    protected function getArgument(string $name)
+    protected function getArgument(string $name): mixed
     {
         return $this->route->getArgument($name);
     }

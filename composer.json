@@ -4,29 +4,34 @@
 	"license"     : "MIT",
 	"description" : "Simple View-Controller stack",
 	"require"     : {
-		"php": ">=7.4",
+		"php": ">=8.2",
 		"ext-json": "*",
 		"ext-simplexml": "*",
 		"perf/caching": "^3.1",
 		"perf/http-status": "^3.0",
 		"perf/source": "^2.0",
 		"perf/timing": "^2.0",
-		"symfony/config": "^5.0",
-		"symfony/dependency-injection": "^5.0",
-		"symfony/expression-language": "^5.1",
-		"symfony/yaml": "^5.0",
+		"symfony/config": "^6.2",
+		"symfony/dependency-injection": "^6.2",
+		"symfony/expression-language": "^6.2",
+		"symfony/yaml": "^6.2",
 		"twig/twig": "^3.0"
 	},
 	"require-dev": {
-		"ext-xdebug"                : "*",
-		"phing/phing"               : "^2.16",
-		"phpmd/phpmd"               : "^2.8",
-		"phpunit/phpunit"           : "^9.3",
-		"squizlabs/php_codesniffer" : "^3.5"
+		"ext-xdebug": "*",
+		"phing/phing": "^2.16",
+		"phpmd/phpmd": "^2.8",
+		"phpunit/phpunit": "^10.1",
+		"squizlabs/php_codesniffer": "^3.5"
 	},
 	"autoload" : {
 		"psr-4" : {
 			"perf\\Vc\\" : "src/"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"perf\\Vc\\" : "tests/unit/src/"
 		}
 	},
 	"config": {

@@ -13,16 +13,19 @@ class TextTransformer implements TransformerInterface
         self::CHARSET => 'utf-8',
     ];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function transformContent($content, array $vars, array $parameters)
-    {
+    public function transformContent(
+        mixed $content,
+        array $vars,
+        array $parameters
+    ): mixed {
         return $content;
     }
 
-    public function transformHeaders(HeaderCollection $headers, array $vars, array $parameters): HeaderCollection
-    {
+    public function transformHeaders(
+        HeaderCollection $headers,
+        array $vars,
+        array $parameters
+    ): HeaderCollection {
         $parameters = array_replace(
             self::PARAMETERS_DEFAULT,
             $parameters

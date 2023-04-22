@@ -7,7 +7,7 @@ use perf\Vc\Exception\TransformerNotFoundException;
 class TransformerRepository implements TransformerRepositoryInterface
 {
     /**
-     * @var TransformerInterface[]
+     * @var array<string, TransformerInterface>
      */
     private array $transformers = [];
 
@@ -23,11 +23,14 @@ class TransformerRepository implements TransformerRepositoryInterface
 
     private function addTransformer(TransformerInterface $transformer): void
     {
-        $class = get_class($transformer);
+        $class = $transformer::class;
 
         $this->transformers[$class] = $transformer;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function get(string $class): TransformerInterface
     {
         if (array_key_exists($class, $this->transformers)) {

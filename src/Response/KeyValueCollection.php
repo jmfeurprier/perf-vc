@@ -2,7 +2,6 @@
 
 namespace perf\Vc\Response;
 
-use DomainException;
 use perf\Vc\Exception\VcException;
 
 class KeyValueCollection
@@ -21,22 +20,29 @@ class KeyValueCollection
         }
     }
 
-    public function set(string $key, $value): void
-    {
+    public function set(
+        string $key,
+        $value
+    ): void {
         $this->vars[$key] = $value;
     }
 
-    public function get(string $key)
+    /**
+     * @throws VcException
+     */
+    public function get(string $key): mixed
     {
         if ($this->has($key)) {
             return $this->vars[$key];
         }
 
-        throw new VcException();
+        throw new VcException("No item with key '{$key}' found in collection.");
     }
 
-    public function tryGet(string $key, $defaultValue = null)
-    {
+    public function tryGet(
+        string $key,
+        $defaultValue = null
+    ): mixed {
         if ($this->has($key)) {
             return $this->vars[$key];
         }

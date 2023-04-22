@@ -28,8 +28,6 @@ class ControllerBaseTest extends TestCase
      */
     private $responseBuilder;
 
-    private ResponseInterface $response;
-
     private ControllerBase $controller;
 
     protected function setUp(): void
@@ -54,34 +52,33 @@ class ControllerBaseTest extends TestCase
 
     public function testHooks()
     {
-        $spy = $this->getMockBuilder(\stdClass::class)->addMethods(['call'])->getMock();
-        $spy->expects($this->exactly(3))->method('call')->withConsecutive([1], [2], [3]);
-
-        $this->controller = new class ($spy) extends ControllerBase {
-            private $spy;
-
-            public function __construct($spy)
-            {
-                $this->spy = $spy;
-            }
+        $this->controller = new class extends ControllerBase {
+            private string $trace = '';
 
             protected function executeHookPre(): void
             {
-                $this->spy->call(1);
+                $this->trace .= '1';
             }
 
             public function execute(): void
             {
-                $this->spy->call(2);
+                $this->trace .= '2';
             }
 
             protected function executeHookPost(): void
             {
-                $this->spy->call(3);
+                $this->trace .= '3';
+            }
+
+            public function getTrace(): string
+            {
+                return $this->trace;
             }
         };
 
         $this->whenRun();
+
+        $this->assertSame('123', $this->controller->getTrace());
     }
 
     public function testForwarding()
@@ -142,6 +139,6 @@ class ControllerBaseTest extends TestCase
 
     private function whenRun(): void
     {
-        $this->response = $this->controller->run($this->request, $this->route, $this->responseBuilder);
+        $this->controller->run($this->request, $this->route, $this->responseBuilder);
     }
 }

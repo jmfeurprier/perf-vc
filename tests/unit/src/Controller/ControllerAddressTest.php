@@ -4,7 +4,7 @@ namespace perf\Vc\Controller;
 
 use PHPUnit\Framework\TestCase;
 
-class ControllerControllerAddressTest extends TestCase
+class ControllerAddressTest extends TestCase
 {
     public function testGetModule()
     {

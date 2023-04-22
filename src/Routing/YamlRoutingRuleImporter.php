@@ -210,10 +210,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
         return $format;
     }
 
-    /**
-     * @return mixed
-     */
-    private function parseArgumentDefaultValue(array $argument)
+    private function parseArgumentDefaultValue(array $argument): mixed
     {
         return $argument['default'] ?? null;
     }

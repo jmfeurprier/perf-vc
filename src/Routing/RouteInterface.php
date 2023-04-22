@@ -12,11 +12,9 @@ interface RouteInterface
     public function getArguments(): array;
 
     /**
-     * @return mixed
-     *
      * @throws RouteArgumentNotFoundException
      */
-    public function getArgument(string $name);
+    public function getArgument(string $name): mixed;
 
     public function hasArgument(string $name): bool;
 

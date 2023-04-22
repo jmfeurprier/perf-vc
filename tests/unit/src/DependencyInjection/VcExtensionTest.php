@@ -22,7 +22,7 @@ class VcExtensionTest extends TestCase
         $configs = [
             'perf_vc' => [
                 'controllers_namespace'   => 'Foo',
-                'routing_rules_file_path' => 'routes.yml',
+                'routing_rules_file_path' => 'routes.yaml',
                 'view_files_base_path'    => '.',
                 'twig_extensions'         => [
                     'Foo',

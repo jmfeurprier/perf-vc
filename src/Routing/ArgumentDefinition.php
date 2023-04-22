@@ -8,10 +8,7 @@ class ArgumentDefinition
 
     private string $format;
 
-    /**
-     * @var mixed
-     */
-    private $defaultValue;
+    private mixed $defaultValue;
 
     public function __construct(string $name, string $format, $defaultValue)
     {

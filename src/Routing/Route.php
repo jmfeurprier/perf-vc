@@ -29,8 +29,10 @@ class Route implements RouteInterface
         $this->path = $path;
     }
 
-    private function addArgument(string $key, $value): void
-    {
+    private function addArgument(
+        string $key,
+        $value
+    ): void {
         $this->arguments[$key] = $value;
     }
 
@@ -47,7 +49,7 @@ class Route implements RouteInterface
     /**
      * {@inheritDoc}
      */
-    public function getArgument(string $name)
+    public function getArgument(string $name): mixed
     {
         if (array_key_exists($name, $this->arguments)) {
             return $this->arguments[$name];

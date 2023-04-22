@@ -10,8 +10,10 @@ class RouteGenerator implements RouteGeneratorInterface
 
     private array $arguments;
 
-    public function generate(RoutingRuleInterface $routingRule, array $arguments): RouteInterface
-    {
+    public function generate(
+        RoutingRuleInterface $routingRule,
+        array $arguments
+    ): RouteInterface {
         $this->init($routingRule, $arguments);
 
         return new Route(
@@ -21,8 +23,10 @@ class RouteGenerator implements RouteGeneratorInterface
         );
     }
 
-    private function init(RoutingRuleInterface $routingRule, array $arguments): void
-    {
+    private function init(
+        RoutingRuleInterface $routingRule,
+        array $arguments
+    ): void {
         $this->routingRule = $routingRule;
         $this->arguments   = $arguments;
     }
@@ -39,7 +43,7 @@ class RouteGenerator implements RouteGeneratorInterface
 
         foreach ($this->arguments as $key => $value) {
             $searches[]     = '{' . $key . '}';
-            $replacements[] = $value;
+            $replacements[] = urlencode($value);
         }
 
         return str_replace(

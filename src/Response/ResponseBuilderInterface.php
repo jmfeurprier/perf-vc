@@ -16,19 +16,13 @@ interface ResponseBuilderInterface
 
     public function addRawHeader(string $header): self;
 
-    /**
-     * @param mixed $content
-     */
-    public function setContent($content): self;
+    public function setContent(mixed $content): self;
 
     public function setVars(array $vars): self;
 
-    /**
-     * @param mixed $value
-     */
     public function setVar(
         string $key,
-        $value
+        mixed $value
     ): self;
 
     public function vars(): KeyValueCollection;

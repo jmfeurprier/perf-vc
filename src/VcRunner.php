@@ -6,22 +6,13 @@ use perf\Vc\Exception\VcException;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseSenderInterface;
 
-class VcRunner
+readonly class VcRunner
 {
-    private FrontControllerInterface $frontController;
-
-    private RequestInterface $request;
-
-    private ResponseSenderInterface $responseSender;
-
     public function __construct(
-        FrontControllerInterface $frontController,
-        RequestInterface $request,
-        ResponseSenderInterface $responseSender
+        private FrontControllerInterface $frontController,
+        private RequestInterface $request,
+        private ResponseSenderInterface $responseSender
     ) {
-        $this->frontController = $frontController;
-        $this->request         = $request;
-        $this->responseSender  = $responseSender;
     }
 
     /**

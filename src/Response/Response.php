@@ -26,7 +26,7 @@ class Response implements ResponseInterface
         $this->source = $source;
     }
 
-    private function addHeader(Header $header)
+    private function addHeader(Header $header): void
     {
         $this->headers[] = $header;
     }

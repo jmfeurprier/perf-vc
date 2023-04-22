@@ -2,20 +2,16 @@
 
 namespace perf\Vc\Controller;
 
-class ControllerAddress
+use Stringable;
+
+class ControllerAddress implements Stringable
 {
     private const DELIMITER = ':';
 
-    private string $module;
-
-    private string $action;
-
     public function __construct(
-        string $module,
-        string $action
+        private readonly string $module,
+        private readonly string $action
     ) {
-        $this->module = $module;
-        $this->action = $action;
     }
 
     public function getModule(): string

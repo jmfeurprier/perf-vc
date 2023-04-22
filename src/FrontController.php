@@ -23,26 +23,14 @@ use perf\Vc\Routing\RouterInterface;
 
 class FrontController implements FrontControllerInterface
 {
-    private RouterInterface $router;
-
-    private ControllerRepositoryInterface $controllerRepository;
-
-    private ResponseBuilderFactoryInterface $responseBuilderFactory;
-
-    private RedirectionResponseGeneratorInterface $redirectionResponseGenerator;
-
     private RequestInterface $request;
 
     public function __construct(
-        RouterInterface $router,
-        ControllerRepositoryInterface $controllerRepository,
-        ResponseBuilderFactoryInterface $responseBuilderFactory,
-        RedirectionResponseGeneratorInterface $redirectionResponseGenerator
+        private readonly RouterInterface $router,
+        private readonly ControllerRepositoryInterface $controllerRepository,
+        private readonly ResponseBuilderFactoryInterface $responseBuilderFactory,
+        private readonly RedirectionResponseGeneratorInterface $redirectionResponseGenerator
     ) {
-        $this->router                       = $router;
-        $this->controllerRepository         = $controllerRepository;
-        $this->responseBuilderFactory       = $responseBuilderFactory;
-        $this->redirectionResponseGenerator = $redirectionResponseGenerator;
     }
 
     /**

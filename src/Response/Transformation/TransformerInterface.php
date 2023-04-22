@@ -6,16 +6,11 @@ use perf\Vc\Header\HeaderCollection;
 
 interface TransformerInterface
 {
-    /**
-     * @param mixed $content
-     *
-     * @return mixed
-     */
     public function transformContent(
-        $content,
+        mixed $content,
         array $vars,
         array $parameters
-    );
+    ): mixed;
 
     public function transformHeaders(
         HeaderCollection $headers,

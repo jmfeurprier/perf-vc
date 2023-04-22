@@ -82,10 +82,7 @@ class ResponseBuilder implements ResponseBuilderInterface
         return $this->headers;
     }
 
-    /**
-     * @param string|SourceInterface $content
-     */
-    public function setContent($content): self
+    public function setContent(mixed $content): self
     {
         $this->content = $content;
 
@@ -99,10 +96,7 @@ class ResponseBuilder implements ResponseBuilderInterface
         return $this;
     }
 
-    /**
-     * @param mixed  $value
-     */
-    public function setVar(string $key, $value): self
+    public function setVar(string $key, mixed $value): self
     {
         $this->vars->set($key, $value);
 

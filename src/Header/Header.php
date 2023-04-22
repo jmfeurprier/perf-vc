@@ -2,18 +2,12 @@
 
 namespace perf\Vc\Header;
 
-class Header
+readonly class Header
 {
-    private string $key;
-
-    private ?string $value;
-
     public function __construct(
-        string $key,
-        string $value = null
+        private string $key,
+        private ?string $value = null
     ) {
-        $this->key = $key;
-        $this->value = $value;
     }
 
     public function getKey(): string

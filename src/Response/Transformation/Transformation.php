@@ -2,16 +2,12 @@
 
 namespace perf\Vc\Response\Transformation;
 
-class Transformation
+readonly class Transformation
 {
-    private TransformerInterface $transformer;
-
-    private array $parameters;
-
-    public function __construct(TransformerInterface $transformer, array $parameters = [])
-    {
-        $this->transformer = $transformer;
-        $this->parameters  = $parameters;
+    public function __construct(
+        private TransformerInterface $transformer,
+        private array $parameters = []
+    ) {
     }
 
     public function getTransformer(): TransformerInterface

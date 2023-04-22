@@ -25,7 +25,6 @@
 	<target name="phpunit" description="Runs unit tests with PHPUnit">
 		<exec executable="${bindir}phpunit" passthru="true">
 			<arg line="-c ${rootdir}phpunit.xml" />
-			<arg line="--verbose" />
 		</exec>
 	</target>
 
