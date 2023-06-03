@@ -101,7 +101,7 @@ class RequestPopulator implements RequestPopulatorInterface
     /**
      * @throws VcException
      */
-    private function getPath()
+    private function getPath(): string
     {
         $url = $this->server['REDIRECT_URL'] ?? $this->server['REQUEST_URI'] ?? null;
 
@@ -111,7 +111,7 @@ class RequestPopulator implements RequestPopulatorInterface
 
         $path = parse_url($url, PHP_URL_PATH);
 
-        if (false === $path) {
+        if (!is_string($path)) {
             throw new VcException("Failed to retrieve HTTP request path from URL '{$url}'.");
         }
 

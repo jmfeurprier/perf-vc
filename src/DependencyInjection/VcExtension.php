@@ -2,6 +2,7 @@
 
 namespace perf\Vc\DependencyInjection;
 
+use Exception;
 use perf\Source\LocalFileSource;
 use perf\Source\SourceInterface;
 use perf\Vc\Controller\ControllerRepositoryInterface;
@@ -27,9 +28,9 @@ class VcExtension implements ExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function load(array $configs, ContainerBuilder $containerBuilder)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $this->init($configs, $containerBuilder);
+        $this->init($configs, $container);
 
         $this->loadServiceDefinitions();
         $this->configureControllerRepository();
@@ -39,6 +40,9 @@ class VcExtension implements ExtensionInterface
         $this->configureResponseBuilderFactory();
     }
 
+    /**
+     * @throws Exception
+     */
     private function loadServiceDefinitions(): void
     {
         $loader = new YamlFileLoader(
@@ -49,7 +53,7 @@ class VcExtension implements ExtensionInterface
         $loader->load('services.yml');
     }
 
-    private function init(array $configs, ContainerBuilder $containerBuilder)
+    private function init(array $configs, ContainerBuilder $containerBuilder): void
     {
         $configuration          = new VcConfiguration();
         $processor              = new Processor();
@@ -137,17 +141,17 @@ class VcExtension implements ExtensionInterface
         $this->containerBuilder->getDefinition($serviceId)->setArgument($argument, $value);
     }
 
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return '';
     }
 
-    public function getXsdValidationBasePath()
+    public function getXsdValidationBasePath(): bool
     {
         return false;
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'perf_vc';
     }

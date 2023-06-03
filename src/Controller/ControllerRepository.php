@@ -9,20 +9,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ControllerRepository implements ControllerRepositoryInterface
 {
-    private ControllerClassResolverInterface $controllerClassResolver;
-
     private string $controllersNamespace;
 
-    private ContainerInterface $container;
-
     public function __construct(
-        ControllerClassResolverInterface $controllerClassResolver,
+        private readonly ControllerClassResolverInterface $controllerClassResolver,
         string $controllersNamespace,
-        ContainerInterface $container
+        private readonly ContainerInterface $container
     ) {
-        $this->controllerClassResolver = $controllerClassResolver;
-        $this->controllersNamespace    = trim($controllersNamespace, '\\');
-        $this->container               = $container;
+        $this->controllersNamespace = trim($controllersNamespace, '\\');
     }
 
     /**

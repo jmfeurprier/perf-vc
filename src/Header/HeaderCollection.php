@@ -21,7 +21,7 @@ class HeaderCollection
         }
     }
 
-    public function add(Header $header)
+    public function add(Header $header): void
     {
         $this->headers[] = $header;
     }
