@@ -11,7 +11,7 @@ class PathPatternParser
     private string $pathTemplate;
 
     /**
-     * @var ArgumentDefinition[]|{string:ArgumentDefinition}
+     * @var array<string, ArgumentDefinition>
      */
     private array $argumentDefinitionsByName;
 
