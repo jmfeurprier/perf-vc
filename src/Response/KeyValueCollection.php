@@ -6,13 +6,22 @@ use perf\Vc\Exception\VcException;
 
 class KeyValueCollection
 {
+    /**
+     * @var array<string, mixed>
+     */
     private array $vars = [];
 
+    /**
+     * @param array<string, mixed> $vars
+     */
     public function __construct(array $vars = [])
     {
         $this->setMany($vars);
     }
 
+    /**
+     * @param array<string, mixed> $vars
+     */
     public function setMany(array $vars): void
     {
         foreach ($vars as $key => $value) {
@@ -22,7 +31,7 @@ class KeyValueCollection
 
     public function set(
         string $key,
-        $value
+        mixed $value
     ): void {
         $this->vars[$key] = $value;
     }
@@ -41,7 +50,7 @@ class KeyValueCollection
 
     public function tryGet(
         string $key,
-        $defaultValue = null
+        mixed $defaultValue = null
     ): mixed {
         if ($this->has($key)) {
             return $this->vars[$key];
@@ -63,6 +72,9 @@ class KeyValueCollection
         return array_key_exists($key, $this->vars);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getAll(): array
     {
         return $this->vars;

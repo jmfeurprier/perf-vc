@@ -21,6 +21,9 @@ use Symfony\Component\ExpressionLanguage\Expression;
 
 class VcExtension implements ExtensionInterface
 {
+    /**
+     * @var array<string, mixed>
+     */
     private array $config;
 
     private ContainerBuilder $containerBuilder;
@@ -28,8 +31,10 @@ class VcExtension implements ExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function load(array $configs, ContainerBuilder $container): void
-    {
+    public function load(
+        array $configs,
+        ContainerBuilder $container
+    ): void {
         $this->init($configs, $container);
 
         $this->loadServiceDefinitions();
@@ -53,11 +58,16 @@ class VcExtension implements ExtensionInterface
         $loader->load('services.yml');
     }
 
-    private function init(array $configs, ContainerBuilder $containerBuilder): void
-    {
-        $configuration          = new VcConfiguration();
-        $processor              = new Processor();
-        $this->config           = $processor->processConfiguration($configuration, $configs);
+    /**
+     * @param array<array<mixed>> $configs
+     */
+    private function init(
+        array $configs,
+        ContainerBuilder $containerBuilder
+    ): void {
+        $configuration = new VcConfiguration();
+        $processor = new Processor();
+        $this->config = $processor->processConfiguration($configuration, $configs);
         $this->containerBuilder = $containerBuilder;
     }
 
@@ -118,7 +128,12 @@ class VcExtension implements ExtensionInterface
                 '$path' => $this->config['routing_rules_file_path'],
             ]
         );
-        $definition->setFactory([LocalFileSource::class, 'create']);
+        $definition->setFactory(
+            [
+                LocalFileSource::class,
+                'create',
+            ]
+        );
         $this->containerBuilder->setDefinition('perf_vc.routing_rules_source', $definition);
 
         $this->setDefinitionArgument(
@@ -136,8 +151,11 @@ class VcExtension implements ExtensionInterface
         $this->setDefinitionArgument(ResponseBuilderFactoryInterface::class, '$vars', $this->config['view_vars']);
     }
 
-    private function setDefinitionArgument(string $serviceId, string $argument, $value): void
-    {
+    private function setDefinitionArgument(
+        string $serviceId,
+        string $argument,
+        mixed $value
+    ): void {
         $this->containerBuilder->getDefinition($serviceId)->setArgument($argument, $value);
     }
 

@@ -30,8 +30,13 @@ readonly class Router implements RouterInterface
         return null;
     }
 
-    public function tryGetByAddress(ControllerAddress $address, array $arguments): ?RouteInterface
-    {
+    /**
+     * {@inheritDoc}
+     */
+    public function tryGetByAddress(
+        ControllerAddress $address,
+        array $arguments
+    ): ?RouteInterface {
         foreach ($this->routingRules->getAll() as $routingRule) {
             if ($routingRule->getAddress()->equals($address)) {
                 return $this->buildRoute($routingRule, $arguments);
@@ -41,8 +46,13 @@ readonly class Router implements RouterInterface
         return null;
     }
 
-    private function buildRoute(RoutingRuleInterface $routingRule, array $arguments): RouteInterface
-    {
+    /**
+     * @param array<string, mixed> $arguments
+     */
+    private function buildRoute(
+        RoutingRuleInterface $routingRule,
+        array $arguments
+    ): RouteInterface {
         return $this->routeGenerator->generate($routingRule, $arguments);
     }
 }

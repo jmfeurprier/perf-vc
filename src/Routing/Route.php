@@ -9,6 +9,9 @@ use perf\Vc\Exception\RouteArgumentNotFoundException;
 
 readonly class Route implements RouteInterface
 {
+    /**
+     * @param array<string, mixed> $arguments
+     */
     public function __construct(
         private ControllerAddress $address,
         private array $arguments = [],
@@ -21,6 +24,9 @@ readonly class Route implements RouteInterface
         return $this->address;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getArguments(): array
     {
         return $this->arguments;

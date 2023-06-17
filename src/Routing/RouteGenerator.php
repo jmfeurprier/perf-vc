@@ -8,8 +8,14 @@ class RouteGenerator implements RouteGeneratorInterface
 {
     private RoutingRuleInterface $routingRule;
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $arguments;
 
+    /**
+     * {@inheritDoc}
+     */
     public function generate(
         RoutingRuleInterface $routingRule,
         array $arguments
@@ -23,6 +29,9 @@ class RouteGenerator implements RouteGeneratorInterface
         );
     }
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     private function init(
         RoutingRuleInterface $routingRule,
         array $arguments

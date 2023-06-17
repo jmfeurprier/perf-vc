@@ -9,11 +9,17 @@ class HeaderCollection
      */
     private array $headers = [];
 
+    /**
+     * @param Header[] $headers
+     */
     public function __construct(array $headers = [])
     {
         $this->addMany($headers);
     }
 
+    /**
+     * @param Header[] $headers
+     */
     public function addMany(array $headers): void
     {
         foreach ($headers as $header) {

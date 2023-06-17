@@ -31,6 +31,9 @@ class ResponseBuilder implements ResponseBuilderInterface
      */
     private array $transformations = [];
 
+    /**
+     * @param array<string, mixed> $vars
+     */
     public function __construct(
         private readonly HttpStatusRepositoryInterface $httpStatusRepository,
         private readonly ViewLocatorInterface $templateLocator,
@@ -135,6 +138,8 @@ class ResponseBuilder implements ResponseBuilderInterface
     }
 
     /**
+     * @return Header[]
+     *
      * @throws VcException
      */
     private function buildHeaders(): array

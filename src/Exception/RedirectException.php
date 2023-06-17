@@ -11,6 +11,9 @@ use perf\Vc\Redirection\UrlRedirection;
 
 class RedirectException extends Exception
 {
+    /**
+     * @param array<string, mixed> $arguments
+     */
     public static function createFromRoute(
         string $module,
         string $action,

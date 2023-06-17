@@ -10,6 +10,9 @@ readonly class RouteRedirection implements RedirectionInterface
 {
     use PathToUrlTrait;
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     public function __construct(
         private ControllerAddress $address,
         private array $arguments,

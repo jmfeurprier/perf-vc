@@ -109,11 +109,16 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
+     * @param array<string, mixed> $arguments
+     *
      * @throws VcException
      * @throws Exception
      */
-    protected function forward(string $module, string $action, array $arguments = []): ResponseInterface
-    {
+    protected function forward(
+        string $module,
+        string $action,
+        array $arguments = []
+    ): ResponseInterface {
         $route = new Route(
             new ControllerAddress(
                 $module,

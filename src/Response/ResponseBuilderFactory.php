@@ -9,6 +9,9 @@ use perf\Vc\View\ViewRendererInterface;
 
 readonly class ResponseBuilderFactory implements ResponseBuilderFactoryInterface
 {
+    /**
+     * @param array<string, mixed> $vars
+     */
     public function __construct(
         private HttpStatusRepositoryInterface $httpStatusRepository,
         private ViewLocatorInterface $templateLocator,

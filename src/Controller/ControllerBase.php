@@ -25,8 +25,8 @@ abstract class ControllerBase implements ControllerInterface
         RouteInterface $route,
         ResponseBuilderInterface $responseBuilder
     ): ResponseInterface {
-        $this->request         = $request;
-        $this->route           = $route;
+        $this->request = $request;
+        $this->route = $route;
         $this->responseBuilder = $responseBuilder;
 
         try {
@@ -105,14 +105,21 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
+     * @param array<string, mixed> $arguments
+     *
      * @throws ForwardException Always thrown.
      */
-    protected function forward(string $module, string $action, array $arguments = []): never
-    {
+    protected function forward(
+        string $module,
+        string $action,
+        array $arguments = []
+    ): never {
         throw new ForwardException($module, $action, $arguments);
     }
 
     /**
+     * @param array<string, mixed> $arguments
+     *
      * @throws RedirectException Always thrown.
      */
     protected function redirectToRoute(
@@ -127,16 +134,20 @@ abstract class ControllerBase implements ControllerInterface
     /**
      * @throws RedirectException Always thrown.
      */
-    protected function redirectToPath(string $path, int $httpStatusCode): never
-    {
+    protected function redirectToPath(
+        string $path,
+        int $httpStatusCode
+    ): never {
         throw RedirectException::createFromPath($path, $httpStatusCode);
     }
 
     /**
      * @throws RedirectException Always thrown.
      */
-    protected function redirectToUrl(string $url, int $httpStatusCode): never
-    {
+    protected function redirectToUrl(
+        string $url,
+        int $httpStatusCode
+    ): never {
         throw RedirectException::createFromUrl($url, $httpStatusCode);
     }
 
@@ -146,6 +157,8 @@ abstract class ControllerBase implements ControllerInterface
     }
 
     /**
+     * @param array<string, mixed> $vars
+     *
      * @throws VcException
      */
     protected function render(array $vars = []): void

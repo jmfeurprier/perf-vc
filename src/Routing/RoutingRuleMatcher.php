@@ -11,6 +11,9 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
 
     private RoutingRuleInterface $routingRule;
 
+    /**
+     * @var array<int, string>
+     */
     private array $matches;
 
     /**
@@ -79,6 +82,9 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function getRouteArguments(): array
     {
         foreach (array_keys($this->matches) as $key) {

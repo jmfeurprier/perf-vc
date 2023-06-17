@@ -24,8 +24,10 @@ class PathPatternParser
      *
      * @throws RoutingRuleImportException
      */
-    public function parse(string $pathTemplate, array $argumentDefinitions): string
-    {
+    public function parse(
+        string $pathTemplate,
+        array $argumentDefinitions
+    ): string {
         $this->init($pathTemplate, $argumentDefinitions);
 
         foreach ($this->getTokens() as $offset => $token) {
@@ -40,14 +42,20 @@ class PathPatternParser
      *
      * @throws RoutingRuleImportException
      */
-    private function init(string $pathTemplate, array $argumentDefinitions): void
-    {
+    private function init(
+        string $pathTemplate,
+        array $argumentDefinitions
+    ): void {
         $this->pathTemplate              = $pathTemplate;
         $this->argumentDefinitionsByName = $this->indexArgumentDefinitionsByName($argumentDefinitions);
         $this->regex                     = $this->pathTemplate;
     }
 
     /**
+     * @param ArgumentDefinition[] $argumentDefinitions
+     *
+     * @return array<string, ArgumentDefinition>
+     *
      * @throws RoutingRuleImportException
      */
     private function indexArgumentDefinitionsByName(array $argumentDefinitions): array
@@ -70,6 +78,8 @@ class PathPatternParser
     }
 
     /**
+     * @return array<int, string>
+     *
      * @throws RoutingRuleImportException
      */
     private function getTokens(): array
@@ -94,8 +104,10 @@ class PathPatternParser
         return $tokens;
     }
 
-    private function processToken(string $token, int $offset): void
-    {
+    private function processToken(
+        string $token,
+        int $offset
+    ): void {
         $argumentName   = substr($token, 1, -1);
         $argumentFormat = self::ARGUMENT_FORMAT_DEFAULT;
 

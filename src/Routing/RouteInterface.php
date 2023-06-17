@@ -9,6 +9,9 @@ interface RouteInterface
 {
     public function getAddress(): ControllerAddress;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArguments(): array;
 
     /**

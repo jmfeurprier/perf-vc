@@ -13,6 +13,9 @@ interface RouterInterface
      */
     public function tryGetByRequest(RequestInterface $request): ?RouteInterface;
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     public function tryGetByAddress(
         ControllerAddress $address,
         array $arguments

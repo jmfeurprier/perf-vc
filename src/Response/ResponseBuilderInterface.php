@@ -18,6 +18,9 @@ interface ResponseBuilderInterface
 
     public function setContent(mixed $content): self;
 
+    /**
+     * @param array<string, mixed> $vars
+     */
     public function setVars(array $vars): self;
 
     public function setVar(
@@ -27,12 +30,17 @@ interface ResponseBuilderInterface
 
     public function vars(): KeyValueCollection;
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function addTransformation(
         string $transformerClass,
         array $parameters = []
     ): self;
 
     /**
+     * @param array<string, mixed> $vars
+     *
      * @throws VcException
      */
     public function renderTemplate(

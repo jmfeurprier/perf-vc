@@ -9,11 +9,12 @@ use Twig\Error\Error as TwigError;
 use Twig\Extension\ExtensionInterface;
 use Twig\Loader\FilesystemLoader;
 
-class TwigViewRenderer implements ViewRendererInterface
+readonly class TwigViewRenderer implements ViewRendererInterface
 {
-    private readonly TwigEnvironment $environment;
+    private TwigEnvironment $environment;
 
     /**
+     * @param array<string, mixed> $options
      * @param ExtensionInterface[] $extensions
      */
     public function __construct(

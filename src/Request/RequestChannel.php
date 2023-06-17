@@ -6,6 +6,9 @@ use perf\Vc\Exception\RequestChannelKeyNotFoundException;
 
 readonly class RequestChannel
 {
+    /**
+     * @param array<string, mixed> $values
+     */
     public function __construct(
         private array $values
     ) {
@@ -39,6 +42,9 @@ readonly class RequestChannel
         return array_key_exists($key, $this->values);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getAll(): array
     {
         return $this->values;

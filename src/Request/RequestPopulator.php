@@ -20,6 +20,13 @@ readonly class RequestPopulator implements RequestPopulatorInterface
         );
     }
 
+    /**
+     * @param array<string, mixed> $get
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $cookies
+     * @param array<string, mixed> $files
+     * @param array<string, mixed> $server
+     */
     public function __construct(
         private array $get,
         private array $post,
@@ -109,6 +116,8 @@ readonly class RequestPopulator implements RequestPopulatorInterface
     }
 
     /**
+     * @return array<string, mixed>
+     *
      * @throws VcException
      */
     private function getAttachment(): array

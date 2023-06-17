@@ -13,6 +13,15 @@ class XmlTransformer implements TransformerInterface
         self::CHARSET => 'utf-8',
     ];
 
+    /**
+     * {@inheritDoc}
+     *
+     * @template T
+     *
+     * @param T $content
+     *
+     * @return T
+     */
     public function transformContent(
         mixed $content,
         array $vars,
@@ -21,6 +30,9 @@ class XmlTransformer implements TransformerInterface
         return $content;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function transformHeaders(
         HeaderCollection $headers,
         array $vars,
