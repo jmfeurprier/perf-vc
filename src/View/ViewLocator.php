@@ -4,7 +4,7 @@ namespace perf\Vc\View;
 
 use perf\Vc\Routing\RouteInterface;
 
-class ViewLocator implements ViewLocatorInterface
+readonly class ViewLocator implements ViewLocatorInterface
 {
     private string $viewFilesExtension;
 

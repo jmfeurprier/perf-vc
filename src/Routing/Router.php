@@ -5,22 +5,13 @@ namespace perf\Vc\Routing;
 use perf\Vc\Controller\ControllerAddress;
 use perf\Vc\Request\RequestInterface;
 
-class Router implements RouterInterface
+readonly class Router implements RouterInterface
 {
-    private RoutingRuleMatcherInterface $routingRuleMatcher;
-
-    private RoutingRuleCollection $routingRules;
-
-    private RouteGeneratorInterface $routeGenerator;
-
     public function __construct(
-        RoutingRuleMatcherInterface $routingRuleMatcher,
-        RouteGeneratorInterface $routeGenerator,
-        RoutingRuleCollection $routingRules
+        private RoutingRuleMatcherInterface $routingRuleMatcher,
+        private RouteGeneratorInterface $routeGenerator,
+        private RoutingRuleCollection $routingRules
     ) {
-        $this->routingRuleMatcher = $routingRuleMatcher;
-        $this->routeGenerator     = $routeGenerator;
-        $this->routingRules       = $routingRules;
     }
 
     /**
@@ -39,9 +30,6 @@ class Router implements RouterInterface
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function tryGetByAddress(ControllerAddress $address, array $arguments): ?RouteInterface
     {
         foreach ($this->routingRules->getAll() as $routingRule) {

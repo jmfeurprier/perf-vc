@@ -6,6 +6,7 @@ use perf\HttpStatus\Exception\HttpStatusException;
 use perf\HttpStatus\HttpStatusRepositoryInterface;
 use perf\Source\SourceInterface;
 use perf\Source\StringSource;
+use perf\Vc\Exception\TransformerNotFoundException;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 use perf\Vc\Header\HeaderCollection;
@@ -17,24 +18,13 @@ use perf\Vc\View\ViewRendererInterface;
 
 class ResponseBuilder implements ResponseBuilderInterface
 {
-    private HttpStatusRepositoryInterface $httpStatusRepository;
+    private ?int $httpStatusCode = null;
 
-    private ViewLocatorInterface $templateLocator;
+    private readonly HeaderCollection $headers;
 
-    private ViewRendererInterface $templateRenderer;
+    private string|SourceInterface $content = '';
 
-    private TransformerRepositoryInterface $transformerRepository;
-
-    private ?int $httpStatusCode;
-
-    private HeaderCollection $headers;
-
-    /**
-     * @var string|SourceInterface
-     */
-    private $content = '';
-
-    private KeyValueCollection $vars;
+    private readonly KeyValueCollection $vars;
 
     /**
      * @var Transformation[]
@@ -42,18 +32,14 @@ class ResponseBuilder implements ResponseBuilderInterface
     private array $transformations = [];
 
     public function __construct(
-        HttpStatusRepositoryInterface $httpStatusRepository,
-        ViewLocatorInterface $templateLocator,
-        ViewRendererInterface $templateRenderer,
-        TransformerRepositoryInterface $transformerRepository,
+        private readonly HttpStatusRepositoryInterface $httpStatusRepository,
+        private readonly ViewLocatorInterface $templateLocator,
+        private readonly ViewRendererInterface $templateRenderer,
+        private readonly TransformerRepositoryInterface $transformerRepository,
         array $vars = []
     ) {
-        $this->httpStatusRepository  = $httpStatusRepository;
-        $this->templateLocator       = $templateLocator;
-        $this->templateRenderer      = $templateRenderer;
-        $this->transformerRepository = $transformerRepository;
-        $this->headers               = new HeaderCollection();
-        $this->vars                  = new KeyValueCollection($vars);
+        $this->headers = new HeaderCollection();
+        $this->vars    = new KeyValueCollection($vars);
     }
 
     public function setHttpStatusCode(int $code): self
@@ -63,8 +49,10 @@ class ResponseBuilder implements ResponseBuilderInterface
         return $this;
     }
 
-    public function addHeader(string $header, string $value)
-    {
+    public function addHeader(
+        string $header,
+        string $value
+    ): self {
         $this->headers->add(new Header($header, $value));
 
         return $this;
@@ -96,8 +84,10 @@ class ResponseBuilder implements ResponseBuilderInterface
         return $this;
     }
 
-    public function setVar(string $key, mixed $value): self
-    {
+    public function setVar(
+        string $key,
+        mixed $value
+    ): self {
         $this->vars->set($key, $value);
 
         return $this;
@@ -108,8 +98,13 @@ class ResponseBuilder implements ResponseBuilderInterface
         return $this->vars;
     }
 
-    public function addTransformation(string $transformerClass, array $parameters = []): self
-    {
+    /**
+     * @throws TransformerNotFoundException
+     */
+    public function addTransformation(
+        string $transformerClass,
+        array $parameters = []
+    ): self {
         $transformer = $this->transformerRepository->get($transformerClass);
 
         $this->transformations[] = new Transformation($transformer, $parameters);
@@ -117,8 +112,10 @@ class ResponseBuilder implements ResponseBuilderInterface
         return $this;
     }
 
-    public function renderTemplate(RouteInterface $route, array $vars = []): void
-    {
+    public function renderTemplate(
+        RouteInterface $route,
+        array $vars = []
+    ): void {
         $vars = array_merge($this->vars->getAll(), $vars);
 
         $templatePath = $this->templateLocator->locate($route);

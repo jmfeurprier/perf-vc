@@ -6,21 +6,14 @@ use perf\Vc\Routing\RouteInterface;
 
 class ControllerClassNotFoundException extends VcException
 {
-    private string $controllerClass;
-
-    private RouteInterface $route;
-
     public function __construct(
-        string $controllerClass,
-        RouteInterface $route
+        private readonly string $controllerClass,
+        private readonly RouteInterface $route
     ) {
         parent::__construct(
             "Controller not found for {$route->getAddress()} " .
             "(expected class {$controllerClass} not found)."
         );
-
-        $this->controllerClass = $controllerClass;
-        $this->route           = $route;
     }
 
     public function getControllerClass(): string

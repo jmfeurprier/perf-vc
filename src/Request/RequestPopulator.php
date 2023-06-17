@@ -4,18 +4,8 @@ namespace perf\Vc\Request;
 
 use perf\Vc\Exception\VcException;
 
-class RequestPopulator implements RequestPopulatorInterface
+readonly class RequestPopulator implements RequestPopulatorInterface
 {
-    private array $get;
-
-    private array $post;
-
-    private array $cookies;
-
-    private array $files;
-
-    private array $server;
-
     /**
      * @SuppressWarnings(PHPMD.Superglobals)
      */
@@ -30,13 +20,13 @@ class RequestPopulator implements RequestPopulatorInterface
         );
     }
 
-    public function __construct(array $get, array $post, array $cookies, array $files, array $server)
-    {
-        $this->get     = $get;
-        $this->post    = $post;
-        $this->cookies = $cookies;
-        $this->files   = $files;
-        $this->server  = $server;
+    public function __construct(
+        private array $get,
+        private array $post,
+        private array $cookies,
+        private array $files,
+        private array $server
+    ) {
     }
 
     /**
@@ -50,10 +40,10 @@ class RequestPopulator implements RequestPopulatorInterface
             $this->getHost(),
             $this->getPort(),
             $this->getPath(),
-            $this->get,
-            $this->getAttachment(),
-            $this->cookies,
-            $this->server
+            new RequestChannel($this->get),
+            new RequestChannel($this->getAttachment()),
+            new RequestChannel($this->cookies),
+            new RequestChannel($this->server)
         );
     }
 
@@ -109,7 +99,7 @@ class RequestPopulator implements RequestPopulatorInterface
             throw new VcException('Failed to retrieve HTTP request path.');
         }
 
-        $path = parse_url($url, PHP_URL_PATH);
+        $path = parse_url((string) $url, PHP_URL_PATH);
 
         if (!is_string($path)) {
             throw new VcException("Failed to retrieve HTTP request path from URL '{$url}'.");
@@ -118,6 +108,9 @@ class RequestPopulator implements RequestPopulatorInterface
         return $path;
     }
 
+    /**
+     * @throws VcException
+     */
     private function getAttachment(): array
     {
         $attachment = [];

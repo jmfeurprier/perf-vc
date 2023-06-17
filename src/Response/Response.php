@@ -12,18 +12,16 @@ class Response implements ResponseInterface
      */
     private array $headers = [];
 
-    private SourceInterface $source;
-
     /**
      * @param Header[] $headers
      */
-    public function __construct(array $headers, SourceInterface $source)
-    {
+    public function __construct(
+        array $headers,
+        private readonly SourceInterface $source
+    ) {
         foreach ($headers as $header) {
             $this->addHeader($header);
         }
-
-        $this->source = $source;
     }
 
     private function addHeader(Header $header): void

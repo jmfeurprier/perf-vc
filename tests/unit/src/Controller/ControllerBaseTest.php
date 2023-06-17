@@ -6,27 +6,17 @@ use perf\Vc\Exception\ForwardException;
 use perf\Vc\Exception\RedirectException;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilderInterface;
-use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Routing\RouteInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ControllerBaseTest extends TestCase
 {
-    /**
-     * @var RequestInterface|MockObject
-     */
-    private $request;
+    private MockObject&RequestInterface $request;
 
-    /**
-     * @var RouteInterface|MockObject
-     */
-    private $route;
+    private MockObject&RouteInterface $route;
 
-    /**
-     * @var ResponseBuilderInterface|MockObject
-     */
-    private $responseBuilder;
+    private MockObject&ResponseBuilderInterface $responseBuilder;
 
     private ControllerBase $controller;
 

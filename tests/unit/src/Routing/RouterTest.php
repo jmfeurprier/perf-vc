@@ -11,17 +11,17 @@ class RouterTest extends TestCase
     /**
      * @var RoutingRuleMatcherInterface|MockObject
      */
-    private $routingRuleMatcher;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Routing\RoutingRuleMatcherInterface $routingRuleMatcher;
 
     /**
      * @var RouteGeneratorInterface|MockObject
      */
-    private $routeGenerator;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Routing\RouteGeneratorInterface $routeGenerator;
 
     /**
      * @var RequestInterface|MockObject
      */
-    private $request;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Request\RequestInterface $request;
 
     /**
      * @var RoutingRuleInterface[]
@@ -33,7 +33,7 @@ class RouterTest extends TestCase
      */
     private array $routes = [];
 
-    private ?RouteInterface $result;
+    private ?RouteInterface $result = null;
 
     protected function setUp(): void
     {

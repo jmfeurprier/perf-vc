@@ -11,8 +11,6 @@ use perf\Vc\Redirection\UrlRedirection;
 
 class RedirectException extends Exception
 {
-    private RedirectionInterface $redirection;
-
     public static function createFromRoute(
         string $module,
         string $action,
@@ -55,11 +53,10 @@ class RedirectException extends Exception
         );
     }
 
-    public function __construct(RedirectionInterface $redirection)
-    {
+    public function __construct(
+        private readonly RedirectionInterface $redirection
+    ) {
         parent::__construct();
-
-        $this->redirection = $redirection;
     }
 
     public function getRedirection(): RedirectionInterface

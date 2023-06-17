@@ -7,14 +7,14 @@ use perf\Vc\Exception\InvalidControllerException;
 use perf\Vc\Routing\RouteInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ControllerRepository implements ControllerRepositoryInterface
+readonly class ControllerRepository implements ControllerRepositoryInterface
 {
     private string $controllersNamespace;
 
     public function __construct(
-        private readonly ControllerClassResolverInterface $controllerClassResolver,
+        private ControllerClassResolverInterface $controllerClassResolver,
         string $controllersNamespace,
-        private readonly ContainerInterface $container
+        private ContainerInterface $container
     ) {
         $this->controllersNamespace = trim($controllersNamespace, '\\');
     }

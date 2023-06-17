@@ -12,15 +12,13 @@ use perf\Vc\Response\ResponseInterface;
 
 class RedirectionResponseGenerator implements RedirectionResponseGeneratorInterface
 {
-    private RedirectionHeadersGeneratorInterface $redirectionHeadersGenerator;
-
     private RequestInterface $request;
 
     private string $url;
 
     private int $httpStatusCode;
 
-    private ?string $httpVersion;
+    private ?string $httpVersion = null;
 
     public static function createDefault(): self
     {
@@ -29,9 +27,9 @@ class RedirectionResponseGenerator implements RedirectionResponseGeneratorInterf
         );
     }
 
-    public function __construct(RedirectionHeadersGeneratorInterface $redirectionHeadersGenerator)
-    {
-        $this->redirectionHeadersGenerator = $redirectionHeadersGenerator;
+    public function __construct(
+        private readonly RedirectionHeadersGeneratorInterface $redirectionHeadersGenerator
+    ) {
     }
 
     /**
@@ -88,7 +86,7 @@ class RedirectionResponseGenerator implements RedirectionResponseGeneratorInterf
         }
 
         return substr(
-            $this->request->getServer()->get('SERVER_PROTOCOL'),
+            (string) $this->request->getServer()->get('SERVER_PROTOCOL'),
             5
         );
     }

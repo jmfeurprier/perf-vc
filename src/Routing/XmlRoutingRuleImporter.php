@@ -10,8 +10,6 @@ use SimpleXMLElement;
 
 class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
 {
-    private PathPatternParser $pathPatternParser;
-
     /**
      * @var RoutingRuleInterface[]
      */
@@ -28,9 +26,9 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
         );
     }
 
-    public function __construct(PathPatternParser $pathPatternParser)
-    {
-        $this->pathPatternParser = $pathPatternParser;
+    public function __construct(
+        private readonly PathPatternParser $pathPatternParser
+    ) {
     }
 
     /**
@@ -125,7 +123,7 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
 
         if ('' !== $methodsString) {
             foreach (preg_split('|\s+|', $methodsString, -1, PREG_SPLIT_NO_EMPTY) as $methodString) {
-                $method = strtoupper($methodString);
+                $method = strtoupper((string) $methodString);
 
                 $methods[] = $method;
             }
@@ -183,8 +181,10 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @throws RoutingRuleImportException
      */
-    private function parsePathPattern(string $pathTemplate, array $argumentDefinitions): string
-    {
+    private function parsePathPattern(
+        string $pathTemplate,
+        array $argumentDefinitions
+    ): string {
         return $this->pathPatternParser->parse($pathTemplate, $argumentDefinitions);
     }
 }

@@ -4,13 +4,11 @@ namespace perf\Vc\Request;
 
 use perf\Vc\Exception\RequestChannelKeyNotFoundException;
 
-class RequestChannel
+readonly class RequestChannel
 {
-    private array $values;
-
-    public function __construct(array $values)
-    {
-        $this->values = $values;
+    public function __construct(
+        private array $values
+    ) {
     }
 
     public function tryGet(

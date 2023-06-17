@@ -16,27 +16,27 @@ class ResponseBuilderTest extends TestCase
     /**
      * @var RouteInterface|MockObject
      */
-    private $route;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Routing\RouteInterface $route;
 
     /**
      * @var HttpStatusRepositoryInterface|MockObject
      */
-    private $httpStatusRepository;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\HttpStatus\HttpStatusRepositoryInterface $httpStatusRepository;
 
     /**
      * @var ViewLocatorInterface|MockObject
      */
-    private $templateLocator;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\View\ViewLocatorInterface $templateLocator;
 
     /**
      * @var ViewRendererInterface|MockObject
      */
-    private $templateRenderer;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\View\ViewRendererInterface $templateRenderer;
 
     /**
      * @var TransformerRepositoryInterface|MockObject
      */
-    private $transformerRepository;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Response\Transformation\TransformerRepositoryInterface $transformerRepository;
 
     private ResponseBuilder $responseBuilder;
 

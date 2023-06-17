@@ -4,13 +4,10 @@ namespace perf\Vc\Exception;
 
 class TransformerNotFoundException extends VcException
 {
-    private string $class;
-
-    public function __construct(string $class)
-    {
+    public function __construct(
+        private readonly string $class
+    ) {
         parent::__construct("Transformer {$class} not found.");
-
-        $this->class = $class;
     }
 
     public function getClass(): string

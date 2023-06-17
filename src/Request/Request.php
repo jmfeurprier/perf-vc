@@ -2,46 +2,19 @@
 
 namespace perf\Vc\Request;
 
-class Request implements RequestInterface
+readonly class Request implements RequestInterface
 {
-    private string $method;
-
-    private string $transport;
-
-    private string $host;
-
-    private int $port;
-
-    private string $path;
-
-    private RequestChannel $query;
-
-    private RequestChannel $post;
-
-    private RequestChannel $cookies;
-
-    private RequestChannel $server;
-
     public function __construct(
-        string $method,
-        string $transport,
-        string $host,
-        int $port,
-        string $path,
-        array $query,
-        array $post,
-        array $cookies,
-        array $server
+        private string $method,
+        private string $transport,
+        private string $host,
+        private int $port,
+        private string $path,
+        private RequestChannel $query,
+        private RequestChannel $post,
+        private RequestChannel $cookies,
+        private RequestChannel $server
     ) {
-        $this->method    = $method;
-        $this->transport = $transport;
-        $this->host      = $host;
-        $this->port      = $port;
-        $this->path      = $path;
-        $this->query     = new RequestChannel($query);
-        $this->post      = new RequestChannel($post);
-        $this->cookies   = new RequestChannel($cookies);
-        $this->server    = new RequestChannel($server);
     }
 
     public function isMethodGet(): bool

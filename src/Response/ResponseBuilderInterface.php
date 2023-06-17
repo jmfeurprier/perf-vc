@@ -12,7 +12,7 @@ interface ResponseBuilderInterface
     public function addHeader(
         string $header,
         string $value
-    );
+    ): self;
 
     public function addRawHeader(string $header): self;
 

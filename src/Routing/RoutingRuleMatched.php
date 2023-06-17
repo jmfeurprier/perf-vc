@@ -2,13 +2,11 @@
 
 namespace perf\Vc\Routing;
 
-class RoutingRuleMatched implements RoutingRuleMatchingOutcomeInterface
+readonly class RoutingRuleMatched implements RoutingRuleMatchingOutcomeInterface
 {
-    private array $arguments;
-
-    public function __construct(array $arguments)
-    {
-        $this->arguments = $arguments;
+    public function __construct(
+        private array $arguments
+    ) {
     }
 
     public function isMatched(): bool

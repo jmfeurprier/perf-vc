@@ -4,13 +4,13 @@ namespace perf\Vc\Controller;
 
 use Stringable;
 
-class ControllerAddress implements Stringable
+readonly class ControllerAddress implements Stringable
 {
     private const DELIMITER = ':';
 
     public function __construct(
-        private readonly string $module,
-        private readonly string $action
+        private string $module,
+        private string $action
     ) {
     }
 

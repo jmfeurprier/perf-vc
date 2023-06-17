@@ -2,19 +2,13 @@
 
 namespace perf\Vc\Routing;
 
-class ArgumentDefinition
+readonly class ArgumentDefinition
 {
-    private string $name;
-
-    private string $format;
-
-    private mixed $defaultValue;
-
-    public function __construct(string $name, string $format, $defaultValue)
-    {
-        $this->name         = $name;
-        $this->format       = $format;
-        $this->defaultValue = $defaultValue;
+    public function __construct(
+        private string $name,
+        private string $format,
+        private mixed $defaultValue
+    ) {
     }
 
     public function getName(): string
@@ -27,7 +21,7 @@ class ArgumentDefinition
         return $this->format;
     }
 
-    public function getDefaultValue()
+    public function getDefaultValue(): mixed
     {
         return $this->defaultValue;
     }

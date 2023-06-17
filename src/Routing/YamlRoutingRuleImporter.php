@@ -11,8 +11,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
 {
-    private PathPatternParser $pathPatternParser;
-
     private ControllerAddress $address;
 
     /**
@@ -27,9 +25,9 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
         );
     }
 
-    public function __construct(PathPatternParser $pathPatternParser)
-    {
-        $this->pathPatternParser = $pathPatternParser;
+    public function __construct(
+        private readonly PathPatternParser $pathPatternParser
+    ) {
     }
 
     /**
@@ -99,8 +97,10 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     /**
      * @throws RoutingRuleImportException
      */
-    private function parseActions(string $module, array $actions): void
-    {
+    private function parseActions(
+        string $module,
+        array $actions
+    ): void {
         foreach ($actions as $action => $actionRules) {
             $this->address = new ControllerAddress($module, $action);
 
@@ -129,11 +129,13 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     /**
      * @throws RoutingRuleImportException
      */
-    private function parseRule(string $pathTemplate, array $actionRule): RoutingRule
-    {
-        $httpMethods         = $this->parseHttpMethods($actionRule);
+    private function parseRule(
+        string $pathTemplate,
+        array $actionRule
+    ): RoutingRule {
+        $httpMethods = $this->parseHttpMethods($actionRule);
         $argumentDefinitions = $this->parseArgumentDefinitions($actionRule);
-        $pathPattern         = $this->parsePathPattern($pathTemplate, $argumentDefinitions);
+        $pathPattern = $this->parsePathPattern($pathTemplate, $argumentDefinitions);
 
         return new RoutingRule(
             $this->address,
@@ -152,7 +154,7 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
         $methods = [];
 
         foreach ($rule['methods'] ?? [] as $method) {
-            $methods[] = strtoupper($method);
+            $methods[] = strtoupper((string) $method);
         }
 
         return $methods;
@@ -177,8 +179,10 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
     /**
      * @throws RoutingRuleImportException
      */
-    private function parseArgumentDefinition(string $name, array $argument): ArgumentDefinition
-    {
+    private function parseArgumentDefinition(
+        string $name,
+        array $argument
+    ): ArgumentDefinition {
         return new ArgumentDefinition(
             $name,
             $this->parseArgumentFormat($argument),
@@ -220,8 +224,10 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      *
      * @throws RoutingRuleImportException
      */
-    private function parsePathPattern(string $pathTemplate, array $argumentDefinitions): string
-    {
+    private function parsePathPattern(
+        string $pathTemplate,
+        array $argumentDefinitions
+    ): string {
         return $this->pathPatternParser->parse($pathTemplate, $argumentDefinitions);
     }
 }

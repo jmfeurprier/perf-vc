@@ -4,42 +4,19 @@ namespace perf\Vc\Routing;
 
 use perf\Vc\Controller\ControllerAddress;
 
-class RoutingRule implements RoutingRuleInterface
+readonly class RoutingRule implements RoutingRuleInterface
 {
-    private ControllerAddress $address;
-
-    private string $pathTemplate;
-
     /**
-     * Expected HTTP methods (empty to accept any method).
-     *
-     * @var string[]
-     */
-    private array $httpMethods = [];
-
-    private string $pathPattern;
-
-    /**
-     * @var ArgumentDefinition[]
-     */
-    private array $argumentDefinitions = [];
-
-    /**
-     * @param string[]             $httpMethods
+     * @param string[]             $httpMethods Expected HTTP methods (empty to accept any method).
      * @param ArgumentDefinition[] $argumentDefinitions
      */
     public function __construct(
-        ControllerAddress $address,
-        string $pathTemplate,
-        array $httpMethods,
-        string $pathPattern,
-        array $argumentDefinitions
+        private ControllerAddress $address,
+        private string $pathTemplate,
+        private array $httpMethods,
+        private string $pathPattern,
+        private array $argumentDefinitions
     ) {
-        $this->address             = $address;
-        $this->pathTemplate        = $pathTemplate;
-        $this->httpMethods         = $httpMethods; // @xxx
-        $this->pathPattern         = $pathPattern;
-        $this->argumentDefinitions = $argumentDefinitions; // @xxx
     }
 
     public function getAddress(): ControllerAddress

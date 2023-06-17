@@ -7,7 +7,7 @@ use perf\Vc\Header\HeaderCollection;
 
 class HtmlTransformer implements TransformerInterface
 {
-    public const CHARSET = 'charset';
+    final public const CHARSET = 'charset';
 
     private const PARAMETERS_DEFAULT = [
         self::CHARSET => 'utf-8',

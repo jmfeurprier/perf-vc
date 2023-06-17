@@ -1,11 +1,10 @@
 <?php
 
-namespace perf\Vc\Response;
+namespace perf\Vc\Redirection;
 
 use perf\HttpStatus\HttpStatusInterface;
 use perf\HttpStatus\HttpStatusRepositoryInterface;
 use perf\Vc\Header\Header;
-use perf\Vc\Redirection\RedirectionHeadersGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +13,7 @@ class RedirectionHeadersGeneratorTest extends TestCase
     /**
      * @var HttpStatusRepositoryInterface|MockObject
      */
-    private $httpStatusRepository;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\HttpStatus\HttpStatusRepositoryInterface $httpStatusRepository;
 
     private RedirectionHeadersGenerator $redirectionHeadersGenerator;
 

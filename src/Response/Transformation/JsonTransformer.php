@@ -7,7 +7,7 @@ use perf\Vc\Header\HeaderCollection;
 
 class JsonTransformer implements TransformerInterface
 {
-    public const CHARSET = 'charset';
+    final public const CHARSET = 'charset';
 
     private const PARAMETERS_DEFAULT = [
         self::CHARSET => 'utf-8',
@@ -18,7 +18,7 @@ class JsonTransformer implements TransformerInterface
         array $vars,
         array $parameters
     ): mixed {
-        return json_encode($content);
+        return json_encode($content, JSON_THROW_ON_ERROR);
     }
 
     public function transformHeaders(

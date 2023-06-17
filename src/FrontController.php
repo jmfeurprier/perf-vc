@@ -67,7 +67,7 @@ class FrontController implements FrontControllerInterface
      * @throws VcException
      * @throws Exception
      */
-    protected function onRouteNotFound(): ResponseInterface
+    protected function onRouteNotFound(): never
     {
         throw new RouteNotFoundException();
     }
@@ -79,7 +79,7 @@ class FrontController implements FrontControllerInterface
      * @throws VcException
      * @throws Exception
      */
-    protected function onFailure(Exception $exception): ResponseInterface
+    protected function onFailure(Exception $exception): never
     {
         throw new VcException("Controller execution failure. << {$exception->getMessage()}", 0, $exception);
     }

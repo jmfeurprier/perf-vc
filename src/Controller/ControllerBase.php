@@ -33,9 +33,7 @@ abstract class ControllerBase implements ControllerInterface
             $this->executeHookPre();
             $this->execute();
             $this->executeHookPost();
-        } catch (RedirectException $e) {
-            throw $e;
-        } catch (ForwardException $e) {
+        } catch (RedirectException|ForwardException $e) {
             throw $e;
         } catch (Exception $e) {
             return $this->onExecutionException($e);
@@ -109,7 +107,7 @@ abstract class ControllerBase implements ControllerInterface
     /**
      * @throws ForwardException Always thrown.
      */
-    protected function forward(string $module, string $action, array $arguments = []): void
+    protected function forward(string $module, string $action, array $arguments = []): never
     {
         throw new ForwardException($module, $action, $arguments);
     }
@@ -122,14 +120,14 @@ abstract class ControllerBase implements ControllerInterface
         string $action,
         array $arguments,
         int $httpStatusCode
-    ): void {
+    ): never {
         throw RedirectException::createFromRoute($module, $action, $arguments, $httpStatusCode);
     }
 
     /**
      * @throws RedirectException Always thrown.
      */
-    protected function redirectToPath(string $path, int $httpStatusCode): void
+    protected function redirectToPath(string $path, int $httpStatusCode): never
     {
         throw RedirectException::createFromPath($path, $httpStatusCode);
     }
@@ -137,7 +135,7 @@ abstract class ControllerBase implements ControllerInterface
     /**
      * @throws RedirectException Always thrown.
      */
-    protected function redirectToUrl(string $url, int $httpStatusCode): void
+    protected function redirectToUrl(string $url, int $httpStatusCode): never
     {
         throw RedirectException::createFromUrl($url, $httpStatusCode);
     }

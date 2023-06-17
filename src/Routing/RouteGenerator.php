@@ -43,7 +43,7 @@ class RouteGenerator implements RouteGeneratorInterface
 
         foreach ($this->arguments as $key => $value) {
             $searches[]     = '{' . $key . '}';
-            $replacements[] = urlencode($value);
+            $replacements[] = urlencode((string) $value);
         }
 
         return str_replace(

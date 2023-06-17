@@ -10,10 +10,8 @@ use perf\HttpStatus\HttpStatusRepositoryInterface;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 
-class RedirectionHeadersGenerator implements RedirectionHeadersGeneratorInterface
+readonly class RedirectionHeadersGenerator implements RedirectionHeadersGeneratorInterface
 {
-    private HttpStatusRepositoryInterface $httpStatusRepository;
-
     public static function createDefault(): self
     {
         return new self(
@@ -21,16 +19,19 @@ class RedirectionHeadersGenerator implements RedirectionHeadersGeneratorInterfac
         );
     }
 
-    public function __construct(HttpStatusRepositoryInterface $httpStatusRepository)
-    {
-        $this->httpStatusRepository = $httpStatusRepository;
+    public function __construct(
+        private HttpStatusRepositoryInterface $httpStatusRepository
+    ) {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function generate(string $url, int $httpStatusCode, string $httpVersion): array
-    {
+    public function generate(
+        string $url,
+        int $httpStatusCode,
+        string $httpVersion
+    ): array {
         // @todo Validate URL.
 
         $httpStatus = $this->getHttpStatus($httpStatusCode, $httpVersion);
@@ -44,8 +45,10 @@ class RedirectionHeadersGenerator implements RedirectionHeadersGeneratorInterfac
     /**
      * @throws VcException
      */
-    private function getHttpStatus(int $httpStatusCode, string $httpVersion): HttpStatusInterface
-    {
+    private function getHttpStatus(
+        int $httpStatusCode,
+        string $httpVersion
+    ): HttpStatusInterface {
         try {
             return $this->httpStatusRepository->get($httpStatusCode, $httpVersion);
         } catch (HttpProtocolNotFoundException $e) {

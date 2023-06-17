@@ -13,7 +13,7 @@ class RouteTest extends TestCase
     /**
      * @var ControllerAddress|MockObject
      */
-    private $address;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Controller\ControllerAddress $address;
 
     protected function setUp(): void
     {

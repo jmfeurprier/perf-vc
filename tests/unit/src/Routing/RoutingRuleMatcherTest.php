@@ -12,12 +12,12 @@ class RoutingRuleMatcherTest extends TestCase
     /**
      * @var ControllerAddress|MockObject
      */
-    private $address;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Controller\ControllerAddress $address;
 
     /**
      * @var RequestInterface|MockObject
      */
-    private $request;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Request\RequestInterface $request;
 
     private RoutingRuleMatcher $routingRuleMatcher;
 

@@ -11,10 +11,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 class ControllerRepositoryTest extends TestCase
 {
-    /**
-     * @var ControllerClassResolverInterface|MockObject
-     */
-    private $controllerClassResolver;
+    private MockObject&ControllerClassResolverInterface $controllerClassResolver;
 
     private Container $container;
 

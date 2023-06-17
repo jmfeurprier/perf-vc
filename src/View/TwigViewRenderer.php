@@ -11,7 +11,7 @@ use Twig\Loader\FilesystemLoader;
 
 class TwigViewRenderer implements ViewRendererInterface
 {
-    private TwigEnvironment $environment;
+    private readonly TwigEnvironment $environment;
 
     /**
      * @param ExtensionInterface[] $extensions

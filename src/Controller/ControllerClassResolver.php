@@ -4,7 +4,7 @@ namespace perf\Vc\Controller;
 
 use perf\Vc\Routing\RouteInterface;
 
-class ControllerClassResolver implements ControllerClassResolverInterface
+readonly class ControllerClassResolver implements ControllerClassResolverInterface
 {
     public function resolve(RouteInterface $route, string $namespace): string
     {

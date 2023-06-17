@@ -1,26 +1,19 @@
 <?php
 
-namespace perf\Vc\Response;
+namespace perf\Vc\Redirection;
 
-use perf\Vc\Redirection\RedirectionHeadersGeneratorInterface;
-use perf\Vc\Redirection\RedirectionResponseGenerator;
 use perf\Vc\Request\RequestInterface;
+use perf\Vc\Response\ResponseInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class RedirectionResponseGeneratorTest extends TestCase
 {
-    /**
-     * @var RedirectionHeadersGeneratorInterface|MockObject
-     */
-    private $redirectionHeadersGenerator;
+    private MockObject&RedirectionHeadersGeneratorInterface $redirectionHeadersGenerator;
 
     private RedirectionResponseGenerator $redirectionResponseGenerator;
 
-    /**
-     * @var RequestInterface|MockObject
-     */
-    private $request;
+    private MockObject&RequestInterface $request;
 
     protected function setUp(): void
     {

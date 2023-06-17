@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class RequestChannelTest extends TestCase
 {
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $values = [
             'foo' => 'bar',
@@ -21,7 +21,7 @@ class RequestChannelTest extends TestCase
         $this->assertSame($values, $channel->getAll());
     }
 
-    public function testTryGetWithDefinedKey()
+    public function testTryGetWithDefinedKey(): void
     {
         $key    = 'foo';
         $value  = 'bar';
@@ -34,7 +34,7 @@ class RequestChannelTest extends TestCase
         $this->assertSame($value, $channel->tryGet($key));
     }
 
-    public function testTryGetWithUndefinedKey()
+    public function testTryGetWithUndefinedKey(): void
     {
         $key    = 'foo';
         $values = [];
@@ -44,7 +44,7 @@ class RequestChannelTest extends TestCase
         $this->assertNull($channel->tryGet($key));
     }
 
-    public function testTryGetWithUndefinedKeyAndDefaultValue()
+    public function testTryGetWithUndefinedKeyAndDefaultValue(): void
     {
         $key          = 'foo';
         $values       = [];
@@ -55,7 +55,7 @@ class RequestChannelTest extends TestCase
         $this->assertSame($defaultValue, $channel->tryGet($key, $defaultValue));
     }
 
-    public function testGetWithDefinedKey()
+    public function testGetWithDefinedKey(): void
     {
         $key    = 'foo';
         $value  = 'bar';
@@ -68,7 +68,7 @@ class RequestChannelTest extends TestCase
         $this->assertSame($value, $channel->get($key));
     }
 
-    public function testGetWithUndefinedKey()
+    public function testGetWithUndefinedKey(): void
     {
         $key    = 'foo';
         $values = [];
@@ -80,7 +80,7 @@ class RequestChannelTest extends TestCase
         $channel->get($key);
     }
 
-    public function testHasWithDefinedKey()
+    public function testHasWithDefinedKey(): void
     {
         $key    = 'foo';
         $values = [
@@ -92,7 +92,7 @@ class RequestChannelTest extends TestCase
         $this->assertTrue($channel->has($key));
     }
 
-    public function testHasWithUndefinedKeyAndDefaultValue()
+    public function testHasWithUndefinedKeyAndDefaultValue(): void
     {
         $key    = 'foo';
         $values = [];

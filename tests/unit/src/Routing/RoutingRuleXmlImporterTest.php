@@ -22,7 +22,7 @@ class RoutingRuleXmlImporterTest extends TestCase
     /**
      * @var SourceInterface|MockObject
      */
-    private $source;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Source\SourceInterface $source;
 
     protected function setUp(): void
     {

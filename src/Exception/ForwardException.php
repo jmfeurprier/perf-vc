@@ -4,22 +4,12 @@ namespace perf\Vc\Exception;
 
 class ForwardException extends VcException
 {
-    private string $module;
-
-    private string $action;
-
-    private array $arguments;
-
     public function __construct(
-        string $module,
-        string $action,
-        array $arguments
+        private readonly string $module,
+        private readonly string $action,
+        private readonly array $arguments
     ) {
         parent::__construct();
-
-        $this->module    = $module;
-        $this->action    = $action;
-        $this->arguments = $arguments;
     }
 
     public function getModule(): string

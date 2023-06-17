@@ -17,7 +17,7 @@ class RequestPopulatorTest extends TestCase
 
     private RequestInterface $result;
 
-    public function testPopulateWillRetrieveMethod()
+    public function testPopulateWillRetrieveMethod(): void
     {
         $this->givenServerValues(
             [

@@ -7,14 +7,8 @@ use perf\Vc\Routing\RouterInterface;
 
 class UrlRedirection implements RedirectionInterface
 {
-    private string $url;
-
-    private int $httpStatusCode;
-
-    public function __construct(string $url, int $httpStatusCode)
+    public function __construct(private readonly string $url, private readonly int $httpStatusCode)
     {
-        $this->url            = $url;
-        $this->httpStatusCode = $httpStatusCode;
     }
 
     public function getUrl(RequestInterface $request, RouterInterface $router): string

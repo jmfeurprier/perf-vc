@@ -7,33 +7,13 @@ namespace perf\Vc\Routing;
 use perf\Vc\Controller\ControllerAddress;
 use perf\Vc\Exception\RouteArgumentNotFoundException;
 
-class Route implements RouteInterface
+readonly class Route implements RouteInterface
 {
-    private ControllerAddress $address;
-
-    private array $arguments = [];
-
-    private ?string $path;
-
     public function __construct(
-        ControllerAddress $address,
-        array $arguments = [],
-        string $path = null
+        private ControllerAddress $address,
+        private array $arguments = [],
+        private ?string $path = null
     ) {
-        $this->address = $address;
-
-        foreach ($arguments as $key => $value) {
-            $this->addArgument($key, $value);
-        }
-
-        $this->path = $path;
-    }
-
-    private function addArgument(
-        string $key,
-        $value
-    ): void {
-        $this->arguments[$key] = $value;
     }
 
     public function getAddress(): ControllerAddress

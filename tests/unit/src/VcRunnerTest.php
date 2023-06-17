@@ -16,17 +16,17 @@ class VcRunnerTest extends TestCase
     /**
      * @var FrontControllerInterface|MockObject
      */
-    private $frontController;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\FrontControllerInterface $frontController;
 
     /**
      * @var RequestInterface|MockObject
      */
-    private $request;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Request\RequestInterface $request;
 
     /**
      * @var ResponseSenderInterface|MockObject
      */
-    private $responseSender;
+    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Response\ResponseSenderInterface $responseSender;
 
     private VcRunner $runner;
 
