@@ -114,6 +114,8 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
 
     /**
      * @return string[]
+     *
+     * @throws RoutingRuleImportException
      */
     private function parseHttpMethods(SimpleXMLElement $sxeNode): array
     {
@@ -122,10 +124,14 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
         $methods = [];
 
         if ('' !== $methodsString) {
-            foreach (preg_split('|\s+|', $methodsString, -1, PREG_SPLIT_NO_EMPTY) as $methodString) {
-                $method = strtoupper((string) $methodString);
+            $methodStrings = preg_split('|\s+|', $methodsString, -1, PREG_SPLIT_NO_EMPTY);
 
-                $methods[] = $method;
+            if (!is_array($methodStrings)) {
+                throw new RoutingRuleImportException('Failed to parse HTTP methods string.');
+            }
+
+            foreach ($methodStrings as $methodString) {
+                $methods[] = strtoupper((string) $methodString);
             }
         }
 

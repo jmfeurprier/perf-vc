@@ -132,7 +132,11 @@ readonly class RequestPopulator implements RequestPopulatorInterface
             case 'DELETE':
             case 'PATCH':
             case 'PUT':
-                parse_str(file_get_contents('php://input'), $attachment);
+                $string = file_get_contents('php://input');
+                if (!is_string($string)) {
+                    throw new VcException('Failed to read PHP input for request attachment.');
+                }
+                parse_str($string, $attachment); // @todo Check $attachment keys type.
                 break;
         }
 
