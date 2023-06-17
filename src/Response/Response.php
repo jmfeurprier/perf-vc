@@ -30,7 +30,7 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @return string[]
+     * @return Header[]
      */
     public function getHeaders(): array
     {
