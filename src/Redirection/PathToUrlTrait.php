@@ -6,8 +6,10 @@ use perf\Vc\Request\RequestInterface;
 
 trait PathToUrlTrait
 {
-    private function getUrlFromPath(RequestInterface $request, string $path): string
-    {
+    private function getUrlFromPath(
+        RequestInterface $request,
+        string $path
+    ): string {
         $transport   = $request->getTransport();
         $hostAndPort = $this->getHostAndPort($request);
 
@@ -27,8 +29,10 @@ trait PathToUrlTrait
         return "{$host}:{$port}";
     }
 
-    private function isDefaultPortForTransport(int $port, string $transport): bool
-    {
+    private function isDefaultPortForTransport(
+        int $port,
+        string $transport
+    ): bool {
         $defaultPorts = [
             RequestInterface::TRANSPORT_HTTP  => 80,
             RequestInterface::TRANSPORT_HTTPS => 443,
