@@ -12,11 +12,11 @@ readonly class RequestPopulator implements RequestPopulatorInterface
     public static function createDefault(): self
     {
         return new self(
-            $_GET ?? [],
-            $_POST ?? [],
-            $_COOKIE ?? [],
-            $_FILES ?? [],
-            $_SERVER ?? []
+            $_GET,
+            $_POST,
+            $_COOKIE,
+            $_FILES,
+            $_SERVER
         );
     }
 
