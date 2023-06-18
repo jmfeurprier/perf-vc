@@ -57,7 +57,11 @@ readonly class RequestPopulator implements RequestPopulatorInterface
     private function getMethod(): string
     {
         if (array_key_exists('REQUEST_METHOD', $this->server)) {
-            return $this->server['REQUEST_METHOD'];
+            $method = $this->server['REQUEST_METHOD'];
+
+            if (is_string($method)) {
+                return $method;
+            }
         }
 
         throw new VcException('Failed to retrieve HTTP method.');
@@ -74,19 +78,33 @@ readonly class RequestPopulator implements RequestPopulatorInterface
         return RequestInterface::TRANSPORT_HTTP;
     }
 
+    /**
+     * @throws VcException
+     */
     private function getHost(): string
     {
         if (array_key_exists('SERVER_NAME', $this->server)) {
-            return $this->server['SERVER_NAME'];
+            $host = $this->server['SERVER_NAME'];
+
+            if (is_string($host)) {
+                return $host;
+            }
         }
 
         throw new VcException('Failed to retrieve HTTP host.');
     }
 
+    /**
+     * @throws VcException
+     */
     private function getPort(): int
     {
         if (array_key_exists('SERVER_PORT', $this->server)) {
-            return $this->server['SERVER_PORT'];
+            $port = $this->server['SERVER_PORT'];
+
+            if (is_int($port)) {
+                return $port;
+            }
         }
 
         throw new VcException('Failed to retrieve HTTP port.');
@@ -99,17 +117,17 @@ readonly class RequestPopulator implements RequestPopulatorInterface
     {
         $url = $this->server['REDIRECT_URL'] ?? $this->server['REQUEST_URI'] ?? null;
 
-        if (null === $url) {
+        if (!is_string($url)) {
             throw new VcException('Failed to retrieve HTTP request path.');
         }
 
-        $path = parse_url((string) $url, PHP_URL_PATH);
+        $path = parse_url($url, PHP_URL_PATH);
 
-        if (!is_string($path)) {
-            throw new VcException("Failed to retrieve HTTP request path from URL '{$url}'.");
+        if (is_string($path)) {
+            return $path;
         }
 
-        return $path;
+        throw new VcException("Failed to retrieve HTTP request path from URL '{$url}'.");
     }
 
     /**

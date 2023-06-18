@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Response\Transformation;
 
+use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 use perf\Vc\Header\HeaderCollection;
 
@@ -31,10 +32,31 @@ class TextTransformer implements TransformerInterface
             $parameters
         );
 
-        $charset = $parameters[self::CHARSET];
+        $charset = $this->getCharset($parameters);
 
-        $headers->replace(new Header('Content-Type', "text/plain; charset={$charset}"));
+        $headers->replace(
+            new Header(
+                'Content-Type',
+                "text/plain; charset={$charset}"
+            )
+        );
 
         return $headers;
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @throws VcException
+     */
+    private function getCharset(array $parameters): string
+    {
+        $charset = $parameters[self::CHARSET];
+
+        if (is_string($charset)) {
+            return $charset;
+        }
+
+        throw new VcException('Invalid charset value type for XML transformer.');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Response\Transformation;
 
+use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 use perf\Vc\Header\HeaderCollection;
 
@@ -17,8 +18,14 @@ class JsonTransformer implements TransformerInterface
         mixed $content,
         array $vars,
         array $parameters
-    ): mixed {
-        return json_encode($content, JSON_THROW_ON_ERROR);
+    ): string {
+        $json = json_encode($content);
+
+        if (is_string($json)) {
+            return $json;
+        }
+
+        throw new VcException('Failed to transform provided content to JSON.');
     }
 
     public function transformHeaders(
@@ -31,10 +38,31 @@ class JsonTransformer implements TransformerInterface
             $parameters
         );
 
-        $charset = $parameters[self::CHARSET];
+        $charset = $this->getCharset($parameters);
 
-        $headers->replace(new Header('Content-Type', "application/json; charset={$charset}"));
+        $headers->replace(
+            new Header(
+                'Content-Type',
+                "application/json; charset={$charset}"
+            )
+        );
 
         return $headers;
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @throws VcException
+     */
+    private function getCharset(array $parameters): string
+    {
+        $charset = $parameters[self::CHARSET];
+
+        if (is_string($charset)) {
+            return $charset;
+        }
+
+        throw new VcException('Invalid charset value type for XML transformer.');
     }
 }
