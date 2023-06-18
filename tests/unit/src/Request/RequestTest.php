@@ -95,10 +95,10 @@ class RequestTest extends TestCase
             'localhost',
             123,
             '/',
-            [],
-            [],
-            [],
-            []
+            new RequestChannel([]),
+            new RequestChannel([]),
+            new RequestChannel([]),
+            new RequestChannel([])
         );
     }
 }

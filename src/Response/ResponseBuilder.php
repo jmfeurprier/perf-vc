@@ -73,7 +73,7 @@ class ResponseBuilder implements ResponseBuilderInterface
         return $this->headers;
     }
 
-    public function setContent(mixed $content): self
+    public function setContent(string|SourceInterface $content): self
     {
         $this->content = $content;
 

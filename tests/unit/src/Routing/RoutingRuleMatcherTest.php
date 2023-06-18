@@ -9,15 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 class RoutingRuleMatcherTest extends TestCase
 {
-    /**
-     * @var ControllerAddress|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Controller\ControllerAddress $address;
+    private ControllerAddress $controllerAddress;
 
-    /**
-     * @var RequestInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Request\RequestInterface $request;
+    private MockObject&RequestInterface $request;
 
     private RoutingRuleMatcher $routingRuleMatcher;
 
@@ -27,8 +21,8 @@ class RoutingRuleMatcherTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->address = $this->createMock(ControllerAddress::class);
-        $this->request = $this->createMock(RequestInterface::class);
+        $this->controllerAddress = new ControllerAddress('module', 'action');
+        $this->request           = $this->createMock(RequestInterface::class);
 
         $this->routingRuleMatcher = new RoutingRuleMatcher();
     }
@@ -86,7 +80,7 @@ class RoutingRuleMatcherTest extends TestCase
         array $argumentDefinitions
     ): void {
         $this->routingRule = new RoutingRule(
-            $this->address,
+            $this->controllerAddress,
             $pathTemplate,
             $methods,
             $pathPattern,

@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Response;
 
+use perf\Source\SourceInterface;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Routing\RouteInterface;
 
@@ -16,7 +17,7 @@ interface ResponseBuilderInterface
 
     public function addRawHeader(string $header): self;
 
-    public function setContent(mixed $content): self;
+    public function setContent(string|SourceInterface $content): self;
 
     /**
      * @param array<string, mixed> $vars

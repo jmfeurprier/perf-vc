@@ -4,6 +4,7 @@ namespace perf\Vc\Controller;
 
 use perf\Vc\Exception\ControllerClassNotFoundException;
 use perf\Vc\Exception\InvalidControllerException;
+use perf\Vc\Routing\Route;
 use perf\Vc\Routing\RouteInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -32,7 +33,7 @@ class ControllerRepositoryTest extends TestCase
             $this->container
         );
 
-        $route           = $this->createMock(RouteInterface::class);
+        $route           = $this->givenRoute();
         $controller      = $this->createMock(ControllerInterface::class);
         $controllerClass = 'Whatever';
 
@@ -60,7 +61,7 @@ class ControllerRepositoryTest extends TestCase
             $this->container
         );
 
-        $route           = $this->createMock(RouteInterface::class);
+        $route           = $this->givenRoute();
         $controllerClass = 'Whatever';
 
         $this->controllerClassResolver
@@ -85,7 +86,7 @@ class ControllerRepositoryTest extends TestCase
             $this->container
         );
 
-        $route           = $this->createMock(RouteInterface::class);
+        $route           = $this->givenRoute();
         $controller      = new \stdClass();
         $controllerClass = 'Whatever';
 
@@ -101,5 +102,14 @@ class ControllerRepositoryTest extends TestCase
         $this->expectException(InvalidControllerException::class);
 
         $controllerRepository->getByRoute($route);
+    }
+
+    private function givenRoute(): RouteInterface
+    {
+        return new Route(
+            new ControllerAddress('module', 'action'),
+            [],
+            null
+        );
     }
 }

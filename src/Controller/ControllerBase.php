@@ -25,15 +25,15 @@ abstract class ControllerBase implements ControllerInterface
         RouteInterface $route,
         ResponseBuilderInterface $responseBuilder
     ): ResponseInterface {
-        $this->request = $request;
-        $this->route = $route;
+        $this->request         = $request;
+        $this->route           = $route;
         $this->responseBuilder = $responseBuilder;
 
         try {
             $this->executeHookPre();
             $this->execute();
             $this->executeHookPost();
-        } catch (RedirectException|ForwardException $e) {
+        } catch (RedirectException | ForwardException $e) {
             throw $e;
         } catch (Exception $e) {
             return $this->onExecutionException($e);

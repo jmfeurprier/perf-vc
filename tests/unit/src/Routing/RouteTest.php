@@ -10,14 +10,11 @@ use TypeError;
 
 class RouteTest extends TestCase
 {
-    /**
-     * @var ControllerAddress|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Controller\ControllerAddress $address;
+    private ControllerAddress $address;
 
     protected function setUp(): void
     {
-        $this->address = $this->createMock(ControllerAddress::class);
+        $this->address = new ControllerAddress('module', 'action');
     }
 
     public function testGetAddress()

@@ -2,26 +2,18 @@
 
 namespace perf\Vc\Routing;
 
+use perf\Vc\Controller\ControllerAddress;
 use perf\Vc\Request\RequestInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase
 {
-    /**
-     * @var RoutingRuleMatcherInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Routing\RoutingRuleMatcherInterface $routingRuleMatcher;
+    private MockObject&RoutingRuleMatcherInterface $routingRuleMatcher;
 
-    /**
-     * @var RouteGeneratorInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Routing\RouteGeneratorInterface $routeGenerator;
+    private MockObject&RouteGeneratorInterface $routeGenerator;
 
-    /**
-     * @var RequestInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Request\RequestInterface $request;
+    private MockObject&RequestInterface $request;
 
     /**
      * @var RoutingRuleInterface[]
@@ -52,7 +44,7 @@ class RouterTest extends TestCase
 
     public function testTryGetRouteWithMatchingRule()
     {
-        $route = $this->createMock(Route::class);
+        $route = $this->givenRoute();
 
         $this->givenMatchingRoutingRule($route);
 
@@ -72,8 +64,8 @@ class RouterTest extends TestCase
 
     public function testTryGetRouteWillReturnFirstMatch()
     {
-        $routePrimary   = $this->createMock(RouteInterface::class);
-        $routeSecondary = $this->createMock(RouteInterface::class);
+        $routePrimary   = $this->givenRoute();
+        $routeSecondary = $this->givenRoute();
 
         $this->givenNotMatchingRoutingRule();
         $this->givenMatchingRoutingRule($routePrimary);
@@ -155,5 +147,14 @@ class RouterTest extends TestCase
     private function thenNoMatch(): void
     {
         $this->assertNull($this->result);
+    }
+
+    private function givenRoute(): RouteInterface
+    {
+        return new Route(
+            new ControllerAddress('module', 'action'),
+            [],
+            null
+        );
     }
 }
