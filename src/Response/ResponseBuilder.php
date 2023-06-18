@@ -119,7 +119,7 @@ class ResponseBuilder implements ResponseBuilderInterface
         RouteInterface $route,
         array $vars = []
     ): void {
-        $vars = array_merge($this->vars->getAll(), $vars);
+        $vars = [...$this->vars->getAll(), ...$vars];
 
         $templatePath = $this->templateLocator->locate($route);
 

@@ -84,8 +84,6 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
 
     /**
      * @return array<string, mixed>
-     *
-     * @throws VcException
      */
     private function getRouteArguments(): array
     {
@@ -101,12 +99,6 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
             $arguments[$definition->getName()] = $definition->getDefaultValue();
         }
 
-        $arguments = array_replace($arguments, $this->matches);
-
-        if (!is_array($arguments)) {
-            throw new VcException('Failed to retrieve route arguments.');
-        }
-
-        return $arguments;
+        return array_replace($arguments, $this->matches);
     }
 }
