@@ -7,6 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 class RequestPopulatorTest extends TestCase
 {
+    /**
+     * @var array<string, array<string, mixed>>
+     */
     private array $channelValues = [
         'get'    => [],
         'post'   => [],
@@ -33,7 +36,7 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame('OPTIONS', $this->result->getMethod());
     }
 
-    public function testPopulateWithoutServerRequestMethodWillThrowException()
+    public function testPopulateWithoutServerRequestMethodWillThrowException(): void
     {
         $this->givenServerValues(
             [
@@ -49,7 +52,7 @@ class RequestPopulatorTest extends TestCase
         $this->whenPopulate();
     }
 
-    public function testPopulateWillRetrieveHost()
+    public function testPopulateWillRetrieveHost(): void
     {
         $this->givenServerValues(
             [
@@ -65,7 +68,7 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame('foo.bar', $this->result->getHost());
     }
 
-    public function testPopulateWithoutServerRequestHostWillThrowException()
+    public function testPopulateWithoutServerRequestHostWillThrowException(): void
     {
         $this->givenServerValues(
             [
@@ -81,7 +84,7 @@ class RequestPopulatorTest extends TestCase
         $this->whenPopulate();
     }
 
-    public function testPopulateWillRetrievePort()
+    public function testPopulateWillRetrievePort(): void
     {
         $this->givenServerValues(
             [
@@ -97,7 +100,7 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame(123, $this->result->getPort());
     }
 
-    public function testPopulateWithoutServerRequestPortWillThrowException()
+    public function testPopulateWithoutServerRequestPortWillThrowException(): void
     {
         $this->givenServerValues(
             [
@@ -113,7 +116,7 @@ class RequestPopulatorTest extends TestCase
         $this->whenPopulate();
     }
 
-    public function testPopulateWillRetrieveHttpsTransport()
+    public function testPopulateWillRetrieveHttpsTransport(): void
     {
         $this->givenServerValues(
             [
@@ -130,7 +133,7 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame('https', $this->result->getTransport());
     }
 
-    public function testPopulateWillRetrieveHttpTransport()
+    public function testPopulateWillRetrieveHttpTransport(): void
     {
         $this->givenServerValues(
             [
@@ -146,7 +149,7 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame('http', $this->result->getTransport());
     }
 
-    public function testPopulateWithServerRequestUriWillRetrievePath()
+    public function testPopulateWithServerRequestUriWillRetrievePath(): void
     {
         $this->givenServerValues(
             [
@@ -162,7 +165,7 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame('/foo/bar.txt', $this->result->getPath());
     }
 
-    public function testPopulateWithServerRedirectUrlWillRetrievePath()
+    public function testPopulateWithServerRedirectUrlWillRetrievePath(): void
     {
         $this->givenServerValues(
             [
@@ -179,7 +182,7 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame('/baz/qux.txt', $this->result->getPath());
     }
 
-    public function testPopulateWithoutServerUrlWillThrowException()
+    public function testPopulateWithoutServerUrlWillThrowException(): void
     {
         $this->givenServerValues(
             [
@@ -195,7 +198,7 @@ class RequestPopulatorTest extends TestCase
         $this->whenPopulate();
     }
 
-    public function testPopulateWithInvalidServerUrlWillThrowException()
+    public function testPopulateWithInvalidServerUrlWillThrowException(): void
     {
         $this->givenServerValues(
             [
@@ -212,7 +215,7 @@ class RequestPopulatorTest extends TestCase
         $this->whenPopulate();
     }
 
-    public function testPopulateWillRetrieveQueryValues()
+    public function testPopulateWillRetrieveQueryValues(): void
     {
         $getValues = [
             'foo' => 'bar',
@@ -233,7 +236,7 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame($getValues, $this->result->getQuery()->getAll());
     }
 
-    public function testPopulateWillRetrievePostValues()
+    public function testPopulateWillRetrievePostValues(): void
     {
         $postValues = [
             'foo' => 'bar',
@@ -254,7 +257,7 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame($postValues, $this->result->getPost()->getAll());
     }
 
-    public function testPopulateWillRetrieveCookieValues()
+    public function testPopulateWillRetrieveCookieValues(): void
     {
         $cookieValues = [
             'foo' => 'bar',
@@ -276,7 +279,7 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame($cookieValues, $this->result->getCookies()->getAll());
     }
 
-    public function testPopulateWillRetrieveServerValues()
+    public function testPopulateWillRetrieveServerValues(): void
     {
         $serverValues = [
             'REQUEST_METHOD' => 'GET',
@@ -292,26 +295,41 @@ class RequestPopulatorTest extends TestCase
         $this->assertSame($serverValues, $this->result->getServer()->getAll());
     }
 
+    /**
+     * @param array<string, mixed> $values
+     */
     private function givenServerValues(array $values): void
     {
         $this->givenChannelValues('server', $values);
     }
 
+    /**
+     * @param array<string, mixed> $values
+     */
     private function givenGetValues(array $values): void
     {
         $this->givenChannelValues('get', $values);
     }
 
+    /**
+     * @param array<string, mixed> $values
+     */
     private function givenPostValues(array $values): void
     {
         $this->givenChannelValues('post', $values);
     }
 
+    /**
+     * @param array<string, mixed> $values
+     */
     private function givenCookieValues(array $values): void
     {
         $this->givenChannelValues('cookie', $values);
     }
 
+    /**
+     * @param array<string, mixed> $values
+     */
     private function givenChannelValues(string $channel, array $values): void
     {
         foreach ($values as $key => $value) {

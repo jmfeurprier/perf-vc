@@ -27,7 +27,7 @@ class RoutingRuleMatcherTest extends TestCase
         $this->routingRuleMatcher = new RoutingRuleMatcher();
     }
 
-    public function testTryMatchWithUnspecifiedMethodWillReturnExpected()
+    public function testTryMatchWithUnspecifiedMethodWillReturnExpected(): void
     {
         $this->givenRequest('GET', '/foo/bar');
         $this->givenRoutingRule('foo/bar', [], '#^/foo/bar$#', []);
@@ -37,7 +37,7 @@ class RoutingRuleMatcherTest extends TestCase
         $this->thenMatch();
     }
 
-    public function testTryMatchWithDifferentMethodWillReturnNull()
+    public function testTryMatchWithDifferentMethodWillReturnNull(): void
     {
         $this->givenRequest('GET', '/foo/bar');
         $this->givenRoutingRule('foo/bar', ['POST'], '#^/foo/bar$#', []);
@@ -47,7 +47,7 @@ class RoutingRuleMatcherTest extends TestCase
         $this->thenNoMatch();
     }
 
-    public function testTryMatchWithSameMethodWillReturnExpected()
+    public function testTryMatchWithSameMethodWillReturnExpected(): void
     {
         $this->givenRequest('GET', '/foo/bar');
         $this->givenRoutingRule('foo/bar', ['GET'], '#^/foo/bar$#', []);
@@ -57,7 +57,7 @@ class RoutingRuleMatcherTest extends TestCase
         $this->thenMatch();
     }
 
-    public function testTryMatchWithDifferenPathWillReturnNull()
+    public function testTryMatchWithDifferentPathWillReturnNull(): void
     {
         $this->givenRequest('GET', '/foo/bar');
         $this->givenRoutingRule('foo/bar', [], '#^/baz/qux#', []);
@@ -67,12 +67,18 @@ class RoutingRuleMatcherTest extends TestCase
         $this->thenNoMatch();
     }
 
-    private function givenRequest(string $method, string $path): void
-    {
+    private function givenRequest(
+        string $method,
+        string $path
+    ): void {
         $this->request->expects($this->any())->method('getMethod')->willReturn($method);
         $this->request->expects($this->any())->method('getPath')->willReturn($path);
     }
 
+    /**
+     * @param string[]             $methods
+     * @param ArgumentDefinition[] $argumentDefinitions
+     */
     private function givenRoutingRule(
         string $pathTemplate,
         array $methods,

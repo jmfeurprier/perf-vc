@@ -13,30 +13,9 @@ use PHPUnit\Framework\TestCase;
 
 class ResponseBuilderTest extends TestCase
 {
-    /**
-     * @var RouteInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Routing\RouteInterface $route;
+    private MockObject&RouteInterface $route;
 
-    /**
-     * @var HttpStatusRepositoryInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\HttpStatus\HttpStatusRepositoryInterface $httpStatusRepository;
-
-    /**
-     * @var ViewLocatorInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\View\ViewLocatorInterface $templateLocator;
-
-    /**
-     * @var ViewRendererInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\View\ViewRendererInterface $templateRenderer;
-
-    /**
-     * @var TransformerRepositoryInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Response\Transformation\TransformerRepositoryInterface $transformerRepository;
+    private MockObject&HttpStatusRepositoryInterface $httpStatusRepository;
 
     private ResponseBuilder $responseBuilder;
 
@@ -46,21 +25,21 @@ class ResponseBuilderTest extends TestCase
 
         $this->httpStatusRepository = $this->createMock(HttpStatusRepositoryInterface::class);
 
-        $this->templateLocator = $this->createMock(ViewLocatorInterface::class);
+        $templateLocator = $this->createMock(ViewLocatorInterface::class);
 
-        $this->templateRenderer = $this->createMock(ViewRendererInterface::class);
+        $templateRenderer = $this->createMock(ViewRendererInterface::class);
 
-        $this->transformerRepository = $this->createMock(TransformerRepositoryInterface::class);
+        $transformerRepository = $this->createMock(TransformerRepositoryInterface::class);
 
         $this->responseBuilder = new ResponseBuilder(
             $this->httpStatusRepository,
-            $this->templateLocator,
-            $this->templateRenderer,
-            $this->transformerRepository
+            $templateLocator,
+            $templateRenderer,
+            $transformerRepository
         );
     }
 
-    public function testBuildWithContent()
+    public function testBuildWithContent(): void
     {
         $content = 'foo';
 
@@ -72,7 +51,7 @@ class ResponseBuilderTest extends TestCase
         $this->assertCount(0, $result->getHeaders());
     }
 
-    public function testBuildWithHttpStatus()
+    public function testBuildWithHttpStatus(): void
     {
         $header = 'foo';
 
@@ -90,7 +69,7 @@ class ResponseBuilderTest extends TestCase
         $this->assertCount(1, $headers);
     }
 
-    public function testBuildWithHeader()
+    public function testBuildWithHeader(): void
     {
         $this->responseBuilder->addHeader('Foo', 'bar');
 

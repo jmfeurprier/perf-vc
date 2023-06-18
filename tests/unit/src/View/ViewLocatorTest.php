@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ViewLocatorTest extends TestCase
 {
-    public function testLocate()
+    public function testLocate(): void
     {
         $module    = 'Foo';
         $action    = 'Bar';

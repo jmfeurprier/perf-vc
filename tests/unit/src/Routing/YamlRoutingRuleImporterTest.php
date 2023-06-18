@@ -9,25 +9,20 @@ use PHPUnit\Framework\TestCase;
 
 class YamlRoutingRuleImporterTest extends TestCase
 {
-    private PathPatternParser $pathPatternParser;
-
     private YamlRoutingRuleImporter $importer;
 
-    /**
-     * @var SourceInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Source\SourceInterface $source;
+    private MockObject&SourceInterface $source;
 
     protected function setUp(): void
     {
-        $this->pathPatternParser = new PathPatternParser();
+        $pathPatternParser = new PathPatternParser();
 
-        $this->importer = new YamlRoutingRuleImporter($this->pathPatternParser);
+        $this->importer = new YamlRoutingRuleImporter($pathPatternParser);
 
         $this->source = $this->createMock(SourceInterface::class);
     }
 
-    public function testImportWithNotYamlSourceWillThrowException()
+    public function testImportWithNotYamlSourceWillThrowException(): void
     {
         $this->givenYaml(<<<YAML
 <not-yaml>
@@ -39,7 +34,7 @@ YAML
         $this->importer->import($this->source);
     }
 
-    public function testImportWithoutModule()
+    public function testImportWithoutModule(): void
     {
         $this->givenYaml('');
 
@@ -48,7 +43,7 @@ YAML
         $this->assertCount(0, $result->getAll());
     }
 
-    public function testImportWithoutAction()
+    public function testImportWithoutAction(): void
     {
         $this->givenYaml(<<<YAML
 Foo:
@@ -61,7 +56,7 @@ YAML
         $this->assertCount(0, $result->getAll());
     }
 
-    public function testImportWithoutRule()
+    public function testImportWithoutRule(): void
     {
         $this->givenYaml(<<<YAML
 Foo:
@@ -74,7 +69,7 @@ YAML
         $this->assertCount(0, $result->getAll());
     }
 
-    public function testImportWithPathRule()
+    public function testImportWithPathRule(): void
     {
         $this->givenYaml(<<<YAML
 Hello:
@@ -89,7 +84,7 @@ YAML
         $this->assertCount(1, $result->getAll());
     }
 
-    public function testImportWithParameter()
+    public function testImportWithParameter(): void
     {
         $this->givenYaml(<<<YAML
 Hello:
@@ -107,7 +102,7 @@ YAML
         $this->assertCount(1, $result->getAll());
     }
 
-    public function testImportWithHttpMethods()
+    public function testImportWithHttpMethods(): void
     {
         $this->givenYaml(<<<YAML
 Hello:
@@ -125,7 +120,7 @@ YAML
         $this->assertCount(1, $result->getAll());
     }
 
-    public function testImportWithMultipleRules()
+    public function testImportWithMultipleRules(): void
     {
         $yaml = <<<YAML
 Hello:
@@ -147,7 +142,7 @@ YAML;
         $this->assertCount(2, $result->getAll());
     }
 
-    private function givenYaml($yaml): void
+    private function givenYaml(string $yaml): void
     {
         $this->source->expects($this->once())->method('getContent')->willReturn($yaml);
     }

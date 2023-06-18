@@ -11,25 +11,13 @@ use PHPUnit\Framework\TestCase;
 
 class ResponseBuilderFactoryTest extends TestCase
 {
-    /**
-     * @var HttpStatusRepositoryInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\HttpStatus\HttpStatusRepositoryInterface $httpStatusRepository;
+    private MockObject&HttpStatusRepositoryInterface $httpStatusRepository;
 
-    /**
-     * @var ViewLocatorInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\View\ViewLocatorInterface $templateLocator;
+    private MockObject&ViewLocatorInterface $templateLocator;
 
-    /**
-     * @var ViewRendererInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\View\ViewRendererInterface $templateRenderer;
+    private MockObject&ViewRendererInterface $templateRenderer;
 
-    /**
-     * @var TransformerRepositoryInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Response\Transformation\TransformerRepositoryInterface $transformerRepository;
+    private MockObject&TransformerRepositoryInterface $transformerRepository;
 
     protected function setUp(): void
     {
@@ -39,7 +27,7 @@ class ResponseBuilderFactoryTest extends TestCase
         $this->transformerRepository = $this->createMock(TransformerRepositoryInterface::class);
     }
 
-    public function testMake()
+    public function testMake(): void
     {
         $factory = new ResponseBuilderFactory(
             $this->httpStatusRepository,

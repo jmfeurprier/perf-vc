@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class RedirectionHeadersGeneratorTest extends TestCase
 {
-    /**
-     * @var HttpStatusRepositoryInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\HttpStatus\HttpStatusRepositoryInterface $httpStatusRepository;
+    private MockObject&HttpStatusRepositoryInterface $httpStatusRepository;
 
     private RedirectionHeadersGenerator $redirectionHeadersGenerator;
 
@@ -26,7 +23,7 @@ class RedirectionHeadersGeneratorTest extends TestCase
         );
     }
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $url = 'https://foo.bar/baz';
 

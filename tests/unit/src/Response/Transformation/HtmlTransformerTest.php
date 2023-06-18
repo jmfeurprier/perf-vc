@@ -14,7 +14,7 @@ class HtmlTransformerTest extends TestCase
         $this->transformer = new HtmlTransformer();
     }
 
-    public function testContentIsNotModified()
+    public function testContentIsNotModified(): void
     {
         $content = '<html />';
 
@@ -23,7 +23,7 @@ class HtmlTransformerTest extends TestCase
         $this->assertSame($content, $result);
     }
 
-    public function testHeadersAreAddedWithDefaultCharset()
+    public function testHeadersAreAddedWithDefaultCharset(): void
     {
         $headers = new HeaderCollection();
 

@@ -15,17 +15,16 @@ use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Routing\RouteInterface;
 use perf\Vc\Routing\RouterInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class FrontControllerTest extends TestCase
 {
-    private RouterInterface $router;
+    private MockObject&RouterInterface $router;
 
-    private ControllerRepositoryInterface $controllerRepository;
+    private MockObject&ControllerRepositoryInterface $controllerRepository;
 
-    private ResponseBuilderFactoryInterface $responseBuilderFactory;
-
-    private RedirectionResponseGeneratorInterface $redirectionResponseGenerator;
+    private MockObject&RedirectionResponseGeneratorInterface $redirectionResponseGenerator;
 
     private FrontController $frontController;
 
@@ -35,27 +34,27 @@ class FrontControllerTest extends TestCase
     {
         $this->router                       = $this->createMock(RouterInterface::class);
         $this->controllerRepository         = $this->createMock(ControllerRepositoryInterface::class);
-        $this->responseBuilderFactory       = $this->createMock(ResponseBuilderFactoryInterface::class);
+        $responseBuilderFactory             = $this->createMock(ResponseBuilderFactoryInterface::class);
         $this->redirectionResponseGenerator = $this->createMock(RedirectionResponseGeneratorInterface::class);
 
         $this->frontController = new FrontController(
             $this->router,
             $this->controllerRepository,
-            $this->responseBuilderFactory,
+            $responseBuilderFactory,
             $this->redirectionResponseGenerator
         );
 
         $this->request = $this->createMock(RequestInterface::class);
     }
 
-    public function testRunWithRouteNotFound()
+    public function testRunWithRouteNotFound(): void
     {
         $this->expectException(RouteNotFoundException::class);
 
         $this->frontController->run($this->request);
     }
 
-    public function testRunWithRouteFound()
+    public function testRunWithRouteFound(): void
     {
         $route = $this->createMock(RouteInterface::class);
 
@@ -71,7 +70,7 @@ class FrontControllerTest extends TestCase
         $this->frontController->run($this->request);
     }
 
-    public function testRunWithControllerException()
+    public function testRunWithControllerException(): void
     {
         $route = $this->createMock(RouteInterface::class);
 
@@ -89,7 +88,7 @@ class FrontControllerTest extends TestCase
         $this->frontController->run($this->request);
     }
 
-    public function testForwarding()
+    public function testForwarding(): void
     {
         $route = $this->createMock(RouteInterface::class);
 
@@ -118,7 +117,7 @@ class FrontControllerTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    public function testRedirection()
+    public function testRedirection(): void
     {
         $route = $this->createMock(RouteInterface::class);
 

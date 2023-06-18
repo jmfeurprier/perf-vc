@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class ArgumentDefinitionTest extends TestCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $name         = 'foo';
         $format       = 'bar';
@@ -21,7 +21,7 @@ class ArgumentDefinitionTest extends TestCase
         $this->assertSame($name, $argumentDefinition->getName());
     }
 
-    public function testGetFormat()
+    public function testGetFormat(): void
     {
         $name         = 'foo';
         $format       = 'bar';
@@ -36,7 +36,7 @@ class ArgumentDefinitionTest extends TestCase
         $this->assertSame($format, $argumentDefinition->getFormat());
     }
 
-    public function testGetDefaultValue()
+    public function testGetDefaultValue(): void
     {
         $name         = 'foo';
         $format       = 'bar';

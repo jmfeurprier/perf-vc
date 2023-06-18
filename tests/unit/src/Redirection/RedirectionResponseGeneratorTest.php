@@ -26,7 +26,7 @@ class RedirectionResponseGeneratorTest extends TestCase
         $this->request = $this->createMock(RequestInterface::class);
     }
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $url = 'https://foo.bar/baz';
 

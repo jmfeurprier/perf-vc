@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class ForwardExceptionTest extends TestCase
 {
-    public function testGetModule()
+    public function testGetModule(): void
     {
         $module    = 'foo';
         $action    = 'bar';
@@ -17,7 +17,7 @@ class ForwardExceptionTest extends TestCase
         $this->assertSame($module, $exception->getModule());
     }
 
-    public function testGetAction()
+    public function testGetAction(): void
     {
         $module    = 'foo';
         $action    = 'bar';
@@ -28,7 +28,7 @@ class ForwardExceptionTest extends TestCase
         $this->assertSame($action, $exception->getAction());
     }
 
-    public function testGetArguments()
+    public function testGetArguments(): void
     {
         $module    = 'foo';
         $action    = 'bar';

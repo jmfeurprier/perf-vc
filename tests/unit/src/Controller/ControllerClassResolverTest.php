@@ -14,7 +14,7 @@ class ControllerClassResolverTest extends TestCase
         $this->controllerClassResolver = new ControllerClassResolver();
     }
 
-    public function testResolve()
+    public function testResolve(): void
     {
         $module    = 'Foo';
         $action    = 'Bar';

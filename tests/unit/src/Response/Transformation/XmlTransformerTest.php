@@ -14,7 +14,7 @@ class XmlTransformerTest extends TestCase
         $this->transformer = new XmlTransformer();
     }
 
-    public function testContentIsNotModified()
+    public function testContentIsNotModified(): void
     {
         $content = '<xml />';
 
@@ -23,7 +23,7 @@ class XmlTransformerTest extends TestCase
         $this->assertSame($content, $result);
     }
 
-    public function testHeadersAreAddedWithDefaultCharset()
+    public function testHeadersAreAddedWithDefaultCharset(): void
     {
         $headers = new HeaderCollection();
 

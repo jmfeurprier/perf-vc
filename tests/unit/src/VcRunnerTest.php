@@ -13,20 +13,11 @@ use PHPUnit\Framework\TestCase;
 
 class VcRunnerTest extends TestCase
 {
-    /**
-     * @var FrontControllerInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\FrontControllerInterface $frontController;
+    private MockObject&FrontControllerInterface $frontController;
 
-    /**
-     * @var RequestInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Request\RequestInterface $request;
+    private MockObject&RequestInterface $request;
 
-    /**
-     * @var ResponseSenderInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Vc\Response\ResponseSenderInterface $responseSender;
+    private MockObject&ResponseSenderInterface $responseSender;
 
     private VcRunner $runner;
 
@@ -43,7 +34,7 @@ class VcRunnerTest extends TestCase
         );
     }
 
-    public function testRun()
+    public function testRun(): void
     {
         $response = $this->createMock(ResponseInterface::class);
 

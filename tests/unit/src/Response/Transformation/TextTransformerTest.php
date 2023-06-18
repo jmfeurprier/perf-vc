@@ -14,16 +14,16 @@ class TextTransformerTest extends TestCase
         $this->transformer = new TextTransformer();
     }
 
-    public function testContentIsNotModified()
+    public function testContentIsNotModified(): void
     {
-        $content = 'some texxt';
+        $content = 'some text';
 
         $result = $this->transformer->transformContent($content, [], []);
 
         $this->assertSame($content, $result);
     }
 
-    public function testHeadersAreAddedWithDefaultCharset()
+    public function testHeadersAreAddedWithDefaultCharset(): void
     {
         $headers = new HeaderCollection();
 

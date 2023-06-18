@@ -21,7 +21,7 @@ class RouterTest extends TestCase
     private array $routingRules = [];
 
     /**
-     * @var RouteInterface[]
+     * @var array<RouteInterface|null>
      */
     private array $routes = [];
 
@@ -35,14 +35,14 @@ class RouterTest extends TestCase
         $this->request = $this->createMock(RequestInterface::class);
     }
 
-    public function testTryGetRouteWithoutRule()
+    public function testTryGetRouteWithoutRule(): void
     {
         $this->whenTryGetByRequest();
 
         $this->thenNoMatch();
     }
 
-    public function testTryGetRouteWithMatchingRule()
+    public function testTryGetRouteWithMatchingRule(): void
     {
         $route = $this->givenRoute();
 
@@ -53,7 +53,7 @@ class RouterTest extends TestCase
         $this->thenMatched($route);
     }
 
-    public function testTryGetRouteWithNoMatchingRule()
+    public function testTryGetRouteWithNoMatchingRule(): void
     {
         $this->givenNotMatchingRoutingRule();
 
@@ -62,7 +62,7 @@ class RouterTest extends TestCase
         $this->thenNoMatch();
     }
 
-    public function testTryGetRouteWillReturnFirstMatch()
+    public function testTryGetRouteWillReturnFirstMatch(): void
     {
         $routePrimary   = $this->givenRoute();
         $routeSecondary = $this->givenRoute();

@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class ControllerAddressTest extends TestCase
 {
-    public function testGetModule()
+    public function testGetModule(): void
     {
         $module = 'foo';
         $action = 'bar';
@@ -18,7 +18,7 @@ class ControllerAddressTest extends TestCase
         $this->assertSame($module, $result);
     }
 
-    public function testGetAction()
+    public function testGetAction(): void
     {
         $module = 'foo';
         $action = 'bar';
@@ -30,7 +30,7 @@ class ControllerAddressTest extends TestCase
         $this->assertSame($action, $result);
     }
 
-    public function testControllerAddressCastedAsString()
+    public function testControllerAddressCastedAsString(): void
     {
         $module = 'foo';
         $action = 'bar';
@@ -43,7 +43,7 @@ class ControllerAddressTest extends TestCase
         $this->assertStringContainsString($action, $result);
     }
 
-    public function testEquality()
+    public function testEquality(): void
     {
         $addressPrimary   = new ControllerAddress('Foo', 'Bar');
         $addressSecondary = new ControllerAddress('Foo', 'Bar');
@@ -52,6 +52,9 @@ class ControllerAddressTest extends TestCase
         $this->assertTrue($addressSecondary->equals($addressPrimary));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function dataProviderInequalities(): array
     {
         return [
@@ -68,7 +71,7 @@ class ControllerAddressTest extends TestCase
         string $actionPrimary,
         string $moduleSecondary,
         string $actionSecondary
-    ) {
+    ): void {
         $addressPrimary   = new ControllerAddress($modulePrimary, $actionPrimary);
         $addressSecondary = new ControllerAddress($moduleSecondary, $actionSecondary);
 

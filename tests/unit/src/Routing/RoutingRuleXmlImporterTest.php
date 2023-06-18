@@ -9,31 +9,21 @@ use PHPUnit\Framework\TestCase;
 
 class RoutingRuleXmlImporterTest extends TestCase
 {
-    /**
-     * @var PathPatternParser
-     */
-    private PathPatternParser $pathPatternParser;
 
-    /**
-     * @var XmlRoutingRuleImporter
-     */
     private XmlRoutingRuleImporter $importer;
 
-    /**
-     * @var SourceInterface|MockObject
-     */
-    private \PHPUnit\Framework\MockObject\MockObject&\perf\Source\SourceInterface $source;
+    private MockObject&SourceInterface $source;
 
     protected function setUp(): void
     {
-        $this->pathPatternParser = new PathPatternParser();
+        $pathPatternParser = new PathPatternParser();
 
         $this->source = $this->createMock(SourceInterface::class);
 
-        $this->importer = new XmlRoutingRuleImporter($this->pathPatternParser);
+        $this->importer = new XmlRoutingRuleImporter($pathPatternParser);
     }
 
-    public function testImportWithNotXmlSourceWillThrowException()
+    public function testImportWithNotXmlSourceWillThrowException(): void
     {
         $xml = '';
 
@@ -44,7 +34,7 @@ class RoutingRuleXmlImporterTest extends TestCase
         $this->importer->import($this->source);
     }
 
-    public function testImportWithoutModule()
+    public function testImportWithoutModule(): void
     {
         $xml = '<nothing />';
 
@@ -55,7 +45,7 @@ class RoutingRuleXmlImporterTest extends TestCase
         $this->assertCount(0, $result->getAll());
     }
 
-    public function testImportWithoutAction()
+    public function testImportWithoutAction(): void
     {
         $xml = <<<XML
 <root>
@@ -70,10 +60,7 @@ XML;
         $this->assertCount(0, $result->getAll());
     }
 
-    /**
-     *
-     */
-    public function testImportWithoutRule()
+    public function testImportWithoutRule(): void
     {
         $xml = <<<XML
 <root>
@@ -90,10 +77,7 @@ XML;
         $this->assertCount(0, $result->getAll());
     }
 
-    /**
-     *
-     */
-    public function testImportWithImplicitLiteralPathRule()
+    public function testImportWithImplicitLiteralPathRule(): void
     {
         $xml = <<<XML
 <root>
@@ -112,10 +96,7 @@ XML;
         $this->assertCount(1, $result->getAll());
     }
 
-    /**
-     *
-     */
-    public function testImportWithExplicitLiteralPathRule()
+    public function testImportWithExplicitLiteralPathRule(): void
     {
         $xml = <<<XML
 <root>
@@ -134,10 +115,7 @@ XML;
         $this->assertCount(1, $result->getAll());
     }
 
-    /**
-     *
-     */
-    public function testImportWithRegexPathRule()
+    public function testImportWithRegexPathRule(): void
     {
         $xml = <<<XML
 <root>
@@ -156,10 +134,7 @@ XML;
         $this->assertCount(1, $result->getAll());
     }
 
-    /**
-     *
-     */
-    public function testImportWithArgument()
+    public function testImportWithArgument(): void
     {
         $xml = <<<XML
 <root>
@@ -178,10 +153,7 @@ XML;
         $this->assertCount(1, $result->getAll());
     }
 
-    /**
-     *
-     */
-    public function testImportWithHttpMethods()
+    public function testImportWithHttpMethods(): void
     {
         $xml = <<<XML
 <root>
@@ -200,10 +172,7 @@ XML;
         $this->assertCount(1, $result->getAll());
     }
 
-    /**
-     *
-     */
-    public function testImportWithMultipleRules()
+    public function testImportWithMultipleRules(): void
     {
         $xml = <<<XML
 <root>

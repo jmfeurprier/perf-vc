@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class RedirectExceptionTest extends TestCase
 {
-    public function testCreateFromRoute()
+    public function testCreateFromRoute(): void
     {
         $exception = RedirectException::createFromRoute('Module', 'Action', ['foo' => 'bar'], 302);
 
@@ -18,7 +18,7 @@ class RedirectExceptionTest extends TestCase
         $this->assertSame(302, $exception->getRedirection()->getHttpStatusCode());
     }
 
-    public function testCreateFromPath()
+    public function testCreateFromPath(): void
     {
         $exception = RedirectException::createFromPath('foo/bar', 302);
 
@@ -26,7 +26,7 @@ class RedirectExceptionTest extends TestCase
         $this->assertSame(302, $exception->getRedirection()->getHttpStatusCode());
     }
 
-    public function testCreateFromUrl()
+    public function testCreateFromUrl(): void
     {
         $exception = RedirectException::createFromUrl('https://foo.bar/baz?qux=123', 302);
 
@@ -34,7 +34,7 @@ class RedirectExceptionTest extends TestCase
         $this->assertSame(302, $exception->getRedirection()->getHttpStatusCode());
     }
 
-    public function testGetRedirection()
+    public function testGetRedirection(): void
     {
         $redirection = $this->createMock(RedirectionInterface::class);
 

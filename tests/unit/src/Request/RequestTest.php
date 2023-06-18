@@ -10,7 +10,7 @@ class RequestTest extends TestCase
 
     private Request $request;
 
-    public function testIsMethodGetReturnsTrue()
+    public function testIsMethodGetReturnsTrue(): void
     {
         $this->givenMethod('GET');
 
@@ -19,7 +19,7 @@ class RequestTest extends TestCase
         $this->assertTrue($this->request->isMethodGet());
     }
 
-    public function testIsMethodGetReturnsFalse()
+    public function testIsMethodGetReturnsFalse(): void
     {
         $this->givenMethod('POST');
 
@@ -28,7 +28,7 @@ class RequestTest extends TestCase
         $this->assertFalse($this->request->isMethodGet());
     }
 
-    public function testIsMethodPostReturnsTrue()
+    public function testIsMethodPostReturnsTrue(): void
     {
         $this->givenMethod('POST');
 
@@ -37,7 +37,7 @@ class RequestTest extends TestCase
         $this->assertTrue($this->request->isMethodPost());
     }
 
-    public function testIsMethodPostReturnsFalse()
+    public function testIsMethodPostReturnsFalse(): void
     {
         $this->givenMethod('GET');
 
@@ -46,7 +46,7 @@ class RequestTest extends TestCase
         $this->assertFalse($this->request->isMethodPost());
     }
 
-    public function testIsMethodPutReturnsTrue()
+    public function testIsMethodPutReturnsTrue(): void
     {
         $this->givenMethod('PUT');
 
@@ -55,7 +55,7 @@ class RequestTest extends TestCase
         $this->assertTrue($this->request->isMethodPut());
     }
 
-    public function testIsMethodPutReturnsFalse()
+    public function testIsMethodPutReturnsFalse(): void
     {
         $this->givenMethod('GET');
 
@@ -64,7 +64,7 @@ class RequestTest extends TestCase
         $this->assertFalse($this->request->isMethodPut());
     }
 
-    public function testIsMethodDeleteReturnsTrue()
+    public function testIsMethodDeleteReturnsTrue(): void
     {
         $this->givenMethod('DELETE');
 
@@ -73,7 +73,7 @@ class RequestTest extends TestCase
         $this->assertTrue($this->request->isMethodDelete());
     }
 
-    public function testIsMethodDeleteReturnsFalse()
+    public function testIsMethodDeleteReturnsFalse(): void
     {
         $this->givenMethod('GET');
 

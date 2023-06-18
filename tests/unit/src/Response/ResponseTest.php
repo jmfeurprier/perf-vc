@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class ResponseTest extends TestCase
 {
-    public function testGetContent()
+    public function testGetContent(): void
     {
         $headers = [];
         $content = 'foo';
@@ -20,7 +20,7 @@ class ResponseTest extends TestCase
         $this->assertSame($content, $response->getContent()->getContent());
     }
 
-    public function testGetHeadersWithoutHeaders()
+    public function testGetHeadersWithoutHeaders(): void
     {
         $headers = [];
 

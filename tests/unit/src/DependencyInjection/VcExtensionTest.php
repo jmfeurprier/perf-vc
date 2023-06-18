@@ -15,7 +15,7 @@ class VcExtensionTest extends TestCase
         $this->extension = new VcExtension();
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
         $containerBuilder = new ContainerBuilder();
 

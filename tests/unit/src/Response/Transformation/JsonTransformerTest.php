@@ -14,7 +14,7 @@ class JsonTransformerTest extends TestCase
         $this->transformer = new JsonTransformer();
     }
 
-    public function testContentIsNotModified()
+    public function testContentIsNotModified(): void
     {
         $content = [
             'foo' => 'bar',
@@ -26,7 +26,7 @@ class JsonTransformerTest extends TestCase
         $this->assertJson($result);
     }
 
-    public function testHeadersAreAddedWithDefaultCharset()
+    public function testHeadersAreAddedWithDefaultCharset(): void
     {
         $headers = new HeaderCollection();
 

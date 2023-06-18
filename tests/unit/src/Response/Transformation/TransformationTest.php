@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class TransformationTest extends TestCase
 {
-    public function testGetTransformer()
+    public function testGetTransformer(): void
     {
         $transformer = $this->createMock(TransformerInterface::class);
 
@@ -15,7 +15,7 @@ class TransformationTest extends TestCase
         $this->assertSame($transformer, $transformation->getTransformer());
     }
 
-    public function testGetParametersWithParameters()
+    public function testGetParametersWithParameters(): void
     {
         $transformer = $this->createMock(TransformerInterface::class);
 
@@ -28,7 +28,7 @@ class TransformationTest extends TestCase
         $this->assertSame($parameters, $transformation->getParameters());
     }
 
-    public function testGetParametersWithoutParameters()
+    public function testGetParametersWithoutParameters(): void
     {
         $transformer = $this->createMock(TransformerInterface::class);
 

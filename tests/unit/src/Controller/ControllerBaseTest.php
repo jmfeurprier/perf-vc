@@ -18,8 +18,6 @@ class ControllerBaseTest extends TestCase
 
     private MockObject&ResponseBuilderInterface $responseBuilder;
 
-    private ControllerBase $controller;
-
     protected function setUp(): void
     {
         $this->request         = $this->createMock(RequestInterface::class);
@@ -27,22 +25,22 @@ class ControllerBaseTest extends TestCase
         $this->responseBuilder = $this->createMock(ResponseBuilderInterface::class);
     }
 
-    public function testExecution()
+    public function testExecution(): void
     {
-        $this->controller = new class extends ControllerBase {
+        $controller = new class extends ControllerBase {
             public function execute(): void
             {
             }
         };
 
-        $this->whenRun();
+        $this->whenRun($controller);
 
         $this->assertTrue(true);
     }
 
-    public function testHooks()
+    public function testHooks(): void
     {
-        $this->controller = new class extends ControllerBase {
+        $controller = new class extends ControllerBase {
             private string $trace = '';
 
             protected function executeHookPre(): void
@@ -66,14 +64,14 @@ class ControllerBaseTest extends TestCase
             }
         };
 
-        $this->whenRun();
+        $this->whenRun($controller);
 
-        $this->assertSame('123', $this->controller->getTrace());
+        $this->assertSame('123', $controller->getTrace());
     }
 
-    public function testForwarding()
+    public function testForwarding(): void
     {
-        $this->controller = new class extends ControllerBase {
+        $controller = new class extends ControllerBase {
             public function execute(): void
             {
                 $this->forward('Module', 'Action', ['foo' => 'bar']);
@@ -82,12 +80,12 @@ class ControllerBaseTest extends TestCase
 
         $this->expectException(ForwardException::class);
 
-        $this->whenRun();
+        $this->whenRun($controller);
     }
 
-    public function testRedirectionToRoute()
+    public function testRedirectionToRoute(): void
     {
-        $this->controller = new class extends ControllerBase {
+        $controller = new class extends ControllerBase {
             public function execute(): void
             {
                 $this->redirectToRoute('Module', 'Action', ['foo' => 'bar'], 302);
@@ -96,12 +94,12 @@ class ControllerBaseTest extends TestCase
 
         $this->expectException(RedirectException::class);
 
-        $this->whenRun();
+        $this->whenRun($controller);
     }
 
-    public function testRedirectionToPath()
+    public function testRedirectionToPath(): void
     {
-        $this->controller = new class extends ControllerBase {
+        $controller = new class extends ControllerBase {
             public function execute(): void
             {
                 $this->redirectToPath('/foo', 302);
@@ -110,12 +108,12 @@ class ControllerBaseTest extends TestCase
 
         $this->expectException(RedirectException::class);
 
-        $this->whenRun();
+        $this->whenRun($controller);
     }
 
-    public function testRedirectionToUrl()
+    public function testRedirectionToUrl(): void
     {
-        $this->controller = new class extends ControllerBase {
+        $controller = new class extends ControllerBase {
             public function execute(): void
             {
                 $this->redirectToUrl('https://foo.bar/baz', 302);
@@ -124,11 +122,11 @@ class ControllerBaseTest extends TestCase
 
         $this->expectException(RedirectException::class);
 
-        $this->whenRun();
+        $this->whenRun($controller);
     }
 
-    private function whenRun(): void
+    private function whenRun(ControllerInterface $controller): void
     {
-        $this->controller->run($this->request, $this->route, $this->responseBuilder);
+        $controller->run($this->request, $this->route, $this->responseBuilder);
     }
 }

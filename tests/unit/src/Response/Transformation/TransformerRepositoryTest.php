@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class TransformerRepositoryTest extends TestCase
 {
-    public function testEmptyRepository()
+    public function testEmptyRepository(): void
     {
         $transformerRepository = new TransformerRepository(
             [
@@ -19,7 +19,7 @@ class TransformerRepositoryTest extends TestCase
         $transformerRepository->get(HtmlTransformer::class);
     }
 
-    public function testNonEmptyRepository()
+    public function testNonEmptyRepository(): void
     {
         $transformer           = new HtmlTransformer();
         $transformerRepository = new TransformerRepository(
