@@ -9,9 +9,6 @@ class RoutingRuleNotMatched implements RoutingRuleMatchingOutcomeInterface
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getArguments(): array
     {
         return [];

@@ -19,9 +19,6 @@ readonly class ControllerRepository implements ControllerRepositoryInterface
         $this->controllersNamespace = trim($controllersNamespace, '\\');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getByRoute(RouteInterface $route): ControllerInterface
     {
         $controllerClass = $this->controllerClassResolver->resolve($route, $this->controllersNamespace);

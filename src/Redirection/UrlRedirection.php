@@ -13,9 +13,6 @@ readonly class UrlRedirection implements RedirectionInterface
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getUrl(
         RequestInterface $request,
         RouterInterface $router

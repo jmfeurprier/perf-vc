@@ -17,9 +17,6 @@ readonly class RoutingRuleMatched implements RoutingRuleMatchingOutcomeInterface
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getArguments(): array
     {
         return $this->arguments;

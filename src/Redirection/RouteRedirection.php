@@ -22,9 +22,6 @@ readonly class RouteRedirection implements RedirectionInterface
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getUrl(
         RequestInterface $request,
         RouterInterface $router

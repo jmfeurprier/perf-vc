@@ -31,9 +31,6 @@ class XmlRoutingRuleImporter implements RoutingRuleImporterInterface
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function import(SourceInterface $source): RoutingRuleCollection
     {
         $this->rules = [];

@@ -9,9 +9,6 @@ class ResponseSender implements ResponseSenderInterface
 {
     private ResponseInterface $response;
 
-    /**
-     * {@inheritDoc}
-     */
     public function send(ResponseInterface $response): void
     {
         $this->response = $response;

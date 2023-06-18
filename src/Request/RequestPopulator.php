@@ -36,9 +36,6 @@ readonly class RequestPopulator implements RequestPopulatorInterface
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function populate(): RequestInterface
     {
         return new Request(

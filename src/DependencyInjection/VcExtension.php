@@ -28,9 +28,6 @@ class VcExtension implements ExtensionInterface
 
     private ContainerBuilder $containerBuilder;
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(
         array $configs,
         ContainerBuilder $container

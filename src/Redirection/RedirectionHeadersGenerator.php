@@ -24,9 +24,6 @@ readonly class RedirectionHeadersGenerator implements RedirectionHeadersGenerato
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function generate(
         string $url,
         int $httpStatusCode,

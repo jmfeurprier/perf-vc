@@ -28,9 +28,6 @@ class TransformerRepository implements TransformerRepositoryInterface
         $this->transformers[$class] = $transformer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get(string $class): TransformerInterface
     {
         if (array_key_exists($class, $this->transformers)) {

@@ -24,17 +24,11 @@ readonly class Route implements RouteInterface
         return $this->address;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getArguments(): array
     {
         return $this->arguments;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getArgument(string $name): mixed
     {
         if (array_key_exists($name, $this->arguments)) {

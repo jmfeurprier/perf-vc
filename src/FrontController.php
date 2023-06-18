@@ -33,9 +33,6 @@ class FrontController implements FrontControllerInterface
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function run(RequestInterface $request): ResponseInterface
     {
         $this->request = $request;

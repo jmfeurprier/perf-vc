@@ -42,9 +42,6 @@ readonly class TwigViewRenderer implements ViewRendererInterface
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function render(
         string $viewPath,
         array $vars

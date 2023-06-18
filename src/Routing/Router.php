@@ -14,9 +14,6 @@ readonly class Router implements RouterInterface
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function tryGetByRequest(RequestInterface $request): ?RouteInterface
     {
         foreach ($this->routingRules->getAll() as $routingRule) {
@@ -30,9 +27,6 @@ readonly class Router implements RouterInterface
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function tryGetByAddress(
         ControllerAddress $address,
         array $arguments

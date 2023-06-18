@@ -13,9 +13,6 @@ class RouteGenerator implements RouteGeneratorInterface
      */
     private array $arguments;
 
-    /**
-     * {@inheritDoc}
-     */
     public function generate(
         RoutingRuleInterface $routingRule,
         array $arguments

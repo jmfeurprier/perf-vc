@@ -33,9 +33,6 @@ class RedirectionResponseGenerator implements RedirectionResponseGeneratorInterf
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function generate(
         RequestInterface $request,
         string $url,
