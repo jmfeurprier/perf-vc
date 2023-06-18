@@ -3,6 +3,7 @@
 namespace perf\Vc\Redirection;
 
 use perf\Source\NullSource;
+use perf\Vc\Exception\InvalidRequestChannelValueTypeException;
 use perf\Vc\Exception\RequestChannelKeyNotFoundException;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
@@ -78,16 +79,22 @@ class RedirectionResponseGenerator implements RedirectionResponseGeneratorInterf
 
     /**
      * @throws RequestChannelKeyNotFoundException
+     * @throws InvalidRequestChannelValueTypeException
      */
     private function getHttpVersion(): string
     {
+        static $key = 'SERVER_PROTOCOL';
+
         if (null !== $this->httpVersion) {
             return $this->httpVersion;
         }
 
-        return substr(
-            (string) $this->request->getServer()->get('SERVER_PROTOCOL'),
-            5
-        );
+        $protocol = $this->request->getServer()->get($key);
+
+        if (is_string($protocol)) {
+            return substr($protocol, 5);
+        }
+
+        throw new InvalidRequestChannelValueTypeException('SERVER_PROTOCOL');
     }
 }
