@@ -52,7 +52,7 @@ class VcExtension implements ExtensionInterface
             new FileLocator(__DIR__ . '/../../config')
         );
 
-        $loader->load('services.yml');
+        $loader->load('services.yaml');
     }
 
     /**
