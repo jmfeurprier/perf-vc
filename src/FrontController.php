@@ -18,6 +18,7 @@ use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Response\ResponseInterface;
 use perf\Vc\Routing\Route;
+use perf\Vc\Routing\RouteArgumentCollection;
 use perf\Vc\Routing\RouteInterface;
 use perf\Vc\Routing\RouterInterface;
 
@@ -121,7 +122,7 @@ class FrontController implements FrontControllerInterface
                 $module,
                 $action
             ),
-            $arguments
+            new RouteArgumentCollection($arguments)
         );
 
         return $this->runController($route);

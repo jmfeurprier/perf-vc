@@ -5,6 +5,7 @@ namespace perf\Vc\Controller;
 use perf\Vc\Exception\ControllerClassNotFoundException;
 use perf\Vc\Exception\InvalidControllerException;
 use perf\Vc\Routing\Route;
+use perf\Vc\Routing\RouteArgumentCollection;
 use perf\Vc\Routing\RouteInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -108,7 +109,7 @@ class ControllerRepositoryTest extends TestCase
     {
         return new Route(
             new ControllerAddress('module', 'action'),
-            [],
+            new RouteArgumentCollection(),
             null
         );
     }

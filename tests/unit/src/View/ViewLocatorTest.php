@@ -1,10 +1,10 @@
 <?php
 
-namespace perf\Vc\Templating;
+namespace perf\Vc\View;
 
 use perf\Vc\Controller\ControllerAddress;
 use perf\Vc\Routing\Route;
-use perf\Vc\View\ViewLocator;
+use perf\Vc\Routing\RouteArgumentCollection;
 use PHPUnit\Framework\TestCase;
 
 class ViewLocatorTest extends TestCase
@@ -16,7 +16,7 @@ class ViewLocatorTest extends TestCase
         $extension = 'qux';
 
         $address = new ControllerAddress($module, $action);
-        $route   = new Route($address);
+        $route   = new Route($address, new RouteArgumentCollection());
 
         $locator = new ViewLocator($extension);
 

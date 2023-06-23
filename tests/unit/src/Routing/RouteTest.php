@@ -39,13 +39,15 @@ class RouteTest extends TestCase
 
     /**
      * @param array<string, mixed> $arguments
-     *
-     * @throws VcException
      */
     private function buildRoute(
         string $path,
         array $arguments = []
     ): Route {
-        return new Route($this->address, $arguments, $path);
+        return new Route(
+            $this->address,
+            new RouteArgumentCollection($arguments),
+            $path
+        );
     }
 }

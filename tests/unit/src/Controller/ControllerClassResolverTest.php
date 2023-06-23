@@ -3,6 +3,7 @@
 namespace perf\Vc\Controller;
 
 use perf\Vc\Routing\Route;
+use perf\Vc\Routing\RouteArgumentCollection;
 use PHPUnit\Framework\TestCase;
 
 class ControllerClassResolverTest extends TestCase
@@ -24,7 +25,8 @@ class ControllerClassResolverTest extends TestCase
             new ControllerAddress(
                 $module,
                 $action
-            )
+            ),
+            new RouteArgumentCollection()
         );
 
         $result = $this->controllerClassResolver->resolve($route, $namespace);

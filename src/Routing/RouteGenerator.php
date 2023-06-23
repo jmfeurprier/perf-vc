@@ -21,7 +21,7 @@ class RouteGenerator implements RouteGeneratorInterface
 
         return new Route(
             $this->getAddress(),
-            $this->arguments,
+            new RouteArgumentCollection($this->arguments),
             $this->getPath()
         );
     }

@@ -153,8 +153,7 @@ class RouterTest extends TestCase
     {
         return new Route(
             new ControllerAddress('module', 'action'),
-            [],
-            null
+            new RouteArgumentCollection()
         );
     }
 }
