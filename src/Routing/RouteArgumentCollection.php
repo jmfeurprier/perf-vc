@@ -5,36 +5,27 @@ declare(strict_types=1);
 namespace perf\Vc\Routing;
 
 use perf\Vc\Exception\RouteArgumentNotFoundException;
+use TypeError;
 
-class RouteArgumentCollection
+readonly class RouteArgumentCollection
 {
-    /**
-     * @var array<string, mixed>
-     */
-    private array $arguments = [];
-
     /**
      * @param array<string, mixed> $arguments
      */
     public function __construct(
-        array $arguments = []
+        private array $arguments = []
     ) {
-        foreach ($arguments as $key => $value) {
-            $this->addArgument($key, $value);
+        foreach (array_keys($arguments) as $key) {
+            if (!is_string($key)) {
+                throw new TypeError('Invalid route argument key type.');
+            }
         }
-    }
-
-    private function addArgument(
-        string $key,
-        mixed $value
-    ): void {
-        $this->arguments[$key] = $value;
     }
 
     /**
      * @return array<string, mixed>
      */
-    public function getAll(): array
+    public function all(): array
     {
         return $this->arguments;
     }

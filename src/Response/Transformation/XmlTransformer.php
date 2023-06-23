@@ -5,6 +5,7 @@ namespace perf\Vc\Response\Transformation;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 use perf\Vc\Header\HeaderCollection;
+use TypeError;
 
 class XmlTransformer implements TransformerInterface
 {
@@ -66,6 +67,6 @@ class XmlTransformer implements TransformerInterface
             return $charset;
         }
 
-        throw new VcException('Invalid charset value type for XML transformer.');
+        throw new TypeError('Invalid charset value type for XML transformer.');
     }
 }

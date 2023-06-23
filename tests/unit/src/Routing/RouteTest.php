@@ -34,7 +34,7 @@ class RouteTest extends TestCase
 
         $result = $route->getArguments();
 
-        $this->assertSame($arguments, $result->getAll());
+        $this->assertSame($arguments, $result->all());
     }
 
     /**

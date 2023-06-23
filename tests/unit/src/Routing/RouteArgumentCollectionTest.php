@@ -13,7 +13,7 @@ class RouteArgumentCollectionTest extends TestCase
     {
         $collection = new RouteArgumentCollection();
 
-        $result = $collection->getAll();
+        $result = $collection->all();
 
         $this->assertCount(0, $result);
     }
@@ -67,6 +67,7 @@ class RouteArgumentCollectionTest extends TestCase
         $this->expectException(TypeError::class);
 
         new RouteArgumentCollection(
+            // @phpstan-ignore-next-line
             [
                 123 => 'bar',
             ]

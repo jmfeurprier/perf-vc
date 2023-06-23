@@ -53,7 +53,7 @@ class RouteGeneratorTest extends TestCase
 
         $this->whenGenerate();
 
-        $this->assertSame($this->arguments, $this->result->getArguments()->getAll());
+        $this->assertSame($this->arguments, $this->result->getArguments()->all());
     }
 
     private function givenPathTemplate(string $pathTemplate): void

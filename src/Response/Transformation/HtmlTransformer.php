@@ -5,6 +5,7 @@ namespace perf\Vc\Response\Transformation;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 use perf\Vc\Header\HeaderCollection;
+use TypeError;
 
 class HtmlTransformer implements TransformerInterface
 {
@@ -35,7 +36,7 @@ class HtmlTransformer implements TransformerInterface
         $charset = $parameters[self::CHARSET];
 
         if (!is_string($charset)) {
-            throw new VcException();
+            throw new TypeError();
         }
 
         $headers->replace(new Header('Content-Type', "text/html; charset={$charset}"));

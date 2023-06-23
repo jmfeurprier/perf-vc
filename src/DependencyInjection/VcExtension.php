@@ -6,7 +6,6 @@ use Exception;
 use perf\Source\LocalFileSource;
 use perf\Source\SourceInterface;
 use perf\Vc\Controller\ControllerRepositoryInterface;
-use perf\Vc\Exception\VcException;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Routing\RouterInterface;
 use perf\Vc\View\ViewLocatorInterface;
@@ -19,6 +18,7 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\ExpressionLanguage\Expression;
+use TypeError;
 
 class VcExtension implements ExtensionInterface
 {
@@ -29,6 +29,9 @@ class VcExtension implements ExtensionInterface
 
     private ContainerBuilder $containerBuilder;
 
+    /**
+     * @throws Exception
+     */
     public function load(
         array $configs,
         ContainerBuilder $container
@@ -87,9 +90,6 @@ class VcExtension implements ExtensionInterface
         );
     }
 
-    /**
-     * @throws VcException
-     */
     private function configureTwigViewRenderer(): void
     {
         $this->setDefinitionArgument(
@@ -108,14 +108,14 @@ class VcExtension implements ExtensionInterface
 
         if (!empty($this->config['twig_extensions'])) {
             if (!is_array($this->config['twig_extensions'])) {
-                throw new VcException();
+                throw new TypeError();
             }
 
             $services = [];
 
             foreach ($this->config['twig_extensions'] as $extensionServiceId) {
                 if (!is_string($extensionServiceId)) {
-                    throw new VcException();
+                    throw new TypeError();
                 }
 
                 $services[] = new Reference($extensionServiceId);

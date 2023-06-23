@@ -10,6 +10,7 @@ use perf\Vc\Exception\VcException;
 use perf\Vc\Request\RequestInterface;
 use perf\Vc\Response\ResponseBuilderInterface;
 use perf\Vc\Response\ResponseInterface;
+use perf\Vc\Routing\RouteArgumentCollection;
 use perf\Vc\Routing\RouteInterface;
 
 abstract class ControllerBase implements ControllerInterface
@@ -86,9 +87,14 @@ abstract class ControllerBase implements ControllerInterface
         return $this->request;
     }
 
+    protected function arguments(): RouteArgumentCollection
+    {
+        return $this->route->getArguments();
+    }
+
     protected function hasArgument(string $name): bool
     {
-        return $this->route->getArguments()->has($name);
+        return $this->arguments()->has($name);
     }
 
     /**

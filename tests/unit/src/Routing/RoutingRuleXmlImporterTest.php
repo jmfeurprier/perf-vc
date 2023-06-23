@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class RoutingRuleXmlImporterTest extends TestCase
 {
-
     private XmlRoutingRuleImporter $importer;
 
     private MockObject&SourceInterface $source;

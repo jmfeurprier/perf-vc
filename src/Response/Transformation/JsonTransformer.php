@@ -6,6 +6,7 @@ use JsonException;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 use perf\Vc\Header\HeaderCollection;
+use TypeError;
 
 class JsonTransformer implements TransformerInterface
 {
@@ -56,8 +57,6 @@ class JsonTransformer implements TransformerInterface
 
     /**
      * @param array<string, mixed> $parameters
-     *
-     * @throws VcException
      */
     private function getCharset(array $parameters): string
     {
@@ -67,6 +66,6 @@ class JsonTransformer implements TransformerInterface
             return $charset;
         }
 
-        throw new VcException('Invalid charset value type for XML transformer.');
+        throw new TypeError('Invalid charset value type for XML transformer.');
     }
 }

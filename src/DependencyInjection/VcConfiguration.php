@@ -1,6 +1,5 @@
 <?php
 
-
 namespace perf\Vc\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -12,6 +11,7 @@ class VcConfiguration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('perf_vc');
 
+        // @phpstan-ignore-next-line
         $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('controllers_namespace')
