@@ -151,7 +151,13 @@ readonly class RequestPopulator implements RequestPopulatorInterface
                 if (!is_string($string)) {
                     throw new VcException('Failed to read PHP input for request attachment.');
                 }
-                parse_str($string, $attachment); // @todo Check $attachment keys type.
+                $parsed = [];
+                parse_str($string, $parsed); // @todo Check $attachment keys type.
+                foreach ($parsed as $key => $value) {
+                    if (is_string($key)) {
+                        $attachment[$key] = $value;
+                    }
+                }
                 break;
         }
 

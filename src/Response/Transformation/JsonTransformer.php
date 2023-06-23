@@ -2,6 +2,7 @@
 
 namespace perf\Vc\Response\Transformation;
 
+use JsonException;
 use perf\Vc\Exception\VcException;
 use perf\Vc\Header\Header;
 use perf\Vc\Header\HeaderCollection;
@@ -14,18 +15,21 @@ class JsonTransformer implements TransformerInterface
         self::CHARSET => 'utf-8',
     ];
 
+    /**
+     * @throws VcException
+     */
     public function transformContent(
         mixed $content,
         array $vars,
         array $parameters
     ): string {
-        $json = json_encode($content);
-
-        if (is_string($json)) {
-            return $json;
+        try {
+            $json = json_encode($content, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new VcException('Failed to transform provided content to JSON.', 0, $e);
         }
 
-        throw new VcException('Failed to transform provided content to JSON.');
+        return $json;
     }
 
     public function transformHeaders(

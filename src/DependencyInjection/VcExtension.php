@@ -6,6 +6,7 @@ use Exception;
 use perf\Source\LocalFileSource;
 use perf\Source\SourceInterface;
 use perf\Vc\Controller\ControllerRepositoryInterface;
+use perf\Vc\Exception\VcException;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Routing\RouterInterface;
 use perf\Vc\View\ViewLocatorInterface;
@@ -62,9 +63,9 @@ class VcExtension implements ExtensionInterface
         array $configs,
         ContainerBuilder $containerBuilder
     ): void {
-        $configuration = new VcConfiguration();
-        $processor = new Processor();
-        $this->config = $processor->processConfiguration($configuration, $configs);
+        $configuration          = new VcConfiguration();
+        $processor              = new Processor();
+        $this->config           = $processor->processConfiguration($configuration, $configs);
         $this->containerBuilder = $containerBuilder;
     }
 
@@ -86,6 +87,9 @@ class VcExtension implements ExtensionInterface
         );
     }
 
+    /**
+     * @throws VcException
+     */
     private function configureTwigViewRenderer(): void
     {
         $this->setDefinitionArgument(
@@ -103,9 +107,17 @@ class VcExtension implements ExtensionInterface
         }
 
         if (!empty($this->config['twig_extensions'])) {
+            if (!is_array($this->config['twig_extensions'])) {
+                throw new VcException();
+            }
+
             $services = [];
 
             foreach ($this->config['twig_extensions'] as $extensionServiceId) {
+                if (!is_string($extensionServiceId)) {
+                    throw new VcException();
+                }
+
                 $services[] = new Reference($extensionServiceId);
             }
 

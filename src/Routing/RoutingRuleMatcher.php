@@ -12,7 +12,7 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
     private RoutingRuleInterface $routingRule;
 
     /**
-     * @var array<int, string>
+     * @var array<int|string, string>
      */
     private array $matches;
 
@@ -33,8 +33,10 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
         return new RoutingRuleMatched($this->getRouteArguments());
     }
 
-    private function init(RequestInterface $request, RoutingRuleInterface $routingRule): void
-    {
+    private function init(
+        RequestInterface $request,
+        RoutingRuleInterface $routingRule
+    ): void {
         $this->request     = $request;
         $this->routingRule = $routingRule;
     }
@@ -84,9 +86,11 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
      */
     private function getRouteArguments(): array
     {
-        foreach (array_keys($this->matches) as $key) {
-            if (is_int($key)) {
-                unset($this->matches[$key]);
+        $matches = [];
+
+        foreach ($this->matches as $key => $value) {
+            if (is_string($key)) {
+                $matches[$key] = $value;
             }
         }
 
@@ -96,6 +100,6 @@ class RoutingRuleMatcher implements RoutingRuleMatcherInterface
             $arguments[$definition->getName()] = $definition->getDefaultValue();
         }
 
-        return array_replace($arguments, $this->matches);
+        return array_replace($arguments, $matches);
     }
 }

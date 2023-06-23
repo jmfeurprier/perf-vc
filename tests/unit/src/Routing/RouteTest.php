@@ -5,7 +5,6 @@ namespace perf\Vc\Routing;
 use perf\Vc\Controller\ControllerAddress;
 use perf\Vc\Exception\VcException;
 use PHPUnit\Framework\TestCase;
-use TypeError;
 
 class RouteTest extends TestCase
 {
@@ -25,72 +24,23 @@ class RouteTest extends TestCase
         $this->assertSame($this->address, $result);
     }
 
-    public function testGetArgumentsWithoutArguments(): void
+    public function testGetArguments(): void
     {
-        $route = $this->buildRoute('foo');
+        $arguments = [
+            'bar' => 'baz',
+        ];
+
+        $route = $this->buildRoute('foo', $arguments);
 
         $result = $route->getArguments();
 
-        $this->assertCount(0, $result);
-    }
-
-    public function testHasArgumentsWithNonExistingArgumentWillReturnFalse(): void
-    {
-        $route = $this->buildRoute('foo');
-
-        $result = $route->hasArgument('bar');
-
-        $this->assertFalse($result);
-    }
-
-    public function testHasArgumentsWithExistingArgumentWillReturnTrue(): void
-    {
-        $arguments = [
-            'bar' => 'baz',
-        ];
-
-        $route = $this->buildRoute('foo', $arguments);
-
-        $result = $route->hasArgument('bar');
-
-        $this->assertTrue($result);
-    }
-
-    public function testGetArgumentsWithNonExistingArgumentWillThrowException(): void
-    {
-        $route = $this->buildRoute('foo');
-
-        $this->expectException(VcException::class);
-
-        $route->getArgument('foo');
-    }
-
-    public function testGetArgumentsWithExistingArgumentWillReturnExpected(): void
-    {
-        $arguments = [
-            'bar' => 'baz',
-        ];
-
-        $route = $this->buildRoute('foo', $arguments);
-
-        $result = $route->getArgument('bar');
-
-        $this->assertSame('baz', $result);
-    }
-
-    public function testWithInvalidArgumentKeyWillThrowException(): void
-    {
-        $arguments = [
-            123 => 'bar',
-        ];
-
-        $this->expectException(TypeError::class);
-
-        $this->buildRoute('', $arguments);
+        $this->assertSame($arguments, $result->getAll());
     }
 
     /**
      * @param array<string, mixed> $arguments
+     *
+     * @throws VcException
      */
     private function buildRoute(
         string $path,

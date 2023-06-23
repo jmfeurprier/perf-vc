@@ -6,17 +6,21 @@ namespace perf\Vc\Routing;
 
 use perf\Vc\Controller\ControllerAddress;
 use perf\Vc\Exception\RouteArgumentNotFoundException;
+use perf\Vc\Exception\VcException;
 
 readonly class Route implements RouteInterface
 {
+    private RouteArgumentCollection $arguments;
+
     /**
      * @param array<string, mixed> $arguments
      */
     public function __construct(
         private ControllerAddress $address,
-        private array $arguments = [],
+        array $arguments = [],
         private ?string $path = null
     ) {
+        $this->arguments = new RouteArgumentCollection($arguments);
     }
 
     public function getAddress(): ControllerAddress
@@ -24,23 +28,9 @@ readonly class Route implements RouteInterface
         return $this->address;
     }
 
-    public function getArguments(): array
+    public function getArguments(): RouteArgumentCollection
     {
         return $this->arguments;
-    }
-
-    public function getArgument(string $name): mixed
-    {
-        if (array_key_exists($name, $this->arguments)) {
-            return $this->arguments[$name];
-        }
-
-        throw new RouteArgumentNotFoundException($name);
-    }
-
-    public function hasArgument(string $name): bool
-    {
-        return array_key_exists($name, $this->arguments);
     }
 
     public function hasPath(): bool

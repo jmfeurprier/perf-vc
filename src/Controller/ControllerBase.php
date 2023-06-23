@@ -88,7 +88,7 @@ abstract class ControllerBase implements ControllerInterface
 
     protected function hasArgument(string $name): bool
     {
-        return $this->route->hasArgument($name);
+        return $this->route->getArguments()->has($name);
     }
 
     /**
@@ -96,7 +96,7 @@ abstract class ControllerBase implements ControllerInterface
      */
     protected function getArgument(string $name): mixed
     {
-        return $this->route->getArgument($name);
+        return $this->route->getArguments()->get($name);
     }
 
     protected function getRoute(): RouteInterface
