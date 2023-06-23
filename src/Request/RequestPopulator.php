@@ -102,8 +102,9 @@ readonly class RequestPopulator implements RequestPopulatorInterface
         if (array_key_exists('SERVER_PORT', $this->server)) {
             $port = $this->server['SERVER_PORT'];
 
-            if (is_int($port)) {
-                return $port;
+            // @todo Improve validation (pattern, range).
+            if (is_scalar($port)) {
+                return (int) $port;
             }
         }
 
