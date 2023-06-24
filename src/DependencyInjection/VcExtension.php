@@ -3,8 +3,6 @@
 namespace perf\Vc\DependencyInjection;
 
 use Exception;
-use perf\Source\LocalFileSource;
-use perf\Source\SourceInterface;
 use perf\Vc\Controller\ControllerRepositoryInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Routing\RouterInterface;
@@ -14,7 +12,6 @@ use perf\Vc\View\ViewRendererInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -67,9 +64,9 @@ class VcExtension implements ExtensionInterface
         array $configs,
         ContainerBuilder $containerBuilder
     ): void {
-        $configuration          = new VcConfiguration();
-        $processor              = new Processor();
-        $this->config           = $processor->processConfiguration($configuration, $configs);
+        $configuration = new VcConfiguration();
+        $processor = new Processor();
+        $this->config = $processor->processConfiguration($configuration, $configs);
         $this->containerBuilder = $containerBuilder;
     }
 
@@ -132,7 +129,11 @@ class VcExtension implements ExtensionInterface
 
     private function configureRouter(): void
     {
-        $this->setDefinitionArgument(RoutingRuleImporterInterface::class, '$routeDefinitions', $this->config['route_definitions']);
+        $this->setDefinitionArgument(
+            RoutingRuleImporterInterface::class,
+            '$routeDefinitions',
+            $this->config['route_definitions']
+        );
 
         $this->setDefinitionArgument(
             RouterInterface::class,

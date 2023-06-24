@@ -19,7 +19,7 @@ class VcConfiguration implements ConfigurationInterface
                     ->isRequired()
                     ->cannotBeEmpty()
                 ->end()
-                ->scalarNode('route_definitions')
+                ->arrayNode('route_definitions')
                     ->info('Route definitions.')
                     ->isRequired()
                     ->cannotBeEmpty()
