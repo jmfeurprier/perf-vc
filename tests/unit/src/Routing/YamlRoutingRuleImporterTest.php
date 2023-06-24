@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class YamlRoutingRuleImporterTest extends TestCase
 {
-    private YamlRoutingRuleImporter $importer;
+    private RoutingRuleImporter $importer;
 
     private MockObject&SourceInterface $source;
 
@@ -17,7 +17,7 @@ class YamlRoutingRuleImporterTest extends TestCase
     {
         $pathPatternParser = new PathPatternParser();
 
-        $this->importer = new YamlRoutingRuleImporter($pathPatternParser);
+        $this->importer = new RoutingRuleImporter($pathPatternParser);
 
         $this->source = $this->createMock(SourceInterface::class);
     }

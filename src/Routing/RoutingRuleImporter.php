@@ -2,14 +2,10 @@
 
 namespace perf\Vc\Routing;
 
-use perf\Source\Exception\SourceException;
-use perf\Source\SourceInterface;
 use perf\Vc\Controller\ControllerAddress;
 use perf\Vc\Exception\RoutingRuleImportException;
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Yaml;
 
-class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
+class RoutingRuleImporter implements RoutingRuleImporterInterface
 {
     private ControllerAddress $address;
 
@@ -18,71 +14,29 @@ class YamlRoutingRuleImporter implements RoutingRuleImporterInterface
      */
     private array $rules = [];
 
-    public static function createDefault(): self
-    {
-        return new self(
-            new PathPatternParser()
-        );
-    }
-
     public function __construct(
-        private readonly PathPatternParser $pathPatternParser
+        private readonly PathPatternParser $pathPatternParser,
+        private readonly array $routeDefinitions
     ) {
     }
 
-    public function import(SourceInterface $source): RoutingRuleCollection
+    public function import(): RoutingRuleCollection
     {
         $this->rules = [];
 
-        $content = $this->getYamlFileContent($source);
-
-        $this->parseModules($content);
+        $this->parseModules($this->routeDefinitions);
 
         return new RoutingRuleCollection($this->rules);
     }
 
     /**
-     * @return array<string, mixed>
+     * @param array<string, mixed> $routeDefinitions
      *
      * @throws RoutingRuleImportException
      */
-    private function getYamlFileContent(SourceInterface $source): array
+    private function parseModules(array $routeDefinitions): void
     {
-        try {
-            $content = Yaml::parse($source->getContent());
-        } catch (SourceException $e) {
-            throw new RoutingRuleImportException(
-                "Failed retrieving YAML routing source content: '{$e->getMessage()}'.",
-                0,
-                $e
-            );
-        } catch (ParseException $e) {
-            throw new RoutingRuleImportException(
-                "Failed parsing YAML routing source content: '{$e->getMessage()}'.",
-                0,
-                $e
-            );
-        }
-
-        if (empty($content)) {
-            return [];
-        }
-
-        if (!is_array($content)) {
-            throw new RoutingRuleImportException();
-        }
-
-        return $content;
-    }
-
-    /**
-     * @param array<string, mixed> $content
-     *
-     * @throws RoutingRuleImportException
-     */
-    private function parseModules(array $content): void
-    {
-        foreach ($content as $module => $actions) {
+        foreach ($routeDefinitions as $module => $actions) {
             if (empty($actions)) {
                 return;
             }

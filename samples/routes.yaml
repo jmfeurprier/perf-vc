@@ -1,39 +1,42 @@
-Homepage:
-    Index:
-        '':
-            methods:
-                - 'GET'
-Contact:
-    Form:
-        '/contact-us':
-            methods:
-                - 'GET'
-                - 'POST'
-    Success:
-        '/contact-us/success':
-            methods:
-                - 'GET'
-Hello:
-    World:
-        'hello-world/{firstName}/{lastName}':
-            parameters:
-                firstName:
-                    format: '[^/]+'
-                lastName:
-                    format: '[^/]+'
-                reversed:
-                    value: false
-            methods:
-                - 'GET'
-                - 'POST'
-        'hello-world/{lastName}/{firstName}/reverse':
-            parameters:
-                firstName:
-                    format: '[^/]+'
-                lastName:
-                    format: '[^/]+'
-                reversed:
-                    value: true
-            methods:
-                - 'GET'
-                - 'POST'
+parameters:
+
+    route_definitions:
+        Homepage:
+            Index:
+                '':
+                    methods:
+                        - 'GET'
+        Contact:
+            Form:
+                '/contact-us':
+                    methods:
+                        - 'GET'
+                        - 'POST'
+            Success:
+                '/contact-us/success':
+                    methods:
+                        - 'GET'
+        Hello:
+            World:
+                'hello-world/{firstName}/{lastName}':
+                    parameters:
+                        firstName:
+                            format: '[^/]+'
+                        lastName:
+                            format: '[^/]+'
+                        reversed:
+                            value: false
+                    methods:
+                        - 'GET'
+                        - 'POST'
+                'hello-world/{lastName}/{firstName}/reverse':
+                    parameters:
+                        firstName:
+                            format: '[^/]+'
+                        lastName:
+                            format: '[^/]+'
+                        reversed:
+                            value: true
+                    methods:
+                        - 'GET'
+                        - 'POST'

@@ -2,15 +2,14 @@
 
 namespace perf\Vc\Routing;
 
-use perf\Source\SourceInterface;
 use perf\Vc\Exception\VcException;
 
 interface RoutingRuleImporterInterface
 {
     /**
-     * Retrieves routing rules from provided routing source.
+     * Retrieves routing rules.
      *
      * @throws VcException
      */
-    public function import(SourceInterface $source): RoutingRuleCollection;
+    public function import(): RoutingRuleCollection;
 }

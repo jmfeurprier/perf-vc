@@ -8,6 +8,7 @@ use perf\Source\SourceInterface;
 use perf\Vc\Controller\ControllerRepositoryInterface;
 use perf\Vc\Response\ResponseBuilderFactoryInterface;
 use perf\Vc\Routing\RouterInterface;
+use perf\Vc\Routing\RoutingRuleImporterInterface;
 use perf\Vc\View\ViewLocatorInterface;
 use perf\Vc\View\ViewRendererInterface;
 use Symfony\Component\Config\Definition\Processor;
@@ -131,26 +132,14 @@ class VcExtension implements ExtensionInterface
 
     private function configureRouter(): void
     {
-        $definition = new Definition(
-            SourceInterface::class,
-            [
-                '$path' => $this->config['routing_rules_file_path'],
-            ]
-        );
-        $definition->setFactory(
-            [
-                LocalFileSource::class,
-                'create',
-            ]
-        );
-        $this->containerBuilder->setDefinition('perf_vc.routing_rules_source', $definition);
+        $this->setDefinitionArgument(RoutingRuleImporterInterface::class, '$routeDefinitions', $this->config['route_definitions']);
 
         $this->setDefinitionArgument(
             RouterInterface::class,
             '$routingRules',
             new Expression(
                 'service("perf\\\\Vc\\\\Routing\\\\RoutingRuleImporterInterface")' .
-                '.import(service("perf_vc.routing_rules_source"))'
+                '.import()'
             )
         );
     }

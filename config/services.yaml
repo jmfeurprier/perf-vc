@@ -50,7 +50,7 @@ services:
         class: perf\Vc\Routing\Router
 
     perf\Vc\Routing\RoutingRuleImporterInterface:
-        class: perf\Vc\Routing\YamlRoutingRuleImporter
+        class: perf\Vc\Routing\RoutingRuleImporter
 
     perf\Vc\Routing\RoutingRuleMatcherInterface:
         class: perf\Vc\Routing\RoutingRuleMatcher
