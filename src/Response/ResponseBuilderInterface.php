@@ -17,7 +17,10 @@ interface ResponseBuilderInterface
 
     public function addRawHeader(string $header): self;
 
-    public function setContent(string|SourceInterface $content): self;
+    /**
+     * @param string|SourceInterface|mixed $content
+     */
+    public function setContent(mixed $content): self;
 
     /**
      * @param array<string, mixed> $vars

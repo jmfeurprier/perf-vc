@@ -5,6 +5,22 @@ namespace perf\Vc\Routing;
 use perf\Vc\Controller\ControllerAddress;
 use perf\Vc\Exception\RoutingRuleImportException;
 
+/**
+ * @psalm-type Parameter array{
+ *     'format'?: string,
+ *     'value'?:  mixed,
+ * }
+ * @psalm-type ActionRule array{
+ *     'methods'?: string[],
+ *     'parameters'?: array<string, Parameter>
+ * }
+ * @psalm-type ActionRules array<string, ActionRule>
+ * @psalm-type ActionDefinition ActionRules
+ * @psalm-type ActionDefinitions array<string, ActionRules>
+ * @psalm-type ModuleDefinition ActionDefinitions
+ * @psalm-type ModuleDefinitions array<string, ModuleDefinition>
+ * @psalm-type RouteDefinitions ModuleDefinitions
+ */
 class RoutingRuleImporter implements RoutingRuleImporterInterface
 {
     private ControllerAddress $address;
@@ -14,6 +30,9 @@ class RoutingRuleImporter implements RoutingRuleImporterInterface
      */
     private array $rules = [];
 
+    /**
+     * @psalm-param RouteDefinitions $routeDefinitions
+     */
     public function __construct(
         private readonly PathPatternParser $pathPatternParser,
         private readonly array $routeDefinitions
@@ -30,7 +49,7 @@ class RoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array<string, mixed> $routeDefinitions
+     * @psalm-param RouteDefinitions $routeDefinitions
      *
      * @throws RoutingRuleImportException
      */
@@ -50,7 +69,7 @@ class RoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array<string, array<string, mixed>> $actions
+     * @psalm-param ActionDefinitions $actions
      *
      * @throws RoutingRuleImportException
      */
@@ -58,29 +77,29 @@ class RoutingRuleImporter implements RoutingRuleImporterInterface
         string $module,
         array $actions
     ): void {
-        foreach ($actions as $action => $actionRules) {
+        foreach ($actions as $action => $actionDefinitions) {
             $this->address = new ControllerAddress($module, $action);
 
-            if (empty($actionRules)) {
+            if (empty($actionDefinitions)) {
                 return;
             }
 
-            if (!is_array($actionRules)) {
+            if (!is_array($actionDefinitions)) {
                 throw new RoutingRuleImportException();
             }
 
-            $this->parseAction($actionRules);
+            $this->parseAction($actionDefinitions);
         }
     }
 
     /**
-     * @param array<string, mixed> $actionRules
+     * @psalm-param ActionDefinition $actionDefinition
      *
      * @throws RoutingRuleImportException
      */
-    private function parseAction(array $actionRules): void
+    private function parseAction(array $actionDefinition): void
     {
-        foreach ($actionRules as $path => $actionRule) {
+        foreach ($actionDefinition as $path => $actionRule) {
             if (!is_array($actionRule)) {
                 throw new RoutingRuleImportException();
             }
@@ -90,7 +109,7 @@ class RoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array<string, array<string, mixed>> $actionRule
+     * @psalm-param ActionRule $actionRule
      *
      * @throws RoutingRuleImportException
      */
@@ -112,7 +131,7 @@ class RoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array<string, array<string, mixed>> $rule
+     * @psalm-param ActionRule $rule
      *
      * @return string[]
      *
@@ -134,7 +153,7 @@ class RoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array<string, array<string, mixed>> $rule
+     * @psalm-param ActionRule $rule
      *
      * @return ArgumentDefinition[]
      *
@@ -149,39 +168,39 @@ class RoutingRuleImporter implements RoutingRuleImporterInterface
                 throw new RoutingRuleImportException();
             }
 
-            $argumentDefinitions[] = $this->parseArgumentDefinition($name, $parameter);
+            $argumentDefinitions[] = $this->parseParameterDefinition($name, $parameter);
         }
 
         return $argumentDefinitions;
     }
 
     /**
-     * @param array<string, mixed> $argument
+     * @psalm-param Parameter $parameter
      *
      * @throws RoutingRuleImportException
      */
-    private function parseArgumentDefinition(
+    private function parseParameterDefinition(
         string $name,
-        array $argument
+        array $parameter
     ): ArgumentDefinition {
         return new ArgumentDefinition(
             $name,
-            $this->parseArgumentFormat($argument),
-            $this->parseArgumentDefaultValue($argument)
+            $this->parseParameterFormat($parameter),
+            $this->parseParameterDefaultValue($parameter)
         );
     }
 
     /**
-     * @param array<string, mixed> $argument
+     * @psalm-param Parameter $parameter
      *
      * @throws RoutingRuleImportException
      */
-    private function parseArgumentFormat(array $argument): string
+    private function parseParameterFormat(array $parameter): string
     {
         $format = '';
 
-        if (array_key_exists('format', $argument)) {
-            $format = $argument['format'];
+        if (array_key_exists('format', $parameter)) {
+            $format = $parameter['format'];
 
             if (!is_string($format)) {
                 throw new RoutingRuleImportException();
@@ -198,11 +217,11 @@ class RoutingRuleImporter implements RoutingRuleImporterInterface
     }
 
     /**
-     * @param array<string, mixed> $argument
+     * @psalm-param Parameter $parameter
      */
-    private function parseArgumentDefaultValue(array $argument): mixed
+    private function parseParameterDefaultValue(array $parameter): mixed
     {
-        return $argument['default'] ?? null;
+        return $parameter['value'] ?? null;
     }
 
     /**

@@ -22,7 +22,10 @@ class ResponseBuilder implements ResponseBuilderInterface
 
     private readonly HeaderCollection $headers;
 
-    private string|SourceInterface $content = '';
+    /**
+     * @var mixed|SourceInterface|string
+     */
+    private mixed $content = '';
 
     private readonly KeyValueCollection $vars;
 
@@ -73,7 +76,7 @@ class ResponseBuilder implements ResponseBuilderInterface
         return $this->headers;
     }
 
-    public function setContent(string|SourceInterface $content): self
+    public function setContent(mixed $content): self
     {
         $this->content = $content;
 
